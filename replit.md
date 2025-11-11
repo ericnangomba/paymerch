@@ -1,7 +1,7 @@
-# PayFlow - Global Payment Platform
+# PayMerch - Global Payment Platform
 
 ## Overview
-PayFlow is a comprehensive digital payment platform for merchants, similar to Flutterwave or PayChangu. It provides an easy-to-use interface for accepting payments globally, managing transactions, generating payment links, tracking analytics, and requesting payouts.
+PayMerch is a comprehensive digital payment platform for merchants, similar to Flutterwave or PayChangu. It provides an easy-to-use interface for accepting payments globally, managing transactions, generating payment links, tracking analytics, and requesting payouts.
 
 ## Current State
 **Phase**: MVP Development - Frontend Complete  

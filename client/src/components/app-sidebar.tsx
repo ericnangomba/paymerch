@@ -52,12 +52,12 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader className="p-6">
-        <Link href="/dashboard" data-testid="link-logo">
+            <Link href="/dashboard" data-testid="link-logo">
           <div className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center">
               <span className="text-primary-foreground font-bold text-lg">P</span>
             </div>
-            <span className="font-bold text-xl">PayFlow</span>
+            <span className="font-bold text-xl">PayMerch</span>
           </div>
         </Link>
       </SidebarHeader>

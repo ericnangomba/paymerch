@@ -1,42 +1,86 @@
-import type { Express } from "express";
+import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertTransactionSchema, insertPaymentLinkSchema, insertPayoutSchema } from "@shared/schema";
+import { checkAuth } from "./index";
+import { z } from "zod";
+
+// Define Zod schemas to replace the ones from the deleted schema file
+const transactionSchema = z.object({
+  merchantId: z.string(),
+  customerEmail: z.string().email().nullable(),
+  customerName: z.string().nullable(),
+  amount: z.string(),
+  currency: z.string(),
+  status: z.enum(["completed", "failed", "pending"]),
+  paymentMethod: z.string(),
+  description: z.string().nullable(),
+  reference: z.string(),
+});
+
+const paymentLinkSchema = z.object({
+  title: z.string(),
+  description: z.string().nullable(),
+  amount: z.string(),
+  currency: z.string(),
+  merchantId: z.string(),
+  isActive: z.number().min(0).max(1),
+});
+
+const payoutSchema = z.object({
+  amount: z.string(),
+  currency: z.string(),
+  bankAccount: z.string().nullable(),
+  merchantId: z.string(),
+  status: z.enum(["pending", "completed", "failed"]),
+});
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  app.get("/api/merchant", async (req, res) => {
+  // Apply authentication middleware to all API routes
+  app.use("/api/*", checkAuth);
+
+  // Extend the Request type to include the user from the checkAuth middleware
+interface AuthRequest extends Request {
+  user?: { uid: string; [key: string]: any };
+}
+
+  app.get("/api/merchant", async (req: AuthRequest, res: Response) => {
     try {
-      const merchant = await storage.getDefaultMerchant();
+      // Fetch merchant data based on the authenticated user's ID
+      const merchantId = req.user!.uid;
+      const merchant = await storage.getMerchantById(merchantId);
+      if (!merchant) {
+        return res.status(404).json({ error: "Merchant not found." });
+      }
       res.json(merchant);
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
   });
 
-  app.get("/api/transactions", async (req, res) => {
+  app.get("/api/transactions", async (req: AuthRequest, res) => {
     try {
-      const merchant = await storage.getDefaultMerchant();
-      const transactions = await storage.getTransactionsByMerchant(merchant.id);
+      const merchantId = req.user!.uid;
+      const transactions = await storage.getTransactionsByMerchant(merchantId);
       res.json(transactions);
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
   });
 
-  app.get("/api/transactions/recent", async (req, res) => {
+  app.get("/api/transactions/recent", async (req: AuthRequest, res) => {
     try {
-      const merchant = await storage.getDefaultMerchant();
-      const transactions = await storage.getRecentTransactions(merchant.id, 5);
+      const merchantId = req.user!.uid;
+      const transactions = await storage.getRecentTransactions(merchantId, 5);
       res.json(transactions);
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
   });
 
-  app.get("/api/stats", async (req, res) => {
+  app.get("/api/stats", async (req: AuthRequest, res) => {
     try {
-      const merchant = await storage.getDefaultMerchant();
-      const transactions = await storage.getTransactionsByMerchant(merchant.id);
+      const merchantId = req.user!.uid;
+      const transactions = await storage.getTransactionsByMerchant(merchantId);
       
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -86,9 +130,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/transactions/process", async (req, res) => {
+  app.post("/api/transactions/process", async (req: AuthRequest, res) => {
     try {
-      const merchant = await storage.getDefaultMerchant();
+      const merchantId = req.user!.uid;
+      const merchant = await storage.getMerchantById(merchantId);
+      if (!merchant) {
+        return res.status(404).json({ error: "Merchant not found." });
+      }
       const { linkId, amount, currency, paymentMethod, customerEmail, customerName } = req.body;
 
       if (!amount || isNaN(parseFloat(amount))) {
@@ -104,22 +152,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const parsedAmount = parseFloat(amount);
       
       const transactionData = {
-        merchantId: merchant.id,
+        merchantId: merchantId,
         customerEmail: customerEmail || null,
         customerName: customerName || null,
         amount: parsedAmount.toFixed(2),
-        currency: currency || "USD",
+        currency: currency || "ZAR",
         status: isSuccess ? "completed" : "failed",
         paymentMethod,
         description: linkId ? `Payment via link ${linkId}` : "Direct payment",
         reference,
       };
 
-      const validatedData = insertTransactionSchema.parse(transactionData);
+      const validatedData = transactionSchema.parse(transactionData);
       const transaction = await storage.createTransaction(validatedData);
 
       if (isSuccess) {
-        await storage.updateMerchantStats(merchant.id, parsedAmount, 1);
+        await storage.updateMerchantStats(merchantId, parsedAmount, 1);
       }
 
       res.json(transaction);
@@ -128,10 +176,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/payment-links", async (req, res) => {
+  app.get("/api/payment-links", async (req: AuthRequest, res) => {
     try {
-      const merchant = await storage.getDefaultMerchant();
-      const links = await storage.getPaymentLinksByMerchant(merchant.id);
+      const merchantId = req.user!.uid;
+      const links = await storage.getPaymentLinksByMerchant(merchantId);
       res.json(links);
     } catch (error: any) {
       res.status(500).json({ error: error.message });
@@ -153,9 +201,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/payment-links", async (req, res) => {
+  app.post("/api/payment-links", async (req: AuthRequest, res) => {
     try {
-      const merchant = await storage.getDefaultMerchant();
+      const merchantId = req.user!.uid;
+      const merchant = await storage.getMerchantById(merchantId);
+      if (!merchant) {
+        return res.status(404).json({ error: "Merchant not found." });
+      }
       
       if (!req.body.amount || isNaN(parseFloat(req.body.amount))) {
         return res.status(400).json({ error: "Invalid amount" });
@@ -165,12 +217,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         title: req.body.title,
         description: req.body.description || null,
         amount: parseFloat(req.body.amount).toFixed(2),
-        currency: req.body.currency || "USD",
-        merchantId: merchant.id,
+        currency: req.body.currency || "ZAR",
+        merchantId: merchantId,
         isActive: 1,
       };
 
-      const validatedData = insertPaymentLinkSchema.parse(linkData);
+      const validatedData = paymentLinkSchema.parse(linkData);
       const link = await storage.createPaymentLink(validatedData);
       res.json(link);
     } catch (error: any) {
@@ -178,19 +230,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/payouts", async (req, res) => {
+  app.get("/api/payouts", async (req: AuthRequest, res) => {
     try {
-      const merchant = await storage.getDefaultMerchant();
-      const payouts = await storage.getPayoutsByMerchant(merchant.id);
+      const merchantId = req.user!.uid;
+      const payouts = await storage.getPayoutsByMerchant(merchantId);
       res.json(payouts);
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
   });
 
-  app.post("/api/payouts", async (req, res) => {
+  app.post("/api/payouts", async (req: AuthRequest, res) => {
     try {
-      const merchant = await storage.getDefaultMerchant();
+      const merchantId = req.user!.uid;
+      const merchant = await storage.getMerchantById(merchantId);
+      if (!merchant) {
+        return res.status(404).json({ error: "Merchant not found." });
+      }
       
       if (!req.body.amount || isNaN(parseFloat(req.body.amount))) {
         return res.status(400).json({ error: "Invalid amount" });
@@ -208,17 +264,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const payoutData = {
         amount: requestedAmount.toFixed(2),
-        currency: req.body.currency || "USD",
+        currency: req.body.currency || "ZAR",
         bankAccount: req.body.bankAccount || null,
-        merchantId: merchant.id,
+        merchantId: merchantId,
         status: "pending",
       };
 
-      const validatedData = insertPayoutSchema.parse(payoutData);
+      const validatedData = payoutSchema.parse(payoutData);
       const payout = await storage.createPayout(validatedData);
 
       const newBalance = parseFloat(merchant.balance) - requestedAmount;
-      await storage.updateMerchantBalance(merchant.id, newBalance);
+      await storage.updateMerchantBalance(merchantId, newBalance);
 
       res.json(payout);
     } catch (error: any) {
@@ -226,10 +282,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/analytics/revenue", async (req, res) => {
+  app.get("/api/analytics/revenue", async (req: AuthRequest, res) => {
     try {
-      const merchant = await storage.getDefaultMerchant();
-      const transactions = await storage.getTransactionsByMerchant(merchant.id);
+      const merchantId = req.user!.uid;
+      const transactions = await storage.getTransactionsByMerchant(merchantId);
 
       const { timeRange = "7d" } = req.query;
       

@@ -1,10 +1,38 @@
-import { 
-  type Merchant, type InsertMerchant,
-  type Transaction, type InsertTransaction,
-  type PaymentLink, type InsertPaymentLink,
-  type Payout, type InsertPayout
-} from "@shared/schema";
 import { randomUUID } from "crypto";
+
+// Define types locally to remove dependency on the deleted @shared/schema file
+export type Merchant = {
+  id: string;
+  businessName: string;
+  email: string;
+  currency: string;
+  balance: string;
+  totalRevenue: string;
+  totalTransactions: number;
+  createdAt: string;
+};
+export type InsertMerchant = Omit<Merchant, 'id' | 'balance' | 'totalRevenue' | 'totalTransactions' | 'createdAt'>;
+
+export type Transaction = {
+  id: string;
+  merchantId: string;
+  customerEmail: string | null;
+  customerName: string | null;
+  amount: string;
+  currency: string;
+  status: 'completed' | 'failed' | 'pending';
+  paymentMethod: string;
+  description: string | null;
+  reference: string;
+  createdAt: string;
+};
+export type InsertTransaction = Omit<Transaction, 'id' | 'createdAt'>;
+
+export type PaymentLink = { id: string; merchantId: string; title: string; description: string | null; amount: string; currency: string; link: string; isActive: number; createdAt: string; };
+export type InsertPaymentLink = Omit<PaymentLink, 'id' | 'link' | 'createdAt'>;
+
+export type Payout = { id: string; merchantId: string; amount: string; currency: string; status: 'pending' | 'completed' | 'failed'; bankAccount: string | null; createdAt: string; };
+export type InsertPayout = Omit<Payout, 'id' | 'createdAt'>;
 
 export interface IStorage {
   getMerchant(id: string): Promise<Merchant | undefined>;
@@ -44,8 +72,8 @@ export class MemStorage implements IStorage {
     const defaultMerchant: Merchant = {
       id: randomUUID(),
       businessName: "Demo Merchant",
-      email: "demo@payflow.com",
-      currency: "USD",
+      email: "demo@paymerch.com",
+      currency: "ZAR",
       balance: "5000.00",
       totalRevenue: "15000.00",
       totalTransactions: 45,
@@ -65,7 +93,7 @@ export class MemStorage implements IStorage {
         customerEmail: "john@example.com",
         customerName: "John Smith",
         amount: "150.00",
-        currency: "USD",
+        currency: "ZAR",
         status: "completed",
         paymentMethod: "card",
         description: "Premium Subscription",
@@ -78,7 +106,7 @@ export class MemStorage implements IStorage {
         customerEmail: "sarah@example.com",
         customerName: "Sarah Johnson",
         amount: "89.99",
-        currency: "USD",
+        currency: "ZAR",
         status: "completed",
         paymentMethod: "mobile_money",
         description: "Product Purchase",
@@ -91,7 +119,7 @@ export class MemStorage implements IStorage {
         customerEmail: "mike@example.com",
         customerName: "Mike Brown",
         amount: "250.00",
-        currency: "USD",
+        currency: "ZAR",
         status: "pending",
         paymentMethod: "bank_transfer",
         description: "Bulk Order",
@@ -104,7 +132,7 @@ export class MemStorage implements IStorage {
         customerEmail: "emma@example.com",
         customerName: "Emma Wilson",
         amount: "49.99",
-        currency: "USD",
+        currency: "ZAR",
         status: "completed",
         paymentMethod: "card",
         description: "Service Fee",
@@ -117,7 +145,7 @@ export class MemStorage implements IStorage {
         customerEmail: "david@example.com",
         customerName: "David Lee",
         amount: "199.00",
-        currency: "USD",
+        currency: "ZAR",
         status: "failed",
         paymentMethod: "card",
         description: "Enterprise Plan",
@@ -135,7 +163,7 @@ export class MemStorage implements IStorage {
         title: "Monthly Subscription",
         description: "Premium features access",
         amount: "29.99",
-        currency: "USD",
+        currency: "ZAR",
         link: `LINK${Date.now()}A`,
         isActive: 1,
         createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
@@ -146,7 +174,7 @@ export class MemStorage implements IStorage {
         title: "One-time Payment",
         description: "Custom service package",
         amount: "499.00",
-        currency: "USD",
+        currency: "ZAR",
         link: `LINK${Date.now()}B`,
         isActive: 1,
         createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
@@ -158,6 +186,10 @@ export class MemStorage implements IStorage {
 
   async getMerchant(id: string): Promise<Merchant | undefined> {
     return this.merchants.get(id);
+  }
+
+  async getMerchantById(id: string): Promise<Merchant | undefined> {
+    return this.getMerchant(id);
   }
 
   async getDefaultMerchant(): Promise<Merchant> {

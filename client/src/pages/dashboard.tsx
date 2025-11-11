@@ -3,8 +3,33 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight, ArrowDownRight, DollarSign, Receipt, TrendingUp, CreditCard } from "lucide-react";
-import type { Merchant, Transaction } from "@shared/schema";
 import { Link } from "wouter";
+
+// Define types locally to remove dependency on the old, deleted schema file
+type Merchant = {
+  id: string;
+  businessName: string;
+  email: string;
+  currency: string;
+  balance: string;
+  totalRevenue: string;
+  totalTransactions: number;
+  createdAt: string;
+};
+
+type Transaction = {
+  id: string;
+  merchantId: string;
+  customerEmail: string | null;
+  customerName: string | null;
+  amount: string;
+  currency: string;
+  status: 'completed' | 'failed' | 'pending';
+  paymentMethod: string;
+  description: string | null;
+  reference: string;
+  createdAt: string;
+};
 
 export default function Dashboard() {
   const { data: merchant, isLoading: merchantLoading } = useQuery<Merchant>({
@@ -47,10 +72,10 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold" data-testid="text-total-balance">
-              ${parseFloat(merchant?.balance || "0").toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              R{parseFloat(merchant?.balance || "0").toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
             <p className="text-xs text-muted-foreground mt-1">
-              {merchant?.currency || "USD"}
+              {merchant?.currency || "ZAR"}
             </p>
           </CardContent>
         </Card>
@@ -62,12 +87,18 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold" data-testid="text-total-revenue">
-              ${parseFloat(merchant?.totalRevenue || "0").toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              R{parseFloat(merchant?.totalRevenue || "0").toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
-            <div className="flex items-center gap-1 text-xs text-green-600 mt-1">
-              <ArrowUpRight className="h-3 w-3" />
-              <span>+{stats?.revenueChange || 0}% from last month</span>
-            </div>
+            {stats && (
+              <div className={`flex items-center gap-1 text-xs mt-1 ${stats.revenueChange >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                {stats.revenueChange >= 0 ? (
+                  <ArrowUpRight className="h-3 w-3" />
+                ) : (
+                  <ArrowDownRight className="h-3 w-3" />
+                )}
+                <span>{stats.revenueChange}% from last month</span>
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -132,7 +163,7 @@ export default function Dashboard() {
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-medium">
-                        ${parseFloat(transaction.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        R{parseFloat(transaction.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </p>
                       <Badge 
                         variant={

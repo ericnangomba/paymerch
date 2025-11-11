@@ -27,11 +27,11 @@ export default function Home() {
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between px-6">
           <Link href="/" data-testid="link-home-logo">
-            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center">
                 <span className="text-primary-foreground font-bold text-lg">P</span>
               </div>
-              <span className="font-bold text-xl">PayFlow</span>
+              <span className="font-bold text-xl">PayMerch</span>
             </div>
           </Link>
           
@@ -49,10 +49,10 @@ export default function Home() {
 
           <div className="flex items-center gap-4">
             <ThemeToggle />
-            <Link href="/dashboard" data-testid="link-dashboard">
-              <Button variant="ghost">Dashboard</Button>
+            <Link href="/signin" data-testid="link-signin">
+              <Button variant="ghost">Sign In</Button>
             </Link>
-            <Link href="/dashboard" data-testid="button-get-started-header">
+            <Link href="/signup" data-testid="button-get-started-header">
               <Button>Get Started</Button>
             </Link>
           </div>
@@ -74,7 +74,7 @@ export default function Home() {
                 The easiest way to accept payments from anywhere in the world. Multiple payment methods, real-time analytics, and instant payouts.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Link href="/dashboard" data-testid="button-get-started-hero">
+                <Link href="/signup" data-testid="button-get-started-hero">
                   <Button size="lg" className="gap-2">
                     Get Started <ArrowRight className="h-4 w-4" />
                   </Button>
@@ -100,7 +100,7 @@ export default function Home() {
               <div className="relative rounded-lg overflow-hidden shadow-2xl border">
                 <img 
                   src={dashboardImage} 
-                  alt="PayFlow Dashboard" 
+                  alt="PayMerch Dashboard" 
                   className="w-full h-auto"
                 />
               </div>
@@ -120,67 +120,72 @@ export default function Home() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <Card className="hover-elevate transition-all duration-300">
               <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <CreditCard className="h-6 w-6 text-primary" />
+                <div className="mb-4 overflow-hidden rounded-lg">
+                  <img src="https://images.unsplash.com/photo-1516728778615-2d590ea1856f?auto=format&fit=crop&w=800&q=60" alt="payment methods" className="w-full h-28 object-cover" />
                 </div>
                 <CardTitle>Multiple Payment Methods</CardTitle>
                 <CardDescription>
-                  Accept credit cards, mobile money, and bank transfers from customers worldwide
+                  Accept credit cards, mobile money and bank transfers. Currency displayed as ZAR by default.
                 </CardDescription>
               </CardHeader>
             </Card>
+
             <Card className="hover-elevate transition-all duration-300">
               <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <BarChart3 className="h-6 w-6 text-primary" />
+                <div className="mb-4 overflow-hidden rounded-lg">
+                  <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&q=60" alt="analytics" className="w-full h-28 object-cover" />
                 </div>
                 <CardTitle>Real-time Analytics</CardTitle>
                 <CardDescription>
-                  Track your revenue, transactions, and success rates with beautiful dashboards
+                  Track revenue, transactions and trends with powerful dashboards.
                 </CardDescription>
               </CardHeader>
             </Card>
+
             <Card className="hover-elevate transition-all duration-300">
               <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <Shield className="h-6 w-6 text-primary" />
+                <div className="mb-4 overflow-hidden rounded-lg">
+                  <img src="https://images.unsplash.com/photo-1549921296-3f0ee5f9c7a6?auto=format&fit=crop&w=800&q=60" alt="security" className="w-full h-28 object-cover" />
                 </div>
                 <CardTitle>Secure Infrastructure</CardTitle>
                 <CardDescription>
-                  Bank-level encryption and PCI compliance to keep your data safe
+                  Bank-level encryption and PCI standards to keep data secure.
                 </CardDescription>
               </CardHeader>
             </Card>
+
             <Card className="hover-elevate transition-all duration-300">
               <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <Globe className="h-6 w-6 text-primary" />
+                <div className="mb-4 overflow-hidden rounded-lg">
+                  <img src="https://images.unsplash.com/photo-1502920917128-1aa500764b0f?auto=format&fit=crop&w=800&q=60" alt="global coverage" className="w-full h-28 object-cover" />
                 </div>
                 <CardTitle>Global Coverage</CardTitle>
                 <CardDescription>
-                  Support for multiple currencies including USD, EUR, NGN, KES, and more
+                  Support and reach across regions with local settlement options; default currency is ZAR.
                 </CardDescription>
               </CardHeader>
             </Card>
+
             <Card className="hover-elevate transition-all duration-300">
               <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <Code className="h-6 w-6 text-primary" />
+                <div className="mb-4 overflow-hidden rounded-lg">
+                  <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=60" alt="integration" className="w-full h-28 object-cover" />
                 </div>
                 <CardTitle>Easy Integration</CardTitle>
                 <CardDescription>
-                  Simple APIs and payment links to get you up and running in minutes
+                  Simple APIs and payment links to get you up and running in minutes.
                 </CardDescription>
               </CardHeader>
             </Card>
+
             <Card className="hover-elevate transition-all duration-300">
               <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <HeadphonesIcon className="h-6 w-6 text-primary" />
+                <div className="mb-4 overflow-hidden rounded-lg">
+                  <img src="https://images.unsplash.com/photo-1580894894518-02a1b5b0c2d9?auto=format&fit=crop&w=800&q=60" alt="support" className="w-full h-28 object-cover" />
                 </div>
                 <CardTitle>24/7 Support</CardTitle>
                 <CardDescription>
-                  Our team is here to help you succeed, anytime you need assistance
+                  Our team is here to help you succeed whenever you need assistance.
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -236,7 +241,7 @@ export default function Home() {
                   <h3 className="text-3xl font-bold">Integrate</h3>
                 </div>
                 <p className="text-lg text-muted-foreground">
-                  Add PayFlow to your website or app with our simple API or use payment links for instant setup.
+                  Add PayMerch to your website or app with our simple API or use payment links for instant setup.
                 </p>
                 <ul className="space-y-3">
                   <li className="flex items-center gap-3">
@@ -322,7 +327,7 @@ export default function Home() {
                 <CardTitle className="text-2xl">Starter</CardTitle>
                 <div>
                   <div className="text-4xl font-bold">2.9%</div>
-                  <p className="text-muted-foreground mt-2">+ $0.30 per transaction</p>
+                  <p className="text-muted-foreground mt-2">+ R3.50 per transaction (ZAR)</p>
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -340,7 +345,7 @@ export default function Home() {
                     <span className="text-sm">Email support</span>
                   </li>
                 </ul>
-                <Link href="/dashboard" data-testid="button-pricing-starter">
+                <Link href="/signup" data-testid="button-pricing-starter">
                   <Button className="w-full" variant="outline">Get Started</Button>
                 </Link>
               </CardContent>
@@ -352,7 +357,7 @@ export default function Home() {
                 <CardTitle className="text-2xl">Professional</CardTitle>
                 <div>
                   <div className="text-4xl font-bold">2.5%</div>
-                  <p className="text-muted-foreground mt-2">+ $0.25 per transaction</p>
+                  <p className="text-muted-foreground mt-2">+ R3.00 per transaction (ZAR)</p>
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -374,7 +379,7 @@ export default function Home() {
                     <span className="text-sm">Custom branding</span>
                   </li>
                 </ul>
-                <Link href="/dashboard" data-testid="button-pricing-pro">
+                <Link href="/signup" data-testid="button-pricing-pro">
                   <Button className="w-full">Get Started</Button>
                 </Link>
               </CardContent>
@@ -411,7 +416,7 @@ export default function Home() {
                     <span className="text-sm">Custom integration</span>
                   </li>
                 </ul>
-                <Link href="/dashboard" data-testid="button-pricing-enterprise">
+                <Link href="/signup" data-testid="button-pricing-enterprise">
                   <Button className="w-full" variant="outline">Contact Sales</Button>
                 </Link>
               </CardContent>
@@ -421,13 +426,13 @@ export default function Home() {
       </section>
 
       <section className="py-24 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground">
-        <div className="container px-6 text-center space-y-8">
+          <div className="container px-6 text-center space-y-8">
           <h2 className="text-4xl lg:text-5xl font-bold">Ready to Start Accepting Payments?</h2>
           <p className="text-xl max-w-2xl mx-auto opacity-90">
-            Join thousands of businesses already using PayFlow to grow globally
+            Join thousands of businesses already using PayMerch to grow locally and abroad
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <Link href="/dashboard" data-testid="button-cta-main">
+                <Link href="/signup" data-testid="button-cta-main">
               <Button size="lg" variant="secondary" className="gap-2">
                 Get Started Now <ArrowRight className="h-4 w-4" />
               </Button>
@@ -445,7 +450,7 @@ export default function Home() {
                 <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center">
                   <span className="text-primary-foreground font-bold text-lg">P</span>
                 </div>
-                <span className="font-bold text-xl">PayFlow</span>
+                <span className="font-bold text-xl">PayMerch</span>
               </div>
               <p className="text-sm text-muted-foreground">
                 Global payment solutions for modern businesses
@@ -469,6 +474,7 @@ export default function Home() {
                 <li><a href="#" className="hover:text-foreground transition-colors" data-testid="footer-link-about">About</a></li>
                 <li><a href="#" className="hover:text-foreground transition-colors" data-testid="footer-link-blog">Blog</a></li>
                 <li><a href="#" className="hover:text-foreground transition-colors" data-testid="footer-link-careers">Careers</a></li>
+                <li><a href="/admin" className="hover:text-foreground transition-colors" data-testid="footer-link-admin">Admin</a></li>
               </ul>
             </div>
             <div>
@@ -481,7 +487,7 @@ export default function Home() {
             </div>
           </div>
           <div className="border-t pt-8 text-center text-sm text-muted-foreground">
-            <p>&copy; 2025 PayFlow. All rights reserved.</p>
+            <p>&copy; 2025 PayMerch. All rights reserved.</p>
           </div>
         </div>
       </footer>

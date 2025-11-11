@@ -11,12 +11,42 @@ import { DollarSign, Plus, Wallet } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { insertPayoutSchema, type Payout, type Merchant } from "@shared/schema";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { z } from "zod";
 import { format } from "date-fns";
 
-const formSchema = insertPayoutSchema.extend({
+// Define types locally to remove dependency on deleted files
+type Merchant = {
+  id: string;
+  businessName: string;
+  email: string;
+  currency: string;
+  balance: string;
+  totalRevenue: string;
+  totalTransactions: number;
+  createdAt: string;
+};
+
+type Payout = {
+  id: string;
+  merchantId: string;
+  amount: string;
+  currency: string;
+  status: 'pending' | 'completed' | 'failed';
+  bankAccount: string | null;
+  createdAt: string;
+};
+
+// Define insertPayoutSchema locally
+const insertPayoutSchema = z.object({
+  merchantId: z.string(),
+  amount: z.string(),
+  currency: z.string(),
+  status: z.enum(['pending', 'completed', 'failed']),
+  bankAccount: z.string().nullable(),
+});
+
+const formSchema = insertPayoutSchema.extend({ // Extend the locally defined schema
   amount: z.string().min(1, "Amount is required"),
 });
 
@@ -39,8 +69,8 @@ export default function Payouts() {
     defaultValues: {
       merchantId: "",
       amount: "",
-      currency: "USD",
-      status: "pending",
+      currency: "ZAR", // Default to ZAR
+      status: "pending", 
       bankAccount: "",
     },
   });
@@ -92,7 +122,7 @@ export default function Payouts() {
             <DialogHeader>
               <DialogTitle>Request Payout</DialogTitle>
               <DialogDescription>
-                Withdraw funds from your PayFlow balance
+                Withdraw funds from your PayMerch balance
               </DialogDescription>
             </DialogHeader>
             <Form {...form}>
@@ -101,8 +131,8 @@ export default function Payouts() {
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium">Available Balance</span>
                     <span className="text-xl font-bold" data-testid="text-available-balance">
-                      ${availableBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                    </span>
+                      R{availableBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </span> 
                   </div>
                 </div>
                 
@@ -136,6 +166,7 @@ export default function Payouts() {
                         <Input 
                           placeholder="Account number or IBAN" 
                           {...field} 
+                          value={field.value ?? ""}
                           data-testid="input-bank-account"
                         />
                       </FormControl>
@@ -166,10 +197,10 @@ export default function Payouts() {
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold" data-testid="text-balance">
-              ${availableBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              R{availableBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
             <p className="text-xs text-muted-foreground mt-2">
-              {merchant?.currency || "USD"}
+              {merchant?.currency || "ZAR"}
             </p>
           </CardContent>
         </Card>
@@ -181,7 +212,7 @@ export default function Payouts() {
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold" data-testid="text-pending-payouts">
-              ${payouts?.filter(p => p.status === "pending").reduce((sum, p) => sum + parseFloat(p.amount), 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) || "0.00"}
+              R{payouts?.filter(p => p.status === "pending").reduce((sum, p) => sum + parseFloat(p.amount), 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
             <p className="text-xs text-muted-foreground mt-2">
               {payouts?.filter(p => p.status === "pending").length || 0} pending requests
@@ -223,7 +254,7 @@ export default function Payouts() {
                   {payouts.map((payout) => (
                     <TableRow key={payout.id} data-testid={`row-payout-${payout.id}`}>
                       <TableCell className="font-semibold">
-                        ${parseFloat(payout.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {payout.currency}
+                        R{parseFloat(payout.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {payout.currency}
                       </TableCell>
                       <TableCell className="font-mono text-sm">
                         {payout.bankAccount || "N/A"}

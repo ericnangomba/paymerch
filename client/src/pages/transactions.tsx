@@ -6,9 +6,23 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Search, Download, Filter } from "lucide-react";
-import type { Transaction } from "@shared/schema";
+import { Search, Filter, Download } from "lucide-react";
 import { format } from "date-fns";
+
+// Define Transaction type locally to remove dependency on the deleted @shared/schema file
+type Transaction = {
+  id: string;
+  merchantId: string;
+  customerEmail: string | null;
+  customerName: string | null;
+  amount: string;
+  currency: string;
+  status: 'completed' | 'failed' | 'pending';
+  paymentMethod: string;
+  description: string | null;
+  reference: string;
+  createdAt: string;
+};
 
 export default function Transactions() {
   const [search, setSearch] = useState("");
@@ -116,7 +130,7 @@ export default function Transactions() {
                         </div>
                       </TableCell>
                       <TableCell className="font-semibold" data-testid={`text-amount-${transaction.id}`}>
-                        ${parseFloat(transaction.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        R{parseFloat(transaction.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </TableCell>
                       <TableCell className="capitalize">
                         {transaction.paymentMethod.replace('_', ' ')}

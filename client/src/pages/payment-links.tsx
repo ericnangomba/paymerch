@@ -14,16 +14,28 @@ import { Copy, Link as LinkIcon, Plus, ExternalLink } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { insertPaymentLinkSchema, type PaymentLink } from "@shared/schema";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { z } from "zod";
 import { format } from "date-fns";
 
-const formSchema = insertPaymentLinkSchema.extend({
+// Define types and schemas locally to remove dependency on the deleted @shared/schema file
+type PaymentLink = { id: string; merchantId: string; title: string; description: string | null; amount: string; currency: string; link: string; isActive: number; createdAt: string; };
+
+const insertPaymentLinkSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  description: z.string().nullable().optional(),
   amount: z.string().min(1, "Amount is required"),
+  currency: z.string(),
+  merchantId: z.string(),
+  isActive: z.number(),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+const formSchema = insertPaymentLinkSchema.extend({
+  // The amount from the form is a string, which is what the backend expects.
+  // The backend will handle parsing to a number.
+});
+
+type FormValues = z.infer<typeof insertPaymentLinkSchema>;
 
 export default function PaymentLinks() {
   const [open, setOpen] = useState(false);
@@ -39,7 +51,7 @@ export default function PaymentLinks() {
       title: "",
       description: "",
       amount: "",
-      currency: "USD",
+      currency: "ZAR",
       merchantId: "",
       isActive: 1,
     },
@@ -122,7 +134,11 @@ export default function PaymentLinks() {
                     <FormItem>
                       <FormLabel>Description (Optional)</FormLabel>
                       <FormControl>
-                        <Textarea placeholder="Brief description..." {...field} data-testid="input-link-description" />
+                        <Textarea
+                          placeholder="Brief description..."
+                          {...field}
+                          value={field.value ?? ""}
+                          data-testid="input-link-description" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -154,13 +170,7 @@ export default function PaymentLinks() {
                               <SelectValue />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent>
-                            <SelectItem value="USD">USD</SelectItem>
-                            <SelectItem value="EUR">EUR</SelectItem>
-                            <SelectItem value="GBP">GBP</SelectItem>
-                            <SelectItem value="NGN">NGN</SelectItem>
-                            <SelectItem value="KES">KES</SelectItem>
-                            <SelectItem value="GHS">GHS</SelectItem>
+                          <SelectContent>                            
                             <SelectItem value="ZAR">ZAR</SelectItem>
                           </SelectContent>
                         </Select>
@@ -221,7 +231,7 @@ export default function PaymentLinks() {
                         </div>
                       </TableCell>
                       <TableCell className="font-semibold">
-                        ${parseFloat(link.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {link.currency}
+                        R{parseFloat(link.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {link.currency}
                       </TableCell>
                       <TableCell className="font-mono text-sm">{link.link}</TableCell>
                       <TableCell>

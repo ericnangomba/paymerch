@@ -11,8 +11,10 @@ import { Separator } from "@/components/ui/separator";
 import { Shield, CreditCard, Smartphone, Building2, CheckCircle2 } from "lucide-react";
 import { SiVisa, SiMastercard } from "react-icons/si";
 import { useToast } from "@/hooks/use-toast";
-import type { PaymentLink } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
+
+// Define the PaymentLink type locally, as it was previously in a deleted file.
+type PaymentLink = { id: string; merchantId: string; title: string; description: string | null; amount: string; currency: string; link: string; isActive: number; createdAt: string; };
 
 export default function Checkout() {
   const { linkId } = useParams<{ linkId: string }>();
@@ -32,7 +34,7 @@ export default function Checkout() {
     title: "Premium Subscription",
     description: "Monthly subscription to premium features",
     amount: "29.99",
-    currency: "USD",
+    currency: "ZAR",
     link: "demo",
     isActive: 1,
     createdAt: new Date().toISOString(),
@@ -111,7 +113,7 @@ export default function Checkout() {
             <div className="space-y-2">
               <h2 className="text-2xl font-bold">Payment Successful!</h2>
               <p className="text-muted-foreground">
-                Your payment of ${parseFloat(link!.amount).toFixed(2)} has been processed successfully
+                Your payment of {link!.currency} {parseFloat(link!.amount).toFixed(2)} has been processed successfully
               </p>
             </div>
             <div className="pt-4">
@@ -136,7 +138,7 @@ export default function Checkout() {
                   <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center">
                     <span className="text-primary-foreground font-bold text-lg">P</span>
                   </div>
-                  <span className="font-bold text-xl">PayFlow</span>
+                  <span className="font-bold text-xl">PayMerch</span>
                 </div>
                 <CardTitle className="text-2xl">{link!.title}</CardTitle>
                 {link!.description && (
@@ -146,14 +148,14 @@ export default function Checkout() {
               <CardContent className="space-y-4">
                 <div className="flex items-baseline gap-2">
                   <span className="text-4xl font-bold" data-testid="text-checkout-amount">
-                    ${parseFloat(link!.amount).toFixed(2)}
+                    R{parseFloat(link!.amount).toFixed(2)}
                   </span>
                   <span className="text-muted-foreground">{link!.currency}</span>
                 </div>
                 <Separator />
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Shield className="h-4 w-4" />
-                  <span>Secured by PayFlow - SSL Encrypted</span>
+                  <span>Secured by PayMerch - SSL Encrypted</span>
                 </div>
                 <div className="flex items-center gap-4 pt-2">
                   <SiVisa className="h-8 w-12 text-muted-foreground" />
@@ -285,7 +287,7 @@ export default function Checkout() {
                   disabled={processing}
                   data-testid="button-pay"
                 >
-                  {processing ? "Processing..." : `Pay $${parseFloat(link!.amount).toFixed(2)}`}
+                  {processing ? "Processing..." : `Pay R${parseFloat(link!.amount).toFixed(2)}`}
                 </Button>
 
                 <p className="text-xs text-center text-muted-foreground">
