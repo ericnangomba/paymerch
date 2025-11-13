@@ -89,6 +89,23 @@ export class MemStorage implements IStorage {
     this.seedDemoData(defaultMerchant.id);
   }
 
+  private async getOrCreateMerchantForUser(userId: string, userEmail?: string): Promise<Merchant> {
+    let merchant = this.merchants.get(userId);
+    if (merchant) {
+      return merchant;
+    }
+
+    // If no merchant exists for this user, create one by cloning the demo merchant
+    const demoMerchant = this.merchants.get(this.defaultMerchantId)!;
+    const newMerchant: Merchant = {
+      ...demoMerchant,
+      id: userId, // Use the user's ID as the merchant ID
+      email: userEmail || `user-${userId}@example.com`,
+    };
+    this.merchants.set(userId, newMerchant);
+    return newMerchant;
+  }
+
   private seedDemoData(merchantId: string) {
     const demoTransactions: Transaction[] = [
       {
@@ -193,7 +210,7 @@ export class MemStorage implements IStorage {
   }
 
   async getMerchantById(id: string): Promise<Merchant | undefined> {
-    return this.getMerchant(id);
+    return this.getOrCreateMerchantForUser(id);
   }
 
   async getDefaultMerchant(): Promise<Merchant> {

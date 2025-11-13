@@ -1,34 +1,34 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
-import { Route, Switch } from "wouter";
-import Dashboard from "./dashboard";
-import Transactions from "./transactions";
-import PaymentLinks from "./payment-links";
-import Analytics from "./analytics";
-import Payouts from "./payouts";
+import { useAuth } from "@/lib/useAuth";
+import AdminDashboard from "@/pages/admin-dashboard";
+import MerchantDashboard from "@/pages/merchant-dashboard";
 
 export default function DashboardLayout() {
-  const style = {
-    "--sidebar-width": "16rem",
-    "--sidebar-width-icon": "3rem",
-  };
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase();
 
   return (
-    <SidebarProvider style={style as React.CSSProperties}>
-      <div className="flex h-screen w-full">
+    <SidebarProvider>
+      <div className="flex h-screen bg-background">
+        {/* Sidebar navigation */}
         <AppSidebar />
-        <div className="flex flex-col flex-1 overflow-hidden">
-          <header className="flex items-center justify-between p-4 border-b bg-background">
-            <SidebarTrigger data-testid="button-sidebar-toggle" />
+
+        {/* Main content area */}
+        <div className="flex flex-col flex-1">
+          {/* Header */}
+          <header className="flex items-center justify-between p-4 border-b bg-card">
+            <SidebarTrigger />
+            <div className="text-sm text-muted-foreground">
+              {user ? `Welcome back, ${user.email}` : "Not signed in"}
+            </div>
           </header>
-          <main className="flex-1 overflow-auto p-6">
-            <Switch>
-              <Route path="/dashboard/transactions" component={Transactions} />
-              <Route path="/dashboard/payment-links" component={PaymentLinks} />
-              <Route path="/dashboard/analytics" component={Analytics} />
-              <Route path="/dashboard/payouts" component={Payouts} />
-              <Route path="/dashboard" component={Dashboard} />
-            </Switch>
+
+          {/* Role-specific dashboard content */}
+          <main className="flex-1 overflow-y-auto p-6">
+            {role === "admin" && <AdminDashboard />}
+            {role === "merchant" && <MerchantDashboard />}
+            {!role && <p>Please sign in to view your dashboard.</p>}
           </main>
         </div>
       </div>

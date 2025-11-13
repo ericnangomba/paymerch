@@ -1,94 +1,144 @@
-import { useEffect, useState } from 'react';
-import { useAuth } from '@/lib/useAuth';
-import { Button } from '@/components/ui/button';
+import { useEffect, useState } from "react";
+import { useAuth } from "@/lib/useAuth";
+import { Button } from "@/components/ui/button";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
+
+interface MerchantOverview {
+  totalRevenue: number;
+  totalBalance: number;
+  totalTransactions: number;
+  successRate: number;
+}
+
+interface Transaction {
+  id: string;
+  amount: number;
+  currency: string;
+  status: string;
+  date: string;
+}
 
 export default function MerchantDashboard() {
-  const { user } = useAuth();
-  const [transactions, setTransactions] = useState<{ id: string; reference: string; amount: string; currency: string; status: string; }[]>([]);
-  const [financials, setFinancials] = useState<{ todayRevenue: number; todayTransactions: number; successRate: number; revenueChange: number; } | null>(null);
-  const [vendors, setVendors] = useState<{ id: string; name: string; category: string; }[]>([]);
+  const { user, logout } = useAuth();
+  const [overview, setOverview] = useState<MerchantOverview | null>(null);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   useEffect(() => {
-    if (user) {
-      fetch('/api/transactions', {
-        headers: { Authorization: `Bearer ${user.token}` },
+    const role = user?.role?.toLowerCase();
+    if (role === "merchant") {
+      fetch("/api/merchant/overview", {
+        headers: { Authorization: `Bearer ${user?.token}` },
       })
         .then((res) => res.json())
-        .then(setTransactions);
+        .then(setOverview)
+        .catch((err) => console.error("Failed to fetch merchant overview:", err));
 
-      fetch('/api/stats', {
-        headers: { Authorization: `Bearer ${user.token}` },
+      fetch("/api/merchant/transactions", {
+        headers: { Authorization: `Bearer ${user?.token}` },
       })
         .then((res) => res.json())
-        .then(setFinancials);
-
-      fetch('/api/merchant/vendors', {
-        headers: { Authorization: `Bearer ${user.token}` },
-      })
-        .then((res) => res.json())
-        .then(setVendors);
+        .then(setTransactions)
+        .catch((err) => console.error("Failed to fetch transactions:", err));
     }
   }, [user]);
 
-  const logout = () => {
-    localStorage.removeItem('user');
-    window.location.href = '/';
-  };
-
-  if (!user) {
-    return <div>Please log in to access your dashboard.</div>;
+  const role = user?.role?.toLowerCase();
+  if (role !== "merchant") {
+    return <div>Access denied. Merchants only.</div>;
   }
 
   return (
-    <div className="p-6">
-      <header className="p-4 bg-primary text-primary-foreground">
-        <h1 className="text-2xl font-bold">Merchant Dashboard</h1>
-        <button onClick={logout} className="btn btn-logout">Logout</button>
-      </header>
+    <SidebarProvider>
+      <div className="flex h-screen bg-background">
+        <AppSidebar />
 
-      <section className="mb-6">
-        <h2 className="text-xl font-semibold">Transaction Management</h2>
-        <p>Manage your transactions efficiently.</p>
-      </section>
+        <div className="flex flex-col flex-1">
+          {/* Header */}
+          <header className="flex items-center justify-between p-4 border-b bg-card">
+            <SidebarTrigger />
+            <div className="flex items-center gap-4">
+              <span className="text-sm text-muted-foreground">
+                {user?.email}
+              </span>
+              <Button variant="destructive" onClick={logout}>
+                Logout
+              </Button>
+            </div>
+          </header>
 
-      <section className="mb-6">
-        <h2 className="text-xl font-semibold">Financial Overview</h2>
-        {financials ? (
-          <div>
-            <p>Today's Revenue: R{financials.todayRevenue}</p>
-            <p>Today's Transactions: {financials.todayTransactions}</p>
-            <p>Success Rate: {financials.successRate}%</p>
-            <p>Revenue Change: {financials.revenueChange}%</p>
-          </div>
-        ) : (
-          <p>Loading...</p>
-        )}
-      </section>
+          {/* Main content */}
+          <main className="flex-1 p-6 space-y-6">
+            <h1 className="text-2xl font-bold">Merchant Dashboard</h1>
 
-      <section className="mb-6">
-        <h2 className="text-xl font-semibold">Vendor Access</h2>
-        <p>Access utilities and manage vendor payments.</p>
-      </section>
+            {/* Overview cards */}
+            <section className="grid grid-cols-4 gap-4">
+              <div className="p-4 border rounded bg-card">
+                <h2 className="font-semibold">Balance</h2>
+                <p className="text-lg">
+                  {overview?.totalBalance?.toLocaleString() ?? "Loading..."}
+                </p>
+              </div>
+              <div className="p-4 border rounded bg-card">
+                <h2 className="font-semibold">Revenue</h2>
+                <p className="text-lg">
+                  {overview?.totalRevenue?.toLocaleString() ?? "Loading..."}
+                </p>
+              </div>
+              <div className="p-4 border rounded bg-card">
+                <h2 className="font-semibold">Transactions</h2>
+                <p className="text-lg">
+                  {overview?.totalTransactions ?? "Loading..."}
+                </p>
+              </div>
+              <div className="p-4 border rounded bg-card">
+                <h2 className="font-semibold">Success Rate</h2>
+                <p className="text-lg">
+                  {overview?.successRate ? `${overview.successRate}%` : "Loading..."}
+                </p>
+              </div>
+            </section>
 
-      <section className="mb-6">
-        <h2 className="text-xl font-semibold">Creditors and Debtors</h2>
-        <p>Manage your creditors and debtors effectively.</p>
-      </section>
+            {/* Transactions list */}
+            <section>
+              <h2 className="text-xl font-semibold mb-2">Recent Transactions</h2>
+              {transactions.length > 0 ? (
+                <ul className="space-y-2">
+                  {transactions.map((tx) => (
+                    <li key={tx.id} className="p-2 border rounded bg-card flex justify-between">
+                      <span>{tx.date}</span>
+                      <span>
+                        {tx.amount} {tx.currency}
+                      </span>
+                      <span
+                        className={
+                          tx.status.toLowerCase() === "success"
+                            ? "text-green-600"
+                            : "text-red-600"
+                        }
+                      >
+                        {tx.status}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No transactions yet.</p>
+              )}
+            </section>
 
-      <section className="mb-6">
-        <h2 className="text-xl font-semibold">Detailed Analytics</h2>
-        <p>Track your revenue, expenses, and transaction trends over time.</p>
-      </section>
-
-      <section className="mb-6">
-        <h2 className="text-xl font-semibold">Vendor Management</h2>
-        <p>Manage vendor relationships and streamline payments.</p>
-      </section>
-
-      <section className="mb-6">
-        <h2 className="text-xl font-semibold">Real-Time Notifications</h2>
-        <p>Stay updated with instant alerts on transactions and account activities.</p>
-      </section>
-    </div>
+            {/* Quick actions */}
+            <section className="mt-6">
+              <h2 className="text-xl font-semibold mb-2">Quick Actions</h2>
+              <div className="flex gap-4">
+                <Button>Generate Payment Link</Button>
+                <Button>Request Payout</Button>
+                <Button>View Analytics</Button>
+              </div>
+            </section>
+          </main>
+        </div>
+      </div>
+    </SidebarProvider>
   );
 }

@@ -1,38 +1,45 @@
-import { useEffect, useState, useCallback } from 'react';
-import { supabase } from './supabaseClient';
+import { useEffect, useState, useCallback } from "react";
+import { supabase } from "./supabaseClient";
+import { useLocation } from "wouter";
 
-export type AuthUser = { uid: string; email?: string | null; isAdmin?: boolean; token: string; role: string } | null;
+export type AuthUser = {
+  uid: string;
+  email?: string | null;
+  isAdmin: boolean;
+  token: string;
+  role: string;
+} | null;
 
 // Function to refresh and store token safely
 export async function refreshAndStoreToken() {
   const { data, error } = await supabase.auth.getSession();
   if (error) {
-    console.error('Failed to get session', error);
-    localStorage.removeItem('authToken');
+    console.error("Failed to get session", error);
+    localStorage.removeItem("authToken");
     return null;
   }
 
   const session = data?.session ?? null;
   const accessToken = session?.access_token ?? null;
 
-  if (accessToken && accessToken !== 'null' && accessToken !== 'undefined') {
-    localStorage.setItem('authToken', accessToken);
+  if (accessToken && accessToken !== "null" && accessToken !== "undefined") {
+    localStorage.setItem("authToken", accessToken);
     return accessToken;
   } else {
-    localStorage.removeItem('authToken');
+    localStorage.removeItem("authToken");
     return null;
   }
 }
 
 // Safe fetch helper function
-export async function safeFetch(url, options = {}) {
-  const token = localStorage.getItem('authToken');
-  const headers = new Headers(options.headers || { 'Content-Type': 'application/json' });
+export async function safeFetch(url: string, options: RequestInit = {}) {
+  const token = localStorage.getItem("authToken");
+  const headers = new Headers(options.headers || { "Content-Type": "application/json" });
 
-  if (token && token !== 'null' && token !== 'undefined') {
-    headers.set('Authorization', `Bearer ${token}`);
+  if (token && token !== "null" && token !== "undefined") {
+    headers.set("Authorization", `Bearer ${token}`);
   } else {
-    headers.delete('Authorization');
+    headers.delete("Authorization");
   }
 
   const opts = { ...options, headers };
@@ -42,12 +49,11 @@ export async function safeFetch(url, options = {}) {
 export function useAuth() {
   const [user, setUser] = useState<AuthUser>(null);
   const [loading, setLoading] = useState(true);
+  const [, setLocation] = useLocation();
 
   const fetchMe = useCallback(async () => {
     try {
-      // get session from supabase client
       const session = await supabase.auth.getSession();
-      console.log('Supabase session:', session.data.session);
       const accessToken = session.data.session?.access_token;
       if (!accessToken) {
         setUser(null);
@@ -55,34 +61,48 @@ export function useAuth() {
         return;
       }
 
-      console.log('Supabase login event:', event);
-      console.log('Supabase session after login:', session);
-
-      // call server to validate and get isAdmin flag
-      const res = await fetch('/api/me', { headers: { Authorization: `Bearer ${accessToken}` } });
+      const res = await fetch("/api/me", {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
       if (!res.ok) {
         setUser(null);
         setLoading(false);
         return;
       }
+
       const data = await res.json();
-      console.log('Fetched user data:', data);
-      setUser({ uid: data.uid, email: data.email, isAdmin: data.isAdmin, token: accessToken, role: data.role });
-      console.log('Storing token in localStorage:', accessToken);
-      localStorage.setItem('authToken', accessToken);
+      const normalizedRole = data.role?.toLowerCase() || "merchant";
+
+      const newUser: AuthUser = {
+        uid: data.uid,
+        email: data.email,
+        isAdmin: normalizedRole === "admin",
+        token: accessToken,
+        role: normalizedRole,
+      };
+
+      setUser(newUser);
+      localStorage.setItem("authToken", accessToken);
+
+      // ✅ Redirect based on role
+      if (normalizedRole === "admin") {
+        setLocation("/admin");
+      } else if (normalizedRole === "merchant") {
+        setLocation("/merchant");
+      }
     } catch (err) {
-      console.error('useAuth error', err);
+      console.error("useAuth error", err);
       setUser(null);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [setLocation]);
 
   useEffect(() => {
     fetchMe();
     const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log('Supabase auth state change event:', event);
-      console.log('Session data on auth state change:', session);
+      console.log("Supabase auth state change event:", event);
+      console.log("Session data on auth state change:", session);
       fetchMe();
     });
     return () => {
@@ -91,9 +111,8 @@ export function useAuth() {
   }, [fetchMe]);
 
   const logout = () => {
-    // Clear user session and redirect to login
-    localStorage.removeItem('authToken');
-    window.location.href = '/signin';
+    localStorage.removeItem("authToken");
+    window.location.href = "/signin";
   };
 
   return { user, loading, refresh: fetchMe, logout };

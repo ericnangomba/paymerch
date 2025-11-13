@@ -5,29 +5,43 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/theme-provider";
 import Home from "@/pages/home";
-import DashboardLayout from "@/pages/dashboard-layout";
 import Checkout from "@/pages/checkout";
 import { SignIn } from "@/pages/SignIn";
 import { SignUp } from "@/pages/SignUp";
-import Admin from "@/pages/admin";
 import NotFound from "@/pages/not-found";
 import AdminDashboard from "@/pages/admin-dashboard";
 import MerchantDashboard from "@/pages/merchant-dashboard";
-import { useAuth } from "@/lib/useAuth";
-import { Redirect } from "wouter";
+import AdminGuard from "@/components/AdminGuard";
+import MerchantGuard from "@/components/MerchantGuard"; // ✅ new guard
+import Unauthorized from "@/pages/Unauthorized";
 
 function Router() {
   return (
     <Switch>
+      {/* Public routes */}
       <Route path="/" component={Home} />
       <Route path="/signin" component={SignIn} />
       <Route path="/signup" component={SignUp} />
-      <Route path="/admin" component={Admin} />
-      <ProtectedRoute path="/admin-dashboard" component={AdminDashboard} role="admin" />
-      <ProtectedRoute path="/merchant-dashboard" component={MerchantDashboard} role="merchant" />
+      <Route path="/unauthorized" component={Unauthorized} />
+
+      {/* Admin Dashboard guarded */}
+      <Route path="/admin">
+        <AdminGuard>
+          <AdminDashboard />
+        </AdminGuard>
+      </Route>
+
+      {/* Merchant Dashboard guarded */}
+      <Route path="/merchant">
+        <MerchantGuard>
+          <MerchantDashboard />
+        </MerchantGuard>
+      </Route>
+
+      {/* Checkout links */}
       <Route path="/checkout/:linkId" component={Checkout} />
-      <Route path="/dashboard" component={DashboardLayout} />
-      <Route path="/dashboard/:rest*" component={DashboardLayout} />
+
+      {/* Fallback */}
       <Route component={NotFound} />
     </Switch>
   );
@@ -44,18 +58,6 @@ function App() {
       </ThemeProvider>
     </QueryClientProvider>
   );
-}
-
-function ProtectedRoute({ component: Component, role, ...rest }: { component: React.ComponentType; role: string; [key: string]: any }) {
-  const { user } = useAuth();
-
-  console.log('ProtectedRoute: user role =', user?.role, 'expected role =', role);
-
-  if (!user || user.role !== role) {
-    return <Redirect to="/signin" />;
-  }
-
-  return <Component {...rest} />;
 }
 
 export default App;

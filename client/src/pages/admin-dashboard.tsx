@@ -1,115 +1,90 @@
-import { useEffect, useState } from 'react';
-import { useAuth } from '@/lib/useAuth';
-import { Button } from '@/components/ui/button';
+import { useEffect, useState } from "react";
+import { useAuth } from "@/lib/useAuth";
+import { Button } from "@/components/ui/button";
+
+interface FinancialOverview {
+  totalRevenue: number;
+  totalBalance: number;
+  totalTransactions: number;
+}
+
+interface Alert {
+  id: number;
+  message: string;
+  type: string;
+}
 
 export default function AdminDashboard() {
-  const { user } = useAuth();
-  const [financialOverview, setFinancialOverview] = useState<{ totalRevenue: number; totalBalance: number; totalTransactions: number; } | null>(null);
-  const [alerts, setAlerts] = useState<{ id: number; message: string; type: string; }[]>([]);
-
+  const { user, logout } = useAuth();
+  const [financialOverview, setFinancialOverview] = useState<FinancialOverview | null>(null);
+  const [alerts, setAlerts] = useState<Alert[]>([]);
   useEffect(() => {
-    if (user?.isAdmin) {
-      fetch('/api/admin/financial-overview', {
+    if (user && user.role === "admin") {
+      fetch("/api/admin/financial-overview", {
         headers: { Authorization: `Bearer ${user.token}` },
       })
         .then((res) => res.json())
-        .then(setFinancialOverview);
+        .then(setFinancialOverview)
+        .catch((err) => console.error("Failed to fetch financial overview:", err));
 
-      fetch('/api/admin/alerts', {
+      fetch("/api/admin/alerts", {
         headers: { Authorization: `Bearer ${user.token}` },
       })
         .then((res) => res.json())
-        .then(setAlerts);
+        .then(setAlerts)
+        .catch((err) => console.error("Failed to fetch alerts:", err));
     }
   }, [user]);
 
-  const logout = () => {
-    localStorage.removeItem('user');
-    window.location.href = '/';
-  };
-
-  if (!user?.isAdmin) {
+  // Render access denied message if user is not an admin
+  if (user && user.role !== "admin") {
     return <div>Access denied. Admins only.</div>;
   }
 
   return (
     <div className="p-6">
-      <header className="p-4 bg-primary text-primary-foreground">
+      <header className="p-4 bg-primary text-primary-foreground flex justify-between items-center">
         <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-        <button onClick={logout} className="btn btn-logout">Logout</button>
+        <Button onClick={logout} variant="destructive">
+          Logout
+        </Button>
       </header>
 
       <section className="mb-6">
-        <h2 className="text-xl font-semibold">Admin Dashboard</h2>
-        <p>Welcome, admin@paymerch.co.za</p>
-      </section>
-
-      <section className="mb-6">
-        <h2 className="text-xl font-semibold">Financial Overview</h2>
+        <h2 className="text-xl font-semibold">Welcome, Admin</h2>
         {financialOverview ? (
-          <div>
-            <p>Total Revenue: R{financialOverview.totalRevenue}</p>
-            <p>Total Balance: R{financialOverview.totalBalance}</p>
-            <p>Total Transactions: {financialOverview.totalTransactions}</p>
+          <div className="grid grid-cols-3 gap-4 mt-4">
+            <div>
+              <h3 className="font-medium">Total Balance</h3>
+              <p>{financialOverview.totalBalance.toLocaleString()}</p>
+            </div>
+            <div>
+              <h3 className="font-medium">Total Revenue</h3>
+              <p>{financialOverview.totalRevenue.toLocaleString()}</p>
+            </div>
+            <div>
+              <h3 className="font-medium">Total Transactions</h3>
+              <p>{financialOverview.totalTransactions}</p>
+            </div>
           </div>
         ) : (
-          <p>Loading...</p>
+          <p>Loading financial overview...</p>
         )}
       </section>
 
-      <section className="mb-6">
-        <h2 className="text-xl font-semibold">Administrative Settings</h2>
-        <ul>
-          <li>Manage APIs</li>
-          <li>Update Security Settings</li>
-          <li>Configure Payment Gateways</li>
-        </ul>
-      </section>
-
-      <section className="mb-6">
-        <h2 className="text-xl font-semibold">Alerts and Notifications</h2>
-        <ul>
-          {alerts.map((alert) => (
-            <li key={alert.id} className={`alert alert-${alert.type}`}>
-              {alert.message}
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="mb-6">
-        <h2 className="text-xl font-semibold">Requests and Rejects</h2>
-        <p>Manage pending and rejected requests efficiently.</p>
-      </section>
-
-      <section className="mb-6">
-        <h2 className="text-xl font-semibold">API Management</h2>
-        <Button>Manage APIs</Button>
-      </section>
-
-      <section className="mb-6">
-        <h2 className="text-xl font-semibold">Security Settings</h2>
-        <Button>Update Security</Button>
-      </section>
-
-      <section className="mb-6">
-        <h2 className="text-xl font-semibold">Gateway Configuration</h2>
-        <Button>Configure Gateways</Button>
-      </section>
-
-      <section className="mb-6">
-        <h2 className="text-xl font-semibold">Advanced Analytics</h2>
-        <p>View detailed insights into revenue, transactions, and user activity.</p>
-      </section>
-
-      <section className="mb-6">
-        <h2 className="text-xl font-semibold">User Management</h2>
-        <p>Manage user roles, permissions, and account statuses.</p>
-      </section>
-
-      <section className="mb-6">
-        <h2 className="text-xl font-semibold">Enhanced Notifications</h2>
-        <p>Receive real-time updates on system events and user activities.</p>
+      <section>
+        <h2 className="text-xl font-semibold mb-2">Alerts</h2>
+        {alerts.length > 0 ? (
+          <ul className="space-y-2">
+            {alerts.map((alert) => (
+              <li key={alert.id} className={`alert alert-${alert.type}`}>
+                {alert.message}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No alerts at this time.</p>
+        )}
       </section>
     </div>
   );
