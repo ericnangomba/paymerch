@@ -19,7 +19,13 @@ import dashboardImage from "@assets/generated_images/Merchant_dashboard_preview_
 import checkoutImage from "@assets/generated_images/Payment_checkout_interface_a8d4ddae.png";
 import apiImage from "@assets/generated_images/API_integration_coding_9329f2b0.png";
 import payoutImage from "@assets/generated_images/Payout_success_screen_cdb36df6.png";
-import { ThemeToggle } from "@/components/theme-toggle";
+import secureInfrastructureImage from "@assets/generated_images/Secure Infrastructure.webp";
+import globalCoverageImage from "@assets/generated_images/Global Coverage.jpg";
+import easyIntegrationImage from "@assets/generated_images/Easy Integration.jpg";
+import supportImage from "@assets/generated_images/247Support.jpg";
+import { useAuth } from '@/lib/useAuth';
+import HeaderAuth from '@/components/header-auth';
+import FooterCompany from '@/components/footer-company';
 
 export default function Home() {
   return (
@@ -47,15 +53,7 @@ export default function Home() {
             </a>
           </nav>
 
-          <div className="flex items-center gap-4">
-            <ThemeToggle />
-            <Link href="/signin" data-testid="link-signin">
-              <Button variant="ghost">Sign In</Button>
-            </Link>
-            <Link href="/signup" data-testid="button-get-started-header">
-              <Button>Get Started</Button>
-            </Link>
-          </div>
+          <HeaderAuth />
         </div>
       </header>
 
@@ -97,9 +95,9 @@ export default function Home() {
               </div>
             </div>
             <div className="relative">
-              <div className="relative rounded-lg overflow-hidden shadow-2xl border">
+              <div className="relative rounded-xl overflow-hidden shadow-2xl border -mr-12">
                 <img 
-                  src={dashboardImage} 
+                  src={payoutImage} 
                   alt="PayMerch Dashboard" 
                   className="w-full h-auto"
                 />
@@ -110,19 +108,22 @@ export default function Home() {
       </section>
 
       <section id="features" className="py-24 bg-muted/50">
-        <div className="container px-6">
-          <div className="text-center space-y-4 mb-16">
+        <div className="container px-6 mx-auto">
+          <div className="mx-auto text-center space-y-4 mb-16">
             <h2 className="text-4xl font-bold">Everything You Need to Succeed</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Powerful features designed to help you grow your business globally
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
             <Card className="hover-elevate transition-all duration-300">
               <CardHeader>
                 <div className="mb-4 overflow-hidden rounded-lg">
-                  <img src="https://images.unsplash.com/photo-1516728778615-2d590ea1856f?auto=format&fit=crop&w=800&q=60" alt="payment methods" className="w-full h-28 object-cover" />
-                </div>
+                      <img src={checkoutImage}
+                        alt="payment methods"
+                        className="w-full h-32 object-cover"
+                      />
+                    </div>
                 <CardTitle>Multiple Payment Methods</CardTitle>
                 <CardDescription>
                   Accept credit cards, mobile money and bank transfers. Currency displayed as ZAR by default.
@@ -133,7 +134,10 @@ export default function Home() {
             <Card className="hover-elevate transition-all duration-300">
               <CardHeader>
                 <div className="mb-4 overflow-hidden rounded-lg">
-                  <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=800&q=60" alt="analytics" className="w-full h-28 object-cover" />
+                  <img src={dashboardImage}
+                    alt="analytics"
+                    className="w-full h-32 object-cover"
+                  />
                 </div>
                 <CardTitle>Real-time Analytics</CardTitle>
                 <CardDescription>
@@ -145,7 +149,10 @@ export default function Home() {
             <Card className="hover-elevate transition-all duration-300">
               <CardHeader>
                 <div className="mb-4 overflow-hidden rounded-lg">
-                  <img src="https://images.unsplash.com/photo-1549921296-3f0ee5f9c7a6?auto=format&fit=crop&w=800&q=60" alt="security" className="w-full h-28 object-cover" />
+                  <img src={secureInfrastructureImage}
+                    alt="security"
+                    className="w-full h-32 object-cover"
+                  />
                 </div>
                 <CardTitle>Secure Infrastructure</CardTitle>
                 <CardDescription>
@@ -157,7 +164,10 @@ export default function Home() {
             <Card className="hover-elevate transition-all duration-300">
               <CardHeader>
                 <div className="mb-4 overflow-hidden rounded-lg">
-                  <img src="https://images.unsplash.com/photo-1502920917128-1aa500764b0f?auto=format&fit=crop&w=800&q=60" alt="global coverage" className="w-full h-28 object-cover" />
+                  <img src={globalCoverageImage}
+                    alt="global coverage"
+                    className="w-full h-32 object-cover"
+                  />
                 </div>
                 <CardTitle>Global Coverage</CardTitle>
                 <CardDescription>
@@ -169,7 +179,10 @@ export default function Home() {
             <Card className="hover-elevate transition-all duration-300">
               <CardHeader>
                 <div className="mb-4 overflow-hidden rounded-lg">
-                  <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=60" alt="integration" className="w-full h-28 object-cover" />
+                  <img src={easyIntegrationImage}
+                    alt="integration"
+                    className="w-full h-32 object-cover"
+                  />
                 </div>
                 <CardTitle>Easy Integration</CardTitle>
                 <CardDescription>
@@ -181,7 +194,10 @@ export default function Home() {
             <Card className="hover-elevate transition-all duration-300">
               <CardHeader>
                 <div className="mb-4 overflow-hidden rounded-lg">
-                  <img src="https://images.unsplash.com/photo-1580894894518-02a1b5b0c2d9?auto=format&fit=crop&w=800&q=60" alt="support" className="w-full h-28 object-cover" />
+                  <img src={supportImage}
+                    alt="support"
+                    className="w-full h-32 object-cover"
+                  />
                 </div>
                 <CardTitle>24/7 Support</CardTitle>
                 <CardDescription>
@@ -194,7 +210,7 @@ export default function Home() {
       </section>
 
       <section id="how-it-works" className="py-24">
-        <div className="container px-6">
+        <div className="container px-6 mx-auto">
           <div className="text-center space-y-4 mb-16">
             <h2 className="text-4xl font-bold">How It Works</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -314,15 +330,15 @@ export default function Home() {
       </section>
 
       <section id="pricing" className="py-24 bg-muted/50">
-        <div className="container px-6">
-          <div className="text-center space-y-4 mb-16">
+        <div className="container px-6 mx-auto">
+          <div className="mx-auto text-center space-y-4 mb-16">
             <h2 className="text-4xl font-bold">Simple, Transparent Pricing</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Pay only for what you use. No hidden fees.
             </p>
           </div>
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <Card className="hover-elevate transition-all duration-300">
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto text-left">
+            <Card className="hover-elevate transition-all duration-300 text-left">
               <CardHeader className="space-y-6">
                 <CardTitle className="text-2xl">Starter</CardTitle>
                 <div>
@@ -351,7 +367,7 @@ export default function Home() {
               </CardContent>
             </Card>
 
-            <Card className="hover-elevate transition-all duration-300 border-primary shadow-lg relative">
+            <Card className="hover-elevate transition-all duration-300 border-primary shadow-lg relative text-left">
               <Badge className="absolute -top-3 left-1/2 -translate-x-1/2">Most Popular</Badge>
               <CardHeader className="space-y-6">
                 <CardTitle className="text-2xl">Professional</CardTitle>
@@ -385,7 +401,7 @@ export default function Home() {
               </CardContent>
             </Card>
 
-            <Card className="hover-elevate transition-all duration-300">
+            <Card className="hover-elevate transition-all duration-300 text-left">
               <CardHeader className="space-y-6">
                 <CardTitle className="text-2xl">Enterprise</CardTitle>
                 <div>
@@ -426,7 +442,7 @@ export default function Home() {
       </section>
 
       <section className="py-24 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground">
-          <div className="container px-6 text-center space-y-8">
+          <div className="container px-6 mx-auto text-center space-y-8">
           <h2 className="text-4xl lg:text-5xl font-bold">Ready to Start Accepting Payments?</h2>
           <p className="text-xl max-w-2xl mx-auto opacity-90">
             Join thousands of businesses already using PayMerch to grow locally and abroad
@@ -443,9 +459,9 @@ export default function Home() {
       </section>
 
       <footer className="border-t py-12">
-        <div className="container px-6">
-          <div className="grid md:grid-cols-4 gap-12 mb-8">
-            <div className="space-y-4">
+        <div className="container px-6 mx-auto">
+          <div className="grid md:grid-cols-4 gap-12 mb-8 md:text-left">
+            <div className="space-y-4 flex flex-col items-center md:items-start">
               <div className="flex items-center gap-2">
                 <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center">
                   <span className="text-primary-foreground font-bold text-lg">P</span>
@@ -468,15 +484,7 @@ export default function Home() {
                 <li><a href="#" className="hover:text-foreground transition-colors" data-testid="footer-link-api">API Docs</a></li>
               </ul>
             </div>
-            <div>
-              <h4 className="font-semibold mb-4">Company</h4>
-              <ul className="space-y-3 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-foreground transition-colors" data-testid="footer-link-about">About</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors" data-testid="footer-link-blog">Blog</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors" data-testid="footer-link-careers">Careers</a></li>
-                <li><a href="/admin" className="hover:text-foreground transition-colors" data-testid="footer-link-admin">Admin</a></li>
-              </ul>
-            </div>
+            <FooterCompany />
             <div>
               <h4 className="font-semibold mb-4">Legal</h4>
               <ul className="space-y-3 text-sm text-muted-foreground">

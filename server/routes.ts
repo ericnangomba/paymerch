@@ -57,6 +57,21 @@ interface AuthRequest extends Request {
     }
   });
 
+  // Return authenticated user's basic info and admin flag
+  app.get("/api/me", async (req: AuthRequest, res: Response) => {
+    try {
+      const user = req.user!;
+      // Determine admin status from environment variables
+      const adminEmails = (process.env.ADMIN_EMAILS || "").split(",").map(s => s.trim()).filter(Boolean);
+      const adminUids = (process.env.ADMIN_UIDS || "").split(",").map(s => s.trim()).filter(Boolean);
+      const isAdmin = (user.email && adminEmails.includes(user.email)) || adminUids.includes(user.uid);
+      const role = isAdmin ? "admin" : "merchant";
+      res.json({ uid: user.uid, email: user.email || null, isAdmin, role });
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   app.get("/api/transactions", async (req: AuthRequest, res) => {
     try {
       const merchantId = req.user!.uid;
@@ -237,6 +252,85 @@ interface AuthRequest extends Request {
       res.json(payouts);
     } catch (error: any) {
       res.status(500).json({ error: error.message });
+    }
+  });
+
+  // ADMIN endpoints - require authenticated admin user
+  const requireAdmin = (req: AuthRequest, res: Response, next: Function) => {
+    const user = req.user!;
+    const adminEmails = (process.env.ADMIN_EMAILS || "").split(",").map(s => s.trim()).filter(Boolean);
+    const adminUids = (process.env.ADMIN_UIDS || "").split(",").map(s => s.trim()).filter(Boolean);
+    const isAdmin = (user.email && adminEmails.includes(user.email)) || adminUids.includes(user.uid);
+    if (!isAdmin) {
+      return res.status(403).json({ error: "Forbidden: Admins only" });
+    }
+    next();
+  };
+
+  app.get('/api/admin/merchants', requireAdmin, async (req: AuthRequest, res: Response) => {
+    try {
+      const merchants = await storage.getAllMerchants();
+      res.json(merchants);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.get('/api/admin/transactions', requireAdmin, async (req: AuthRequest, res: Response) => {
+    try {
+      const transactions = await storage.getAllTransactions();
+      res.json(transactions);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.get('/api/admin/payouts', requireAdmin, async (req: AuthRequest, res: Response) => {
+    try {
+      const payouts = await storage.getAllPayouts();
+      res.json(payouts);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Admin: Financial Overview
+  app.get('/api/admin/financial-overview', requireAdmin, async (req: AuthRequest, res: Response) => {
+    try {
+      const merchants = await storage.getAllMerchants();
+      const totalRevenue = merchants.reduce((sum, merchant) => sum + parseFloat(merchant.totalRevenue), 0);
+      const totalBalance = merchants.reduce((sum, merchant) => sum + parseFloat(merchant.balance), 0);
+      const totalTransactions = merchants.reduce((sum, merchant) => sum + merchant.totalTransactions, 0);
+
+      res.json({ totalRevenue, totalBalance, totalTransactions });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Admin: Alerts and Notifications
+  app.get('/api/admin/alerts', requireAdmin, async (_req: AuthRequest, res: Response) => {
+    try {
+      const alerts = [
+        { id: 1, message: 'System maintenance scheduled for Nov 15, 2025.', type: 'info' },
+        { id: 2, message: 'New merchant signups increased by 20% this month.', type: 'success' },
+      ];
+      res.json(alerts);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Merchant: Vendor Access
+  app.get('/api/merchant/vendors', async (req: AuthRequest, res: Response) => {
+    try {
+      const vendors = [
+        { id: 'v1', name: 'Vendor A', category: 'Utilities' },
+        { id: 'v2', name: 'Vendor B', category: 'Supplies' },
+      ];
+      res.json(vendors);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
     }
   });
 

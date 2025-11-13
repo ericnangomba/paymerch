@@ -1,9 +1,11 @@
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight, ArrowDownRight, DollarSign, Receipt, TrendingUp, CreditCard } from "lucide-react";
 import { Link } from "wouter";
+import { refreshAndStoreToken, safeFetch } from "@/lib/useAuth";
 
 // Define types locally to remove dependency on the old, deleted schema file
 type Merchant = {
@@ -32,12 +34,30 @@ type Transaction = {
 };
 
 export default function Dashboard() {
+  useEffect(() => {
+    refreshAndStoreToken(); // Ensure token is refreshed on app start
+  }, []);
+
   const { data: merchant, isLoading: merchantLoading } = useQuery<Merchant>({
     queryKey: ["/api/merchant"],
+    queryFn: async () => {
+      const response = await safeFetch("/api/merchant");
+      if (!response.ok) {
+        throw new Error("Failed to fetch merchant data");
+      }
+      return response.json();
+    },
   });
 
   const { data: recentTransactions, isLoading: transactionsLoading } = useQuery<Transaction[]>({
     queryKey: ["/api/transactions/recent"],
+    queryFn: async () => {
+      const response = await safeFetch("/api/transactions/recent");
+      if (!response.ok) {
+        throw new Error("Failed to fetch recent transactions");
+      }
+      return response.json();
+    },
   });
 
   const { data: stats } = useQuery<{
@@ -47,6 +67,13 @@ export default function Dashboard() {
     revenueChange: number;
   }>({
     queryKey: ["/api/stats"],
+    queryFn: async () => {
+      const response = await safeFetch("/api/stats");
+      if (!response.ok) {
+        throw new Error("Failed to fetch stats");
+      }
+      return response.json();
+    },
   });
 
   if (merchantLoading) {

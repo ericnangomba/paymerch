@@ -1,7 +1,6 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { Route, Switch, useRoute } from "wouter";
+import { Route, Switch } from "wouter";
 import Dashboard from "./dashboard";
 import Transactions from "./transactions";
 import PaymentLinks from "./payment-links";
@@ -21,7 +20,6 @@ export default function DashboardLayout() {
         <div className="flex flex-col flex-1 overflow-hidden">
           <header className="flex items-center justify-between p-4 border-b bg-background">
             <SidebarTrigger data-testid="button-sidebar-toggle" />
-            <ThemeToggle />
           </header>
           <main className="flex-1 overflow-auto p-6">
             <Switch>

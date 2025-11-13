@@ -54,6 +54,10 @@ export interface IStorage {
   getPayout(id: string): Promise<Payout | undefined>;
   getPayoutsByMerchant(merchantId: string): Promise<Payout[]>;
   createPayout(payout: InsertPayout): Promise<Payout>;
+  // Admin helpers
+  getAllMerchants(): Promise<Merchant[]>;
+  getAllTransactions(): Promise<Transaction[]>;
+  getAllPayouts(): Promise<Payout[]>;
 }
 
 export class MemStorage implements IStorage {
@@ -308,6 +312,19 @@ export class MemStorage implements IStorage {
     };
     this.payouts.set(id, payout);
     return payout;
+  }
+
+  // Admin helpers
+  async getAllMerchants(): Promise<Merchant[]> {
+    return Array.from(this.merchants.values()).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  async getAllTransactions(): Promise<Transaction[]> {
+    return Array.from(this.transactions.values()).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  async getAllPayouts(): Promise<Payout[]> {
+    return Array.from(this.payouts.values()).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 }
 

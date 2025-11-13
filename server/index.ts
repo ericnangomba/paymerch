@@ -26,6 +26,9 @@ export const checkAuth = async (req: Request, res: Response, next: NextFunction)
     return res.status(401).json({ message: 'Unauthorized: No token provided.' });
   }
 
+  console.log("Authorization Header:", req.headers.authorization);
+  console.log("Token Parts:", token?.split("."));
+  
   try {
     // Decode Supabase JWT token and extract user info
     // In a real production setup, you should verify the JWT signature
@@ -59,13 +62,29 @@ export const checkAuth = async (req: Request, res: Response, next: NextFunction)
 };
 
 // Configure Helmet for security, with special rules for Vite in development
+// Configure Helmet for security, with special rules for Vite in development
+// Expand CSP to allow images from external providers and allow connect to Supabase
+const supabaseOrigin = (() => {
+  try {
+    const raw = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || '';
+    if (!raw) return 'https:';
+    const u = new URL(raw);
+    return u.origin;
+  } catch (err) {
+    return process.env.VITE_SUPABASE_URL || 'https:';
+  }
+})();
+
 app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-        "script-src": ["'self'", "'unsafe-inline'"], // Allow inline scripts for Vite
-        "connect-src": ["'self'", "ws:"], // Allow websocket connections for HMR
+        "script-src": ["'self'", "'unsafe-inline'", "https://unpkg.com/"], // Allow inline scripts for Vite
+        // Allow websocket for HMR and allow https connections (Supabase and external APIs)
+        "connect-src": ["'self'", "ws:", "https:", supabaseOrigin],
+        // Allow images from data URIs and Unsplash and any https host
+        "img-src": ["'self'", "data:", "https:", "https://images.unsplash.com"],
       },
     },
   })

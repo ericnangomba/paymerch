@@ -15,12 +15,6 @@ import {
 
 const menuItems = [
   {
-    title: "Dashboard",
-    url: "/dashboard",
-    icon: LayoutDashboard,
-    testId: "nav-dashboard",
-  },
-  {
     title: "Transactions",
     url: "/dashboard/transactions",
     icon: Receipt,
