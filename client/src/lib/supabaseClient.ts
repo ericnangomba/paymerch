@@ -1,23 +1,36 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined
 
-// Debug logging
+const isConfigured = Boolean(supabaseUrl && supabaseAnonKey)
+
 console.log('🔍 Supabase Configuration:')
-console.log('  URL:', supabaseUrl ? `✅ Configured (${supabaseUrl.split('.')[0]}....)` : '❌ Missing')
-console.log('  Key:', supabaseAnonKey ? '✅ Configured' : '❌ Missing')
+console.log('  URL:', isConfigured ? `✅ Configured (${supabaseUrl!.split('.')[0]}....)` : '❌ Missing')
+console.log('  Key:', isConfigured ? '✅ Configured' : '❌ Missing')
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  const errorMsg = 
-    'Supabase credentials are not configured.\n' +
-    'Make sure your .env file has:\n' +
-    '  VITE_SUPABASE_URL=https://your-project.supabase.co\n' +
-    '  VITE_SUPABASE_ANON_KEY=your-anon-key-here'
-  console.error('❌', errorMsg)
-  throw new Error(errorMsg)
+const fallbackAuth = {
+  getSession: async () => ({ data: { session: null }, error: null }),
+  onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => undefined } } }),
+  signOut: async () => ({ error: null }),
 }
 
-// Create and export Supabase client
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
-console.log('✅ Supabase client ready')
+const fallbackClient = {
+  auth: fallbackAuth,
+  from: () => ({
+    select: async () => ({ data: [], error: null }),
+    insert: async () => ({ data: null, error: null }),
+    update: async () => ({ data: null, error: null }),
+    delete: async () => ({ data: null, error: null }),
+  }),
+} as any
+
+export const supabase = isConfigured
+  ? createClient(supabaseUrl!, supabaseAnonKey!)
+  : fallbackClient
+
+if (!isConfigured) {
+  console.warn('⚠️ Supabase credentials are not configured. Running in demo mode without auth.')
+} else {
+  console.log('✅ Supabase client ready')
+}

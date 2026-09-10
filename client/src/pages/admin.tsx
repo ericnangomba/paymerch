@@ -58,10 +58,8 @@ export default function Admin() {
       <header className="border-b">
         <div className="container px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold">P</span>
-            </div>
-            <h1 className="text-xl font-bold">PayMerch Admin</h1>
+            <img src="/paymerch.png" alt="Brand logo" className="h-18 w-auto object-contain" />
+            <h1 className="text-xl font-bold">Admin</h1>
           </div>
           <div>
             <Link href="/">

@@ -1,12 +1,13 @@
 import { defineConfig } from "drizzle-kit";
+import "dotenv/config";
 
 if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL, ensure the database is provisioned");
+  throw new Error("DATABASE_URL is missing. Add your Neon connection string to the .env file.");
 }
 
 export default defineConfig({
   out: "./migrations",
-  schema: "./shared/schema.ts",
+  schema: "./server/storage.ts",
   dialect: "postgresql",
   dbCredentials: {
     url: process.env.DATABASE_URL,

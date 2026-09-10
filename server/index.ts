@@ -1,10 +1,10 @@
+import "dotenv/config";
 import express, { Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import helmet from 'helmet';
 
-// Using Supabase for authentication - no Firebase needed!
-log("✅ Using Supabase JWT authentication (Firebase not required)");
+log("✅ Using Neon Postgres database connection");
 
 const app = express();
 
@@ -148,17 +148,17 @@ app.use((req: Request, res: Response, next: NextFunction) => {
     serveStatic(app);
   }
 
-  // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 5000 if not specified.
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
+  // Bind to localhost by default for local development. `reusePort` is not supported
+  // on Windows, and binding to 0.0.0.0 can also cause issues in some local envs.
   const port = parseInt(process.env.PORT || '5000', 10);
+  const host = process.env.HOST || (process.platform === 'win32' ? '127.0.0.1' : '0.0.0.0');
+
   server.listen({
     port,
-    host: "0.0.0.0",
-    reusePort: true,
+    host,
+    ...(process.platform !== 'win32' ? { reusePort: true } : {}),
   }, () => {
-    log(`Server listening on port ${port}`);
+    log(`Server listening on http://${host}:${port}`);
   });
 
   const gracefulShutdown = (signal: string) => {

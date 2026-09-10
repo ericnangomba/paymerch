@@ -122,7 +122,7 @@ export default function Payouts() {
             <DialogHeader>
               <DialogTitle>Request Payout</DialogTitle>
               <DialogDescription>
-                Withdraw funds from your PayMerch balance
+                Withdraw funds from your available balance
               </DialogDescription>
             </DialogHeader>
             <Form {...form}>

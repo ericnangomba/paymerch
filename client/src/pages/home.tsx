@@ -33,11 +33,12 @@ export default function Home() {
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between px-6">
           <Link href="/" data-testid="link-home-logo">
-              <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">P</span>
-              </div>
-              <span className="font-bold text-xl">PayMerch</span>
+            <div className="flex items-center gap-2">
+              <img
+                src="/paymerch.png"
+                alt="Brand logo"
+                className="h-24 w-auto object-contain"
+              />
             </div>
           </Link>
           
@@ -62,18 +63,18 @@ export default function Home() {
         <div className="container relative z-10 px-6">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
-              <Badge className="w-fit" variant="secondary">
+              <Badge className="w-fit bg-accent/10 text-accent border border-accent/30" variant="secondary">
                 Trusted by 10,000+ merchants worldwide
               </Badge>
               <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
-                Accept Payments <span className="text-primary">Globally</span> with Ease
+                Accept Payments <span className="text-accent">Globally</span> with Ease
               </h1>
               <p className="text-xl text-muted-foreground max-w-lg">
                 The easiest way to accept payments from anywhere in the world. Multiple payment methods, real-time analytics, and instant payouts.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link href="/signup" data-testid="button-get-started-hero">
-                  <Button size="lg" className="gap-2">
+                  <Button size="lg" className="gap-2 bg-accent text-accent-foreground border-accent hover:bg-accent/90">
                     Get Started <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
@@ -98,7 +99,7 @@ export default function Home() {
               <div className="relative rounded-xl overflow-hidden shadow-2xl border -mr-12">
                 <img 
                   src={payoutImage} 
-                  alt="PayMerch Dashboard" 
+                  alt="Dashboard preview"
                   className="w-full h-auto"
                 />
               </div>
@@ -257,7 +258,7 @@ export default function Home() {
                   <h3 className="text-3xl font-bold">Integrate</h3>
                 </div>
                 <p className="text-lg text-muted-foreground">
-                  Add PayMerch to your website or app with our simple API or use payment links for instant setup.
+                  Add payments to your website or app with our simple API or use payment links for instant setup.
                 </p>
                 <ul className="space-y-3">
                   <li className="flex items-center gap-3">
@@ -445,7 +446,7 @@ export default function Home() {
           <div className="container px-6 mx-auto text-center space-y-8">
           <h2 className="text-4xl lg:text-5xl font-bold">Ready to Start Accepting Payments?</h2>
           <p className="text-xl max-w-2xl mx-auto opacity-90">
-            Join thousands of businesses already using PayMerch to grow locally and abroad
+            Join thousands of businesses already growing locally and abroad
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
                 <Link href="/signup" data-testid="button-cta-main">
@@ -463,10 +464,7 @@ export default function Home() {
           <div className="grid md:grid-cols-4 gap-12 mb-8 md:text-left">
             <div className="space-y-4 flex flex-col items-center md:items-start">
               <div className="flex items-center gap-2">
-                <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-lg">P</span>
-                </div>
-                <span className="font-bold text-xl">PayMerch</span>
+                <img src="/paymerch.png" alt="Brand logo" className="h-18 w-auto object-contain" />
               </div>
               <p className="text-sm text-muted-foreground">
                 Global payment solutions for modern businesses
@@ -495,7 +493,7 @@ export default function Home() {
             </div>
           </div>
           <div className="border-t pt-8 text-center text-sm text-muted-foreground">
-            <p>&copy; 2025 PayMerch. All rights reserved.</p>
+            <p>&copy; 2025 All rights reserved.</p>
           </div>
         </div>
       </footer>

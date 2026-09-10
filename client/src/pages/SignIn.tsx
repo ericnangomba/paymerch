@@ -33,7 +33,10 @@ export function SignIn() {
     <div className="container mx-auto flex items-center justify-center min-h-screen p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Sign In to PayMerch</CardTitle>
+          <div className="mb-4 flex justify-center">
+            <img src="/paymerch.png" alt="Brand logo" className="h-24 w-auto object-contain" />
+          </div>
+          <CardTitle>Sign In</CardTitle>
           <CardDescription>Enter your credentials to access your dashboard.</CardDescription>
         </CardHeader>
         <CardContent>

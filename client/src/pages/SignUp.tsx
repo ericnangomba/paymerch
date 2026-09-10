@@ -40,7 +40,10 @@ export function SignUp() {
     <div className="container mx-auto flex items-center justify-center min-h-screen p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Create your PayMerch Account</CardTitle>
+          <div className="mb-4 flex justify-center">
+            <img src="/paymerch.png" alt="Brand logo" className="h-24 w-auto object-contain" />
+          </div>
+          <CardTitle>Create your account</CardTitle>
           <CardDescription>Get started with accepting payments globally.</CardDescription>
         </CardHeader>
         <CardContent>

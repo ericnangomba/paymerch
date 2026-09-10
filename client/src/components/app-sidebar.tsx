@@ -46,12 +46,13 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader className="p-6">
-            <Link href="/dashboard" data-testid="link-logo">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-lg">P</span>
-            </div>
-            <span className="font-bold text-xl">PayMerch</span>
+        <Link href="/dashboard" data-testid="link-logo">
+          <div className="flex items-center justify-center md:justify-start">
+            <img
+              src="/paymerch.png"
+              alt="Brand logo"
+              className="h-24 w-auto object-contain"
+            />
           </div>
         </Link>
       </SidebarHeader>

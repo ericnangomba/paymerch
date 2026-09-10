@@ -135,10 +135,7 @@ export default function Checkout() {
             <Card>
               <CardHeader>
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center">
-                    <span className="text-primary-foreground font-bold text-lg">P</span>
-                  </div>
-                  <span className="font-bold text-xl">PayMerch</span>
+                  <img src="/paymerch.png" alt="Brand logo" className="h-[54px] w-auto object-contain" />
                 </div>
                 <CardTitle className="text-2xl">{link!.title}</CardTitle>
                 {link!.description && (
@@ -155,7 +152,7 @@ export default function Checkout() {
                 <Separator />
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Shield className="h-4 w-4" />
-                  <span>Secured by PayMerch - SSL Encrypted</span>
+                  <span>Secured by SSL encryption</span>
                 </div>
                 <div className="flex items-center gap-4 pt-2">
                   <SiVisa className="h-8 w-12 text-muted-foreground" />
