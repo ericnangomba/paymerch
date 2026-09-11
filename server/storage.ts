@@ -1,6 +1,4 @@
 import { randomUUID } from "crypto";
-import { neon } from "@neondatabase/serverless";
-import "dotenv/config";
 
 // Define types locally to remove dependency on the deleted @shared/schema file
 export type Merchant = {
@@ -65,408 +63,303 @@ export interface IStorage {
   getAllPayouts(): Promise<Payout[]>;
 }
 
-export class NeonStorage implements IStorage {
-  private sql: ReturnType<typeof neon>;
+export class MemStorage implements IStorage {
+  private merchants: Map<string, Merchant>;
+  private transactions: Map<string, Transaction>;
+  private paymentLinks: Map<string, PaymentLink>;
+  private payouts: Map<string, Payout>;
+  private defaultMerchantId: string;
 
   constructor() {
-    if (!process.env.DATABASE_URL) {
-      throw new Error("DATABASE_URL is missing. Add your Neon connection string to the .env file.");
-    }
-    this.sql = neon(process.env.DATABASE_URL);
-    this.initializeTables();
-  }
+    this.merchants = new Map();
+    this.transactions = new Map();
+    this.paymentLinks = new Map();
+    this.payouts = new Map();
 
-  private async initializeTables() {
-    try {
-      // Create merchants table
-      await this.sql`
-        CREATE TABLE IF NOT EXISTS merchants (
-          id TEXT PRIMARY KEY,
-          business_name TEXT NOT NULL,
-          email TEXT NOT NULL UNIQUE,
-          currency TEXT DEFAULT 'ZAR',
-          balance NUMERIC DEFAULT 0,
-          total_revenue NUMERIC DEFAULT 0,
-          total_transactions INTEGER DEFAULT 0,
-          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-          status TEXT DEFAULT 'active'
-        )
-      `;
-
-      // Create transactions table
-      await this.sql`
-        CREATE TABLE IF NOT EXISTS transactions (
-          id TEXT PRIMARY KEY,
-          merchant_id TEXT NOT NULL,
-          customer_email TEXT,
-          customer_name TEXT,
-          amount NUMERIC NOT NULL,
-          currency TEXT NOT NULL,
-          status TEXT NOT NULL,
-          payment_method TEXT NOT NULL,
-          description TEXT,
-          reference TEXT NOT NULL,
-          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-          risk_score INTEGER,
-          fraud_flag BOOLEAN DEFAULT FALSE,
-          FOREIGN KEY (merchant_id) REFERENCES merchants(id)
-        )
-      `;
-
-      // Create payment_links table
-      await this.sql`
-        CREATE TABLE IF NOT EXISTS payment_links (
-          id TEXT PRIMARY KEY,
-          merchant_id TEXT NOT NULL,
-          title TEXT NOT NULL,
-          description TEXT,
-          amount NUMERIC NOT NULL,
-          currency TEXT NOT NULL,
-          link TEXT NOT NULL UNIQUE,
-          is_active INTEGER DEFAULT 1,
-          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-          FOREIGN KEY (merchant_id) REFERENCES merchants(id)
-        )
-      `;
-
-      // Create payouts table
-      await this.sql`
-        CREATE TABLE IF NOT EXISTS payouts (
-          id TEXT PRIMARY KEY,
-          merchant_id TEXT NOT NULL,
-          amount NUMERIC NOT NULL,
-          currency TEXT NOT NULL,
-          status TEXT NOT NULL,
-          bank_account TEXT,
-          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-          FOREIGN KEY (merchant_id) REFERENCES merchants(id)
-        )
-      `;
-
-      console.log("Neon DB tables initialized successfully");
-    } catch (error) {
-      console.error("Error initializing Neon DB tables:", error);
-    }
-  }
-
-  async getMerchant(id: string): Promise<Merchant | undefined> {
-    const result = await this.sql`
-      SELECT * FROM merchants WHERE id = ${id}
-    `;
-    if (result.length === 0) return undefined;
-    const row = result[0];
-    return {
-      id: row.id,
-      businessName: row.business_name,
-      email: row.email,
-      currency: row.currency,
-      balance: row.balance.toString(),
-      totalRevenue: row.total_revenue.toString(),
-      totalTransactions: row.total_transactions,
-      createdAt: row.created_at,
-      status: row.status,
-    };
-  }
-
-  async getMerchantById(id: string): Promise<Merchant | undefined> {
-    let merchant = await this.getMerchant(id);
-    if (merchant) return merchant;
-
-    // If no merchant exists, create one
-    const newMerchant = await this.createMerchant({
-      businessName: "My Business",
-      email: `user-${id}@example.com`,
+    const defaultMerchant: Merchant = {
+      id: randomUUID(),
+      businessName: "Demo Merchant",
+      email: "demo@paymerch.com",
       currency: "ZAR",
-    });
+      balance: "5000.00",
+      totalRevenue: "15000.00",
+      totalTransactions: 45,
+      createdAt: new Date().toISOString(),
+      status: "active",
+    };
+    this.merchants.set(defaultMerchant.id, defaultMerchant);
+    this.defaultMerchantId = defaultMerchant.id;
+
+    this.seedDemoData(defaultMerchant.id);
+  }
+
+  private async getOrCreateMerchantForUser(userId: string, userEmail?: string): Promise<Merchant> {
+    let merchant = this.merchants.get(userId);
+    if (merchant) {
+      return merchant;
+    }
+
+    // If no merchant exists for this user, create one by cloning the demo merchant
+    const demoMerchant = this.merchants.get(this.defaultMerchantId)!;
+    const newMerchant: Merchant = {
+      ...demoMerchant,
+      id: userId, // Use the user's ID as the merchant ID
+      email: userEmail || `user-${userId}@example.com`,
+    };
+    this.merchants.set(userId, newMerchant);
     return newMerchant;
   }
 
-  async getDefaultMerchant(): Promise<Merchant> {
-    const result = await this.sql`
-      SELECT * FROM merchants ORDER BY created_at LIMIT 1
-    `;
-    if (result.length === 0) {
-      // Create default merchant if none exists
-      return await this.createMerchant({
-        businessName: "Demo Merchant",
-        email: "demo@paymerch.com",
+  private seedDemoData(merchantId: string) {
+    const demoTransactions: Transaction[] = [
+      {
+        id: randomUUID(),
+        merchantId,
+        customerEmail: "john@example.com",
+        customerName: "John Smith",
+        amount: "150.00",
         currency: "ZAR",
-      });
+        status: "completed",
+        paymentMethod: "card",
+        description: "Premium Subscription",
+        reference: `TXN${Date.now()}001`,
+        createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+        riskScore: 15,
+        fraudFlag: false,
+      },
+      {
+        id: randomUUID(),
+        merchantId,
+        customerEmail: "sarah@example.com",
+        customerName: "Sarah Johnson",
+        amount: "89.99",
+        currency: "ZAR",
+        status: "completed",
+        paymentMethod: "mobile_money",
+        description: "Product Purchase",
+        reference: `TXN${Date.now()}002`,
+        createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
+        riskScore: 8,
+        fraudFlag: false,
+      },
+      {
+        id: randomUUID(),
+        merchantId,
+        customerEmail: "mike@example.com",
+        customerName: "Mike Brown",
+        amount: "250.00",
+        currency: "ZAR",
+        status: "pending",
+        paymentMethod: "bank_transfer",
+        description: "Bulk Order",
+        reference: `TXN${Date.now()}003`,
+        createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
+        riskScore: 25,
+        fraudFlag: false,
+      },
+      {
+        id: randomUUID(),
+        merchantId,
+        customerEmail: "emma@example.com",
+        customerName: "Emma Wilson",
+        amount: "49.99",
+        currency: "ZAR",
+        status: "completed",
+        paymentMethod: "card",
+        description: "Service Fee",
+        reference: `TXN${Date.now()}004`,
+        createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+        riskScore: 12,
+        fraudFlag: false,
+      },
+      {
+        id: randomUUID(),
+        merchantId,
+        customerEmail: "david@example.com",
+        customerName: "David Lee",
+        amount: "199.00",
+        currency: "ZAR",
+        status: "failed",
+        paymentMethod: "card",
+        description: "Enterprise Plan",
+        reference: `TXN${Date.now()}005`,
+        createdAt: new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString(),
+        riskScore: 85,
+        fraudFlag: true,
+      },
+    ];
+
+    demoTransactions.forEach(tx => this.transactions.set(tx.id, tx));
+
+    const demoLinks: PaymentLink[] = [
+      {
+        id: randomUUID(),
+        merchantId,
+        title: "Monthly Subscription",
+        description: "Premium features access",
+        amount: "29.99",
+        currency: "ZAR",
+        link: `LINK${Date.now()}A`,
+        isActive: 1,
+        createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+      },
+      {
+        id: randomUUID(),
+        merchantId,
+        title: "One-time Payment",
+        description: "Custom service package",
+        amount: "499.00",
+        currency: "ZAR",
+        link: `LINK${Date.now()}B`,
+        isActive: 1,
+        createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+      },
+    ];
+
+    demoLinks.forEach(link => this.paymentLinks.set(link.id, link));
+  }
+
+  async getMerchant(id: string): Promise<Merchant | undefined> {
+    return this.merchants.get(id);
+  }
+
+  async getMerchantById(id: string): Promise<Merchant | undefined> {
+    return this.getOrCreateMerchantForUser(id);
+  }
+
+  async getDefaultMerchant(): Promise<Merchant> {
+    const merchant = this.merchants.get(this.defaultMerchantId);
+    if (!merchant) {
+      throw new Error("Default merchant not found");
     }
-    const row = result[0];
-    return {
-      id: row.id,
-      businessName: row.business_name,
-      email: row.email,
-      currency: row.currency,
-      balance: row.balance.toString(),
-      totalRevenue: row.total_revenue.toString(),
-      totalTransactions: row.total_transactions,
-      createdAt: row.created_at,
-      status: row.status,
-    };
+    return merchant;
   }
 
   async createMerchant(insertMerchant: InsertMerchant): Promise<Merchant> {
     const id = randomUUID();
-    await this.sql`
-      INSERT INTO merchants (id, business_name, email, currency)
-      VALUES (${id}, ${insertMerchant.businessName}, ${insertMerchant.email}, ${insertMerchant.currency})
-    `;
-    return await this.getMerchant(id) as Promise<Merchant>;
+    const merchant: Merchant = {
+      ...insertMerchant,
+      id,
+      balance: "0",
+      totalRevenue: "0",
+      totalTransactions: 0,
+      createdAt: new Date().toISOString(),
+      status: "active",
+    };
+    this.merchants.set(id, merchant);
+    return merchant;
   }
 
   async updateMerchantBalance(id: string, newBalance: number): Promise<Merchant> {
-    await this.sql`
-      UPDATE merchants SET balance = ${newBalance} WHERE id = ${id}
-    `;
-    return await this.getMerchant(id) as Promise<Merchant>;
+    const merchant = this.merchants.get(id);
+    if (!merchant) {
+      throw new Error("Merchant not found");
+    }
+    merchant.balance = newBalance.toFixed(2);
+    this.merchants.set(id, merchant);
+    return merchant;
   }
 
   async updateMerchantStats(id: string, additionalRevenue: number, additionalTransactions: number): Promise<Merchant> {
-    await this.sql`
-      UPDATE merchants 
-      SET total_revenue = total_revenue + ${additionalRevenue},
-          total_transactions = total_transactions + ${additionalTransactions},
-          balance = balance + ${additionalRevenue}
-      WHERE id = ${id}
-    `;
-    return await this.getMerchant(id) as Promise<Merchant>;
+    const merchant = this.merchants.get(id);
+    if (!merchant) {
+      throw new Error("Merchant not found");
+    }
+    merchant.totalRevenue = (parseFloat(merchant.totalRevenue) + additionalRevenue).toFixed(2);
+    merchant.totalTransactions += additionalTransactions;
+    merchant.balance = (parseFloat(merchant.balance) + additionalRevenue).toFixed(2);
+    this.merchants.set(id, merchant);
+    return merchant;
   }
 
   async getTransaction(id: string): Promise<Transaction | undefined> {
-    const result = await this.sql`
-      SELECT * FROM transactions WHERE id = ${id}
-    `;
-    if (result.length === 0) return undefined;
-    const row = result[0];
-    return {
-      id: row.id,
-      merchantId: row.merchant_id,
-      customerEmail: row.customer_email,
-      customerName: row.customer_name,
-      amount: row.amount.toString(),
-      currency: row.currency,
-      status: row.status,
-      paymentMethod: row.payment_method,
-      description: row.description,
-      reference: row.reference,
-      createdAt: row.created_at,
-      riskScore: row.risk_score,
-      fraudFlag: row.fraud_flag,
-    };
+    return this.transactions.get(id);
   }
 
   async getTransactionsByMerchant(merchantId: string): Promise<Transaction[]> {
-    const result = await this.sql`
-      SELECT * FROM transactions WHERE merchant_id = ${merchantId} ORDER BY created_at DESC
-    `;
-    return result.map(row => ({
-      id: row.id,
-      merchantId: row.merchant_id,
-      customerEmail: row.customer_email,
-      customerName: row.customer_name,
-      amount: row.amount.toString(),
-      currency: row.currency,
-      status: row.status,
-      paymentMethod: row.payment_method,
-      description: row.description,
-      reference: row.reference,
-      createdAt: row.created_at,
-      riskScore: row.risk_score,
-      fraudFlag: row.fraud_flag,
-    }));
+    return Array.from(this.transactions.values())
+      .filter(tx => tx.merchantId === merchantId)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 
   async getRecentTransactions(merchantId: string, limit: number): Promise<Transaction[]> {
-    const result = await this.sql`
-      SELECT * FROM transactions WHERE merchant_id = ${merchantId} ORDER BY created_at DESC LIMIT ${limit}
-    `;
-    return result.map(row => ({
-      id: row.id,
-      merchantId: row.merchant_id,
-      customerEmail: row.customer_email,
-      customerName: row.customer_name,
-      amount: row.amount.toString(),
-      currency: row.currency,
-      status: row.status,
-      paymentMethod: row.payment_method,
-      description: row.description,
-      reference: row.reference,
-      createdAt: row.created_at,
-      riskScore: row.risk_score,
-      fraudFlag: row.fraud_flag,
-    }));
+    const transactions = await this.getTransactionsByMerchant(merchantId);
+    return transactions.slice(0, limit);
   }
 
   async createTransaction(insertTransaction: InsertTransaction): Promise<Transaction> {
     const id = randomUUID();
-    await this.sql`
-      INSERT INTO transactions (id, merchant_id, customer_email, customer_name, amount, currency, status, payment_method, description, reference)
-      VALUES (${id}, ${insertTransaction.merchantId}, ${insertTransaction.customerEmail}, ${insertTransaction.customerName}, ${insertTransaction.amount}, ${insertTransaction.currency}, ${insertTransaction.status}, ${insertTransaction.paymentMethod}, ${insertTransaction.description}, ${insertTransaction.reference})
-    `;
-    return await this.getTransaction(id) as Promise<Transaction>;
+    const transaction: Transaction = {
+      ...insertTransaction,
+      id,
+      createdAt: new Date().toISOString(),
+      riskScore: Math.floor(Math.random() * 30),
+      fraudFlag: false,
+    };
+    this.transactions.set(id, transaction);
+    return transaction;
   }
 
   async getPaymentLink(id: string): Promise<PaymentLink | undefined> {
-    const result = await this.sql`
-      SELECT * FROM payment_links WHERE id = ${id}
-    `;
-    if (result.length === 0) return undefined;
-    const row = result[0];
-    return {
-      id: row.id,
-      merchantId: row.merchant_id,
-      title: row.title,
-      description: row.description,
-      amount: row.amount.toString(),
-      currency: row.currency,
-      link: row.link,
-      isActive: row.is_active,
-      createdAt: row.created_at,
-    };
+    return this.paymentLinks.get(id);
   }
 
   async getPaymentLinkByLink(link: string): Promise<PaymentLink | undefined> {
-    const result = await this.sql`
-      SELECT * FROM payment_links WHERE link = ${link}
-    `;
-    if (result.length === 0) return undefined;
-    const row = result[0];
-    return {
-      id: row.id,
-      merchantId: row.merchant_id,
-      title: row.title,
-      description: row.description,
-      amount: row.amount.toString(),
-      currency: row.currency,
-      link: row.link,
-      isActive: row.is_active,
-      createdAt: row.created_at,
-    };
+    return Array.from(this.paymentLinks.values()).find(pl => pl.link === link);
   }
 
   async getPaymentLinksByMerchant(merchantId: string): Promise<PaymentLink[]> {
-    const result = await this.sql`
-      SELECT * FROM payment_links WHERE merchant_id = ${merchantId} ORDER BY created_at DESC
-    `;
-    return result.map(row => ({
-      id: row.id,
-      merchantId: row.merchant_id,
-      title: row.title,
-      description: row.description,
-      amount: row.amount.toString(),
-      currency: row.currency,
-      link: row.link,
-      isActive: row.is_active,
-      createdAt: row.created_at,
-    }));
+    return Array.from(this.paymentLinks.values())
+      .filter(link => link.merchantId === merchantId)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 
   async createPaymentLink(insertLink: InsertPaymentLink): Promise<PaymentLink> {
     const id = randomUUID();
     const link = `LINK${Date.now()}${Math.random().toString(36).substr(2, 5).toUpperCase()}`;
-    await this.sql`
-      INSERT INTO payment_links (id, merchant_id, title, description, amount, currency, link)
-      VALUES (${id}, ${insertLink.merchantId}, ${insertLink.title}, ${insertLink.description}, ${insertLink.amount}, ${insertLink.currency}, ${link})
-    `;
-    return await this.getPaymentLink(id) as Promise<PaymentLink>;
+    const paymentLink: PaymentLink = {
+      ...insertLink,
+      id,
+      link,
+      createdAt: new Date().toISOString(),
+    };
+    this.paymentLinks.set(id, paymentLink);
+    return paymentLink;
   }
 
   async getPayout(id: string): Promise<Payout | undefined> {
-    const result = await this.sql`
-      SELECT * FROM payouts WHERE id = ${id}
-    `;
-    if (result.length === 0) return undefined;
-    const row = result[0];
-    return {
-      id: row.id,
-      merchantId: row.merchant_id,
-      amount: row.amount.toString(),
-      currency: row.currency,
-      status: row.status,
-      bankAccount: row.bank_account,
-      createdAt: row.created_at,
-    };
+    return this.payouts.get(id);
   }
 
   async getPayoutsByMerchant(merchantId: string): Promise<Payout[]> {
-    const result = await this.sql`
-      SELECT * FROM payouts WHERE merchant_id = ${merchantId} ORDER BY created_at DESC
-    `;
-    return result.map(row => ({
-      id: row.id,
-      merchantId: row.merchant_id,
-      amount: row.amount.toString(),
-      currency: row.currency,
-      status: row.status,
-      bankAccount: row.bank_account,
-      createdAt: row.created_at,
-    }));
+    return Array.from(this.payouts.values())
+      .filter(payout => payout.merchantId === merchantId)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 
   async createPayout(insertPayout: InsertPayout): Promise<Payout> {
     const id = randomUUID();
-    await this.sql`
-      INSERT INTO payouts (id, merchant_id, amount, currency, status, bank_account)
-      VALUES (${id}, ${insertPayout.merchantId}, ${insertPayout.amount}, ${insertPayout.currency}, ${insertPayout.status}, ${insertPayout.bankAccount})
-    `;
-    return await this.getPayout(id) as Promise<Payout>;
+    const payout: Payout = {
+      ...insertPayout,
+      id,
+      createdAt: new Date().toISOString(),
+    };
+    this.payouts.set(id, payout);
+    return payout;
   }
 
   // Admin helpers
   async getAllMerchants(): Promise<Merchant[]> {
-    const result = await this.sql`
-      SELECT * FROM merchants ORDER BY created_at DESC
-    `;
-    return result.map(row => ({
-      id: row.id,
-      businessName: row.business_name,
-      email: row.email,
-      currency: row.currency,
-      balance: row.balance.toString(),
-      totalRevenue: row.total_revenue.toString(),
-      totalTransactions: row.total_transactions,
-      createdAt: row.created_at,
-      status: row.status,
-    }));
+    return Array.from(this.merchants.values()).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 
   async getAllTransactions(): Promise<Transaction[]> {
-    const result = await this.sql`
-      SELECT * FROM transactions ORDER BY created_at DESC
-    `;
-    return result.map(row => ({
-      id: row.id,
-      merchantId: row.merchant_id,
-      customerEmail: row.customer_email,
-      customerName: row.customer_name,
-      amount: row.amount.toString(),
-      currency: row.currency,
-      status: row.status,
-      paymentMethod: row.payment_method,
-      description: row.description,
-      reference: row.reference,
-      createdAt: row.created_at,
-      riskScore: row.risk_score,
-      fraudFlag: row.fraud_flag,
-    }));
+    return Array.from(this.transactions.values()).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 
   async getAllPayouts(): Promise<Payout[]> {
-    const result = await this.sql`
-      SELECT * FROM payouts ORDER BY created_at DESC
-    `;
-    return result.map(row => ({
-      id: row.id,
-      merchantId: row.merchant_id,
-      amount: row.amount.toString(),
-      currency: row.currency,
-      status: row.status,
-      bankAccount: row.bank_account,
-      createdAt: row.created_at,
-    }));
+    return Array.from(this.payouts.values()).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 }
 
-export const storage = new NeonStorage();
+export const storage = new MemStorage();
