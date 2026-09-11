@@ -17,7 +17,7 @@ export default function HeaderAuth(){
           <Button variant="ghost">Sign In</Button>
         </Link>
         <Link href="/signup" data-testid="button-get-started-header">
-          <Button>Get Started</Button>
+          <Button className="bg-accent-secondary text-accent-secondary-foreground border-accent-secondary hover:bg-accent-secondary/90">Get Started</Button>
         </Link>
       </div>
     );
@@ -29,7 +29,7 @@ export default function HeaderAuth(){
         <Button variant="ghost">Sign In</Button>
       </Link>
       <Link href="/signup" data-testid="button-get-started-header">
-        <Button>Get Started</Button>
+        <Button className="bg-accent-secondary text-accent-secondary-foreground border-accent-secondary hover:bg-accent-secondary/90">Get Started</Button>
       </Link>
       <button onClick={logout} className="btn btn-logout">Logout</button>
     </div>

@@ -39,6 +39,8 @@
   --muted-foreground: 215 16% 47%;
   --accent: 25 96% 58%;
   --accent-foreground: 210 40% 98%;
+  --accent-secondary: 183 51% 47%;
+  --accent-secondary-foreground: 0 0% 100%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
   --input: 220 12% 72%;
@@ -83,6 +85,9 @@
   --accent-border: hsl(var(--accent));
   --accent-border: hsl(from hsl(var(--accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
 
+  --accent-secondary-border: hsl(var(--accent-secondary));
+  --accent-secondary-border: hsl(from hsl(var(--accent-secondary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+
   --destructive-border: hsl(var(--destructive));
   --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
 }
@@ -122,6 +127,8 @@
   --muted-foreground: 210 18% 74%;
   --accent: 25 96% 58%;
   --accent-foreground: 210 40% 98%;
+  --accent-secondary: 183 51% 47%;
+  --accent-secondary-foreground: 0 0% 100%;
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
   --input: 220 12% 32%;
@@ -159,6 +166,9 @@
 
   --accent-border: hsl(var(--accent));
   --accent-border: hsl(from hsl(var(--accent)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+
+  --accent-secondary-border: hsl(var(--accent-secondary));
+  --accent-secondary-border: hsl(from hsl(var(--accent-secondary)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
 
   --destructive-border: hsl(var(--destructive));
   --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);

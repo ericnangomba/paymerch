@@ -66,12 +66,12 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="space-y-6 sm:space-y-8 text-center lg:text-left">
               <div className="flex justify-center lg:justify-start">
-                <Badge className="w-fit bg-accent/10 text-accent border border-accent/30" variant="secondary">
+                <Badge className="w-fit bg-accent-secondary/10 text-accent-secondary border border-accent-secondary/30" variant="secondary">
                   Trusted by 10,000+ merchants worldwide
                 </Badge>
               </div>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
-                Accept Payments <span className="text-accent">Globally</span> with Ease
+                Accept Payments <span className="text-accent-secondary">Globally</span> with Ease
               </h1>
               <p className="text-base sm:text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0">
                 The easiest way to accept payments from anywhere in the world. Multiple payment methods, real-time analytics, and instant payouts.
@@ -83,7 +83,7 @@ export default function Home() {
                   </Button>
                 </Link>
                 <Link href="/checkout/demo" data-testid="button-view-demo">
-                  <Button size="lg" variant="outline" className="w-full sm:w-auto">
+                  <Button size="lg" className="w-full sm:w-auto gap-2 bg-accent-secondary text-accent-secondary-foreground border-accent-secondary hover:bg-accent-secondary/90">
                     View Demo
                   </Button>
                 </Link>
@@ -367,7 +367,7 @@ export default function Home() {
                   </li>
                 </ul>
                 <Link href="/signup" data-testid="button-pricing-starter">
-                  <Button className="w-full" variant="outline">Get Started</Button>
+                  <Button className="w-full bg-accent text-accent-foreground border-accent hover:bg-accent/90">Get Started</Button>
                 </Link>
               </CardContent>
             </Card>
@@ -401,7 +401,7 @@ export default function Home() {
                   </li>
                 </ul>
                 <Link href="/signup" data-testid="button-pricing-pro">
-                  <Button className="w-full">Get Started</Button>
+                  <Button className="w-full bg-accent-secondary text-accent-secondary-foreground border-accent-secondary hover:bg-accent-secondary/90">Get Started</Button>
                 </Link>
               </CardContent>
             </Card>
@@ -438,7 +438,7 @@ export default function Home() {
                   </li>
                 </ul>
                 <Link href="/signup" data-testid="button-pricing-enterprise">
-                  <Button className="w-full" variant="outline">Contact Sales</Button>
+                  <Button className="w-full bg-accent-secondary text-accent-secondary-foreground border-accent-secondary hover:bg-accent-secondary/90">Contact Sales</Button>
                 </Link>
               </CardContent>
             </Card>
@@ -454,7 +454,7 @@ export default function Home() {
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
                 <Link href="/signup" data-testid="button-cta-main">
-              <Button size="lg" variant="secondary" className="gap-2">
+              <Button size="lg" className="gap-2 bg-accent text-accent-foreground border-accent hover:bg-accent/90">
                 Get Started Now <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
