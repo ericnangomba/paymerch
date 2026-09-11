@@ -26,7 +26,7 @@ export function SignUp() {
         if (email === 'admin@paymerch.com') {
           navigate("/admin");
         } else {
-          navigate("/dashboard");
+          navigate("/merchant");
         }
         return;
       }
