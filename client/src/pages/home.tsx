@@ -38,7 +38,6 @@ import secureInfrastructureImage from "@assets/generated_images/Secure Infrastru
 import globalCoverageImage from "@assets/generated_images/Global Coverage.jpg";
 import easyIntegrationImage from "@assets/generated_images/Easy Integration.jpg";
 import supportImage from "@assets/generated_images/247Support.jpg";
-import { useAuth } from '@/lib/useAuth';
 import HeaderAuth from '@/components/header-auth';
 import FooterCompany from '@/components/footer-company';
 

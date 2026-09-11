@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/lib/useAuth";
 import { 
   Users, 
   CreditCard, 
@@ -41,7 +42,6 @@ import {
   PieChart,
   LineChart,
 } from "lucide-react";
-import { useAuth } from "@/lib/useAuth";
 
 type Merchant = { id: string; businessName: string; email: string; balance: string; status: string; createdAt: string };
 type Transaction = { id: string; merchantId: string; amount: string; status: string; createdAt: string; paymentMethod?: string; riskScore?: number; fraudFlag?: boolean };
@@ -50,7 +50,7 @@ type FraudAlert = { id: string; type: string; severity: 'low' | 'medium' | 'high
 type SystemMetric = { name: string; value: string; trend: 'up' | 'down' | 'stable'; change: string };
 
 export default function Admin() {
-  const { user, loading } = useAuth();
+  const { user, loading, logout } = useAuth();
   const [merchants, setMerchants] = useState<Merchant[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [payouts, setPayouts] = useState<Payout[]>([]);
@@ -137,6 +137,12 @@ export default function Admin() {
             <Link href="/">
               <Button variant="ghost" size="sm" className="text-xs sm:text-sm">Home</Button>
             </Link>
+            <Button variant="destructive" size="sm" className="text-xs sm:text-sm" onClick={() => {
+              const { logout } = useAuth();
+              logout();
+            }}>
+              Logout
+            </Button>
           </div>
         </div>
       </header>

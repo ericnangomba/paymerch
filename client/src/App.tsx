@@ -9,10 +9,10 @@ import Checkout from "@/pages/checkout";
 import { SignIn } from "@/pages/SignIn";
 import { SignUp } from "@/pages/SignUp";
 import NotFound from "@/pages/not-found";
-import AdminDashboard from "@/pages/admin-dashboard";
+import AdminDashboard from "@/pages/admin";
 import MerchantDashboard from "@/pages/merchant-dashboard";
 import AdminGuard from "@/components/AdminGuard";
-import MerchantGuard from "@/components/MerchantGuard"; // ✅ new guard
+import MerchantGuard from "@/components/MerchantGuard";
 import Unauthorized from "@/pages/Unauthorized";
 
 function Router() {
@@ -37,9 +37,15 @@ function Router() {
           <MerchantDashboard />
         </MerchantGuard>
       </Route>
+      <Route path="/dashboard">
+        <MerchantGuard>
+          <MerchantDashboard />
+        </MerchantGuard>
+      </Route>
 
       {/* Checkout links */}
       <Route path="/checkout/:linkId" component={Checkout} />
+      <Route path="/checkout/demo" component={Checkout} />
 
       {/* Fallback */}
       <Route component={NotFound} />

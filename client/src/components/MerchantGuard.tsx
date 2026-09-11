@@ -13,7 +13,13 @@ export default function MerchantGuard({ children }: MerchantGuardProps) {
     return <div>Loading...</div>;
   }
 
-  if (!user || user.role !== "merchant") {
+  // Allow access if user is authenticated (for demo mode)
+  if (!user) {
+    return <Unauthorized />;
+  }
+
+  // Admin users should not access merchant dashboard
+  if (user.role === "admin") {
     return <Unauthorized />;
   }
 

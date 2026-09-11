@@ -78,12 +78,7 @@ export function useAuth() {
         localStorage.setItem("authToken", "demo-token");
         setLoading(false);
         
-        // Redirect based on role
-        if (newUser.isAdmin) {
-          setLocation("/admin");
-        } else {
-          setLocation("/dashboard");
-        }
+        // Don't auto-redirect in demo mode - let the user navigate
         return;
       }
 
@@ -127,11 +122,15 @@ export function useAuth() {
       setUser(newUser);
       localStorage.setItem("authToken", accessToken);
 
-      // ✅ Redirect based on role
-      if (newUser.isAdmin) {
-        setLocation("/admin");
-      } else if (normalizedRole === "merchant") {
-        setLocation("/merchant");
+      // ✅ Redirect based on role (only if not on auth pages)
+      const currentPath = window.location.pathname;
+      const authPages = ["/signin", "/signup", "/"];
+      if (!authPages.includes(currentPath)) {
+        if (newUser.isAdmin && currentPath !== "/admin") {
+          setLocation("/admin");
+        } else if (normalizedRole === "merchant" && currentPath !== "/merchant" && currentPath !== "/dashboard") {
+          setLocation("/merchant");
+        }
       }
     } catch (err) {
       console.error("useAuth error", err);
