@@ -34,7 +34,7 @@ export function SignIn() {
       <Card className="w-full max-w-md">
         <CardHeader>
           <div className="mb-4 flex justify-center">
-            <img src="/paymerch.png" alt="Brand logo" className="h-[120px] w-auto object-contain" />
+            <img src="/paymerch.png" alt="Brand logo" className="h-[150px] w-auto object-contain" />
           </div>
           <CardTitle>Sign In</CardTitle>
           <CardDescription>Enter your credentials to access your dashboard.</CardDescription>

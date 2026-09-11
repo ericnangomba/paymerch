@@ -135,7 +135,7 @@ export default function Checkout() {
             <Card>
               <CardHeader>
                 <div className="flex items-center gap-2 mb-2">
-                  <img src="/paymerch.png" alt="Brand logo" className="h-[68px] w-auto object-contain" />
+                  <img src="/paymerch.png" alt="Brand logo" className="h-[85px] w-auto object-contain" />
                 </div>
                 <CardTitle className="text-2xl">{link!.title}</CardTitle>
                 {link!.description && (
