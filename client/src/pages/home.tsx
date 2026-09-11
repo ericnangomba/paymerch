@@ -468,7 +468,7 @@ export default function Home() {
           <div className="grid md:grid-cols-4 gap-12 mb-8 md:text-left">
             <div className="space-y-4 flex flex-col items-center md:items-start">
               <div className="flex items-center gap-2">
-                <img src="/paymerch.png" alt="Brand logo" className="h-18 w-auto object-contain" />
+                <img src="/paymerch_icon.png" alt="Brand icon" className="h-[50px] w-auto object-contain" />
               </div>
               <p className="text-sm text-muted-foreground">
                 Global payment solutions for modern businesses
