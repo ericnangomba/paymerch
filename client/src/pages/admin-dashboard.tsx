@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/useAuth";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface FinancialOverview {
   totalRevenue: number;
@@ -43,7 +44,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="p-6">
-      <header className="p-4 bg-primary text-primary-foreground flex justify-between items-center">
+      <header className="p-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white flex justify-between items-center">
         <h1 className="text-2xl font-bold">Admin Dashboard</h1>
         <Button onClick={logout} variant="destructive">
           Logout
@@ -53,19 +54,31 @@ export default function AdminDashboard() {
       <section className="mb-6">
         <h2 className="text-xl font-semibold">Welcome, Admin</h2>
         {financialOverview ? (
-          <div className="grid grid-cols-3 gap-4 mt-4">
-            <div>
-              <h3 className="font-medium">Total Balance</h3>
-              <p>{financialOverview.totalBalance.toLocaleString()}</p>
-            </div>
-            <div>
-              <h3 className="font-medium">Total Revenue</h3>
-              <p>{financialOverview.totalRevenue.toLocaleString()}</p>
-            </div>
-            <div>
-              <h3 className="font-medium">Total Transactions</h3>
-              <p>{financialOverview.totalTransactions}</p>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+            <Card className="border-2 hover:border-orange-500/50 transition-all bg-gradient-to-br from-orange-500/5 to-orange-500/10">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium">Total Balance</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-2xl font-bold">{financialOverview.totalBalance.toLocaleString()}</p>
+              </CardContent>
+            </Card>
+            <Card className="border-2 hover:border-orange-500/50 transition-all bg-gradient-to-br from-orange-500/5 to-orange-500/10">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-2xl font-bold">{financialOverview.totalRevenue.toLocaleString()}</p>
+              </CardContent>
+            </Card>
+            <Card className="border-2 hover:border-orange-500/50 transition-all bg-gradient-to-br from-orange-500/5 to-orange-500/10">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium">Total Transactions</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-2xl font-bold">{financialOverview.totalTransactions}</p>
+              </CardContent>
+            </Card>
           </div>
         ) : (
           <p>Loading financial overview...</p>

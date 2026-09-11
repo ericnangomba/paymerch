@@ -157,12 +157,12 @@ export default function Admin() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b bg-gradient-to-r from-purple-900/10 to-indigo-900/10 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+      <header className="border-b bg-gradient-to-r from-orange-900/10 to-teal-900/10 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
         <div className="container px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
             <img src="/paymerch_icon.png" alt="Brand logo" className="h-[40px] sm:h-[50px] w-auto object-contain" />
             <div>
-              <h1 className="text-base sm:text-lg md:text-xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">Admin Dashboard</h1>
+              <h1 className="text-base sm:text-lg md:text-xl font-bold bg-gradient-to-r from-orange-600 to-teal-600 bg-clip-text text-transparent">Admin Dashboard</h1>
               <p className="text-[10px] sm:text-xs text-muted-foreground hidden sm:block">AI-Powered Payment Management System</p>
             </div>
           </div>
@@ -189,23 +189,23 @@ export default function Admin() {
         </div>
       </header>
 
-      <main className="container px-4 sm:px-6 py-6 sm:py-8 bg-gradient-to-br from-purple-50/50 to-indigo-50/50 dark:from-purple-950/20 dark:to-indigo-950/20">
+      <main className="container px-4 sm:px-6 py-6 sm:py-8 bg-gradient-to-br from-orange-50/50 to-teal-50/50 dark:from-orange-950/20 dark:to-teal-950/20">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
-          <TabsList className="grid w-full grid-cols-3 sm:grid-cols-6 lg:w-auto lg:inline-grid gap-1 sm:gap-2 bg-purple-100 dark:bg-purple-900/30">
-            <TabsTrigger value="overview" className="text-xs sm:text-sm data-[state=active]:bg-purple-600 data-[state=active]:text-white">Overview</TabsTrigger>
-            <TabsTrigger value="transactions" className="text-xs sm:text-sm data-[state=active]:bg-purple-600 data-[state=active]:text-white">Transactions</TabsTrigger>
-            <TabsTrigger value="merchants" className="text-xs sm:text-sm data-[state=active]:bg-purple-600 data-[state=active]:text-white">Merchants</TabsTrigger>
-            <TabsTrigger value="fraud" className="text-xs sm:text-sm data-[state=active]:bg-purple-600 data-[state=active]:text-white">Fraud</TabsTrigger>
-            <TabsTrigger value="ai-ml" className="text-xs sm:text-sm data-[state=active]:bg-purple-600 data-[state=active]:text-white">AI/ML</TabsTrigger>
-            <TabsTrigger value="settings" className="text-xs sm:text-sm data-[state=active]:bg-purple-600 data-[state=active]:text-white">Settings</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 sm:grid-cols-6 lg:w-auto lg:inline-grid gap-1 sm:gap-2 bg-orange-100 dark:bg-orange-900/30">
+            <TabsTrigger value="overview" className="text-xs sm:text-sm data-[state=active]:bg-orange-600 data-[state=active]:text-white">Overview</TabsTrigger>
+            <TabsTrigger value="transactions" className="text-xs sm:text-sm data-[state=active]:bg-orange-600 data-[state=active]:text-white">Transactions</TabsTrigger>
+            <TabsTrigger value="merchants" className="text-xs sm:text-sm data-[state=active]:bg-orange-600 data-[state=active]:text-white">Merchants</TabsTrigger>
+            <TabsTrigger value="fraud" className="text-xs sm:text-sm data-[state=active]:bg-orange-600 data-[state=active]:text-white">Fraud</TabsTrigger>
+            <TabsTrigger value="ai-ml" className="text-xs sm:text-sm data-[state=active]:bg-orange-600 data-[state=active]:text-white">AI/ML</TabsTrigger>
+            <TabsTrigger value="settings" className="text-xs sm:text-sm data-[state=active]:bg-orange-600 data-[state=active]:text-white">Settings</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-4 sm:space-y-6">
             <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-              <Card className="border-2 hover:border-purple-500/50 transition-all bg-gradient-to-br from-purple-500/5 to-purple-500/10">
+              <Card className="border-2 hover:border-orange-500/50 transition-all bg-gradient-to-br from-orange-500/5 to-orange-500/10">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-                  <DollarSign className="h-4 w-4 text-purple-600" />
+                  <DollarSign className="h-4 w-4 text-orange-600" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">R45,231,890</div>
@@ -213,10 +213,10 @@ export default function Admin() {
                 </CardContent>
               </Card>
 
-              <Card className="border-2 hover:border-indigo-500/50 transition-all bg-gradient-to-br from-indigo-500/5 to-indigo-500/10">
+              <Card className="border-2 hover:border-teal-500/50 transition-all bg-gradient-to-br from-teal-500/5 to-teal-500/10">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Transactions</CardTitle>
-                  <CreditCard className="h-4 w-4 text-indigo-600" />
+                  <CreditCard className="h-4 w-4 text-teal-600" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{transactions.length}</div>
@@ -224,10 +224,10 @@ export default function Admin() {
                 </CardContent>
               </Card>
 
-              <Card className="border-2 hover:border-pink-500/50 transition-all bg-gradient-to-br from-pink-500/5 to-pink-500/10">
+              <Card className="border-2 hover:border-orange-500/50 transition-all bg-gradient-to-br from-orange-500/5 to-orange-500/10">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Active Merchants</CardTitle>
-                  <Users className="h-4 w-4 text-pink-600" />
+                  <Users className="h-4 w-4 text-orange-600" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{merchants.length}</div>

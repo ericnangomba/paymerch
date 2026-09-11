@@ -50,9 +50,9 @@ export function AppSidebar() {
           <img
             src="/paymerch_icon.png"
             alt="Brand logo"
-            className="h-[40px] w-auto object-contain"
+            className="h-[50px] sm:h-[60px] w-auto object-contain"
           />
-          <span className="font-bold text-lg">PayMerch</span>
+          <span className="font-bold text-lg sm:text-xl">PayMerch</span>
         </div>
       </SidebarHeader>
       <SidebarContent>
