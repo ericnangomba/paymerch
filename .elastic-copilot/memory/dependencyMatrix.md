@@ -1,16 +1,16 @@
 # Dependency Matrix
 
-*Generated: 2026-09-10T23:00:24.675Z*
+*Generated: 2026-09-11T06:22:19.775Z*
 
 ## Summary
 
-- Files analyzed: 89
+- Files analyzed: 91
 - File types: ts, js, tsx
 
 ## File Type Distribution
 
 - 15 ts files
-- 1 js files
+- 3 js files
 - 73 tsx files
 
 ## Key Dependencies by Type
@@ -31,19 +31,29 @@ Top dependencies:
 
 ### JS
 
-No common dependencies found
+Top dependencies:
+- dotenv/config
+- express
+- http
+- crypto
+- zod
+- fs
+- path
+- vite
+- @vitejs/plugin-react
+- nanoid
 
 ### TSX
 
 Top dependencies:
-- react
 - wouter
-- @/components/ui/button
+- ./lib/queryClient
 - @tanstack/react-query
-- @/components/ui/card
-- @/components/ui/badge
-- @/components/ui/input
-- @/components/ui/select
-- @/components/ui/table
-- lucide-react
+- @/components/ui/toaster
+- @/components/ui/tooltip
+- @/components/theme-provider
+- @/pages/home
+- @/pages/checkout
+- @/pages/SignIn
+- @/pages/SignUp
 
