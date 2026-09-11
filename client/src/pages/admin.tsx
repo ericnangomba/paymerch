@@ -107,7 +107,12 @@ export default function Admin() {
   }, [user, loading]);
 
   async function getToken() {
-    const s = await (await import('@/lib/supabaseClient')).supabase.auth.getSession();
+    const supabaseModule = await import('@/lib/supabaseClient');
+    const supabase = supabaseModule.supabase;
+    if (!supabase) {
+      return localStorage.getItem('authToken') || 'demo-token';
+    }
+    const s = await supabase.auth.getSession();
     return s.data.session?.access_token || '';
   }
 
