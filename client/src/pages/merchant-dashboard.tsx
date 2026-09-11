@@ -125,30 +125,30 @@ export default function MerchantDashboard() {
 
         <div className="flex flex-col flex-1 overflow-hidden">
           {/* Header */}
-          <header className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-accent/5 to-accent-secondary/5">
-            <div className="flex items-center gap-4">
+          <header className="flex items-center justify-between p-3 sm:p-4 border-b bg-gradient-to-r from-accent/5 to-accent-secondary/5">
+            <div className="flex items-center gap-2 sm:gap-4">
               <SidebarTrigger />
-              <h1 className="text-xl font-bold bg-gradient-to-r from-accent to-accent-secondary bg-clip-text text-transparent">Merchant Dashboard</h1>
+              <h1 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-accent to-accent-secondary bg-clip-text text-transparent">Merchant Dashboard</h1>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <Link href="/">
-                <Button variant="ghost" size="sm">
+                <Button variant="ghost" size="sm" className="hidden sm:flex">
                   <Home className="h-4 w-4 mr-2" />
                   Home
                 </Button>
               </Link>
-              <span className="text-sm text-muted-foreground hidden sm:inline">
+              <span className="text-xs sm:text-sm text-muted-foreground hidden sm:inline">
                 {user?.email}
               </span>
               <Button variant="destructive" size="sm" onClick={handleLogout}>
-                <LogOut className="h-4 w-4 mr-2" />
-                Logout
+                <LogOut className="h-4 w-4 mr-0 sm:mr-2" />
+                <span className="hidden sm:inline">Logout</span>
               </Button>
             </div>
           </header>
 
           {/* Main content */}
-          <main className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
+          <main className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 space-y-4 sm:space-y-6">
             {/* Overview cards */}
             <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <Card className="border-2 hover:border-accent/50 transition-all bg-gradient-to-br from-accent/5 to-accent/10">
@@ -206,9 +206,9 @@ export default function MerchantDashboard() {
 
             {/* Transactions list */}
             <section>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold">Recent Transactions</h2>
-                <Button variant="outline" size="sm">
+              <div className="flex items-center justify-between mb-3 sm:mb-4">
+                <h2 className="text-lg sm:text-xl font-semibold">Recent Transactions</h2>
+                <Button variant="outline" size="sm" className="text-xs sm:text-sm">
                   <Download className="h-4 w-4 mr-2" />
                   Export
                 </Button>
@@ -218,18 +218,18 @@ export default function MerchantDashboard() {
                   {transactions.length > 0 ? (
                     <div className="divide-y">
                       {transactions.map((tx) => (
-                        <div key={tx.id} className="p-4 flex items-center justify-between hover:bg-muted/50 transition-colors">
-                          <div className="flex items-center gap-4">
-                            <div className="h-10 w-10 rounded-full bg-accent/10 flex items-center justify-center">
+                        <div key={tx.id} className="p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between hover:bg-muted/50 transition-colors gap-2 sm:gap-4">
+                          <div className="flex items-center gap-3 sm:gap-4">
+                            <div className="h-10 w-10 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
                               <CreditCard className="h-5 w-5 text-accent" />
                             </div>
                             <div>
-                              <div className="font-medium">R{tx.amount.toFixed(2)}</div>
-                              <div className="text-sm text-muted-foreground">{tx.customerEmail || 'Guest'}</div>
+                              <div className="font-medium text-sm sm:text-base">R{tx.amount.toFixed(2)}</div>
+                              <div className="text-xs sm:text-sm text-muted-foreground">{tx.customerEmail || 'Guest'}</div>
                             </div>
                           </div>
-                          <div className="text-right">
-                            <div className={`text-sm font-medium ${
+                          <div className="text-right sm:text-left">
+                            <div className={`text-xs sm:text-sm font-medium ${
                               tx.status.toLowerCase() === "completed" || tx.status.toLowerCase() === "success"
                                 ? "text-green-600"
                                 : tx.status.toLowerCase() === "pending"
@@ -244,9 +244,9 @@ export default function MerchantDashboard() {
                       ))}
                     </div>
                   ) : (
-                    <div className="p-8 text-center text-muted-foreground">
-                      <CreditCard className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                      <p>No transactions yet. Start accepting payments!</p>
+                    <div className="p-6 sm:p-8 text-center text-muted-foreground">
+                      <CreditCard className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-2 opacity-50" />
+                      <p className="text-sm sm:text-base">No transactions yet. Start accepting payments!</p>
                     </div>
                   )}
                 </CardContent>
@@ -255,8 +255,8 @@ export default function MerchantDashboard() {
 
             {/* Quick actions */}
             <section>
-              <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Quick Actions</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 <Card className="hover:shadow-lg transition-all cursor-pointer border-2 hover:border-accent/50 bg-gradient-to-br from-accent/5 to-accent/10" onClick={() => alert('Payment link generation coming soon!')}>
                   <CardHeader>
                     <div className="h-12 w-12 rounded-lg bg-accent/20 flex items-center justify-center mb-2">

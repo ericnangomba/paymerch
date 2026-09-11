@@ -1,35 +1,47 @@
+import { useState } from "react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { HeaderAuth } from "@/components/header-auth";
 import { 
-  CreditCard, 
-  BarChart3, 
+  Menu, 
+  X, 
+  ArrowRight, 
+  Play, 
+  CheckCircle2, 
+  TrendingUp, 
   Shield, 
+  Zap, 
   Globe, 
-  Code, 
-  HeadphonesIcon,
-  ArrowRight,
-  CheckCircle2,
-  Zap,
-  Smartphone,
-  Mail,
-  Phone,
-  MapPin,
-  Clock,
-  TrendingUp,
-  Users,
-  Award,
-  Lock,
-  Rocket,
-  DollarSign,
-  PieChart,
-  Layers,
-  MessageSquare,
-  Building2,
-  Play,
+  Clock, 
+  DollarSign, 
+  CreditCard, 
+  Users, 
+  BarChart3, 
+  Lock, 
+  RefreshCw, 
+  MessageSquare, 
+  Target, 
+  PieChart, 
+  LineChart, 
+  Activity, 
+  ArrowUpRight, 
+  ArrowDownRight, 
+  Bell, 
+  Search, 
+  Filter, 
+  Download, 
+  FileText, 
+  Brain, 
+  Settings, 
+  Eye, 
+  Ban, 
+  Database, 
+  Cpu, 
+  Network, 
+  FileCode 
 } from "lucide-react";
-import { SiVisa, SiMastercard, SiPaypal, SiStripe } from "react-icons/si";
+import { SiVisa, SiMastercard } from "react-icons/si";
 import dashboardImage from "@assets/generated_images/Merchant_dashboard_preview_f82fecf1.png";
 import checkoutImage from "@assets/generated_images/Payment_checkout_interface_a8d4ddae.png";
 import apiImage from "@assets/generated_images/API_integration_coding_9329f2b0.png";
@@ -42,20 +54,23 @@ import HeaderAuth from '@/components/header-auth';
 import FooterCompany from '@/components/footer-company';
 
 export default function Home() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 sm:h-20 items-center justify-between px-4 sm:px-6">
+        <div className="container flex h-20 sm:h-20 md:h-24 items-center justify-between px-4 sm:px-6">
           <Link href="/" data-testid="link-home-logo">
             <div className="flex items-center gap-2">
               <img
                 src="/paymerch.png"
                 alt="Brand logo"
-                className="h-[70px] sm:h-[80px] md:h-[100px] lg:h-[125px] w-auto object-contain"
+                className="h-[80px] sm:h-[90px] md:h-[100px] lg:h-[120px] w-auto object-contain"
               />
             </div>
           </Link>
 
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-4 sm:gap-6">
             <a href="#features" className="text-xs sm:text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-features">
               Features
@@ -71,60 +86,93 @@ export default function Home() {
             </a>
           </nav>
 
-          <div className="flex items-center justify-end">
-            <HeaderAuth />
+          <div className="flex items-center gap-2">
+            <div className="hidden sm:block">
+              <HeaderAuth />
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden h-10 w-10"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </Button>
           </div>
         </div>
+
+        {/* Mobile Navigation */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t bg-background">
+            <nav className="container px-4 py-4 flex flex-col gap-4">
+              <a href="#features" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                Features
+              </a>
+              <a href="#pricing" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                Pricing
+              </a>
+              <a href="#how-it-works" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                How It Works
+              </a>
+              <a href="#contact" className="text-sm font-medium text-accent-secondary hover:text-accent-secondary/80 transition-colors font-semibold" onClick={() => setMobileMenuOpen(false)}>
+                Contact Us
+              </a>
+              <div className="pt-2 border-t">
+                <HeaderAuth />
+              </div>
+            </nav>
+          </div>
+        )}
       </header>
 
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-16 sm:py-20 lg:py-24">
+      <section className="relative min-h-[60vh] sm:min-h-screen flex items-center justify-center overflow-hidden py-12 sm:py-16 lg:py-20">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-background"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-accent-secondary/20 via-background to-background"></div>
         <div className="container relative z-10 px-4 sm:px-6">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            <div className="space-y-6 sm:space-y-8 text-center lg:text-left order-2 lg:order-1">
+          <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
+            <div className="space-y-4 sm:space-y-6 lg:space-y-8 text-center lg:text-left order-2 lg:order-1">
               <div className="flex justify-center lg:justify-start">
-                <Badge className="w-fit bg-accent-secondary/10 text-accent-secondary border border-accent-secondary/30 text-xs sm:text-sm" variant="secondary">
+                <Badge className="w-fit bg-accent-secondary/10 text-accent-secondary border border-accent-secondary/30 text-xs sm:text-sm px-2 sm:px-3 py-1" variant="secondary">
                   <TrendingUp className="h-3 w-3 mr-1" />
                   Trusted by 10,000+ merchants worldwide
                 </Badge>
               </div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight tracking-tight px-2">
                 Accept Payments <span className="text-accent-secondary">Globally</span> with Ease
               </h1>
-              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0">
+              <p className="text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground max-w-lg mx-auto lg:mx-0 px-2">
                 The most powerful payment platform for modern businesses. Accept credit cards, mobile money, and bank transfers with enterprise-grade security and instant payouts.
               </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4">
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-2 sm:gap-3 lg:gap-4 px-2">
                 <Link href="/signup" data-testid="button-get-started-hero">
-                  <Button size="lg" className="w-full sm:w-auto gap-2 bg-accent text-accent-foreground border-accent hover:bg-accent/90 shadow-lg">
+                  <Button size="lg" className="w-full sm:w-auto gap-2 bg-accent text-accent-foreground border-accent hover:bg-accent/90 shadow-lg text-sm sm:text-base">
                     Get Started <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
                 <Link href="/checkout/demo" data-testid="button-view-demo">
-                  <Button size="lg" className="w-full sm:w-auto gap-2 bg-accent-secondary text-accent-secondary-foreground border-accent-secondary hover:bg-accent-secondary/90 shadow-lg">
+                  <Button size="lg" className="w-full sm:w-auto gap-2 bg-accent-secondary text-accent-secondary-foreground border-accent-secondary hover:bg-accent-secondary/90 shadow-lg text-sm sm:text-base">
                     View Demo <Play className="h-4 w-4" />
                   </Button>
                 </Link>
               </div>
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-2 sm:gap-4 pt-2">
-                <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-2 sm:gap-3 lg:gap-4 pt-2 px-2">
+                <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-muted-foreground">
                   <CheckCircle2 className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />
                   <span>No setup fees</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+                <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-muted-foreground">
                   <CheckCircle2 className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />
                   <span>Free API access</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+                <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-muted-foreground">
                   <CheckCircle2 className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />
                   <span>Instant payouts</span>
                 </div>
               </div>
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 pt-4">
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4 lg:gap-6 pt-2 sm:pt-4 px-2">
                 <div className="flex items-center gap-2">
-                  <SiVisa className="h-6 w-9 sm:h-8 sm:w-12 text-muted-foreground" />
-                  <SiMastercard className="h-6 w-9 sm:h-8 sm:w-12 text-muted-foreground" />
+                  <SiVisa className="h-5 w-8 sm:h-6 sm:w-9 lg:h-8 lg:w-12 text-muted-foreground" />
+                  <SiMastercard className="h-5 w-8 sm:h-6 sm:w-9 lg:h-8 lg:w-12 text-muted-foreground" />
                 </div>
                 <div className="text-xs sm:text-sm text-muted-foreground">
                   <span className="font-semibold text-foreground">99.9%</span> uptime
@@ -135,23 +183,23 @@ export default function Home() {
               </div>
             </div>
             <div className="relative order-first lg:order-last">
-              <div className="relative rounded-xl overflow-hidden shadow-2xl border mx-auto max-w-md lg:max-w-none lg:-mr-12 bg-gradient-to-br from-background to-muted/20">
+              <div className="relative rounded-xl overflow-hidden shadow-2xl border mx-auto max-w-sm sm:max-w-md lg:max-w-none lg:-mr-12 bg-gradient-to-br from-background to-muted/20">
                 <div className="absolute inset-0 bg-gradient-to-br from-accent-secondary/5 to-accent/5"></div>
                 <img 
                   src={payoutImage} 
                   alt="Dashboard preview"
                   className="w-full h-auto relative z-10"
                 />
-                <div className="absolute bottom-4 left-4 right-4 z-20">
-                  <div className="bg-background/95 backdrop-blur-sm rounded-lg p-3 sm:p-4 shadow-lg border">
+                <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 z-20">
+                  <div className="bg-background/95 backdrop-blur-sm rounded-lg p-2 sm:p-3 md:p-4 shadow-lg border">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-muted-foreground">Today's Revenue</p>
-                        <p className="text-2xl font-bold text-accent-secondary">R12,450.00</p>
+                        <p className="text-xs sm:text-sm text-muted-foreground">Today's Revenue</p>
+                        <p className="text-lg sm:text-xl md:text-2xl font-bold text-accent-secondary">R12,450.00</p>
                       </div>
                       <div className="flex items-center gap-1 text-green-500">
-                        <TrendingUp className="h-4 w-4" />
-                        <span className="text-sm font-medium">+23%</span>
+                        <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4" />
+                        <span className="text-xs sm:text-sm font-medium">+23%</span>
                       </div>
                     </div>
                   </div>
