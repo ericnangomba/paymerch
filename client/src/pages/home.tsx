@@ -28,7 +28,6 @@ import {
   MessageSquare,
   Building2,
   Play,
-  CheckCircle,
 } from "lucide-react";
 import { SiVisa, SiMastercard, SiPaypal, SiStripe } from "react-icons/si";
 import dashboardImage from "@assets/generated_images/Merchant_dashboard_preview_f82fecf1.png";
