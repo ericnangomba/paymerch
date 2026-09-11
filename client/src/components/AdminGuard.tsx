@@ -3,25 +3,36 @@ import { useLocation } from "wouter";
 import { useEffect } from "react";
 
 export default function AdminGuard({ children }: { children: React.ReactNode }) {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const [location, setLocation] = useLocation();
 
   useEffect(() => {
-    if (!user) {
-      if (location !== "/signin") {
-        setLocation("/signin");
-      }
-    } else {
-      const normalizedRole = user.role?.toLowerCase();
-      if (normalizedRole !== "admin") {
-        if (location !== "/unauthorized") {
-          setLocation("/unauthorized");
+    if (!loading) {
+      if (!user) {
+        if (location !== "/signin") {
+          setLocation("/signin");
+        }
+      } else {
+        const isAdmin = user.isAdmin || user.role?.toLowerCase() === "admin";
+        if (!isAdmin) {
+          if (location !== "/unauthorized") {
+            setLocation("/unauthorized");
+          }
         }
       }
     }
-  }, [user, location, setLocation]);
+  }, [user, loading, location, setLocation]);
 
-  if (!user || user.role?.toLowerCase() !== "admin") {
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  }
+
+  if (!user) {
+    return null; // Prevent rendering until redirect resolves
+  }
+
+  const isAdmin = user.isAdmin || user.role?.toLowerCase() === "admin";
+  if (!isAdmin) {
     return null; // Prevent rendering until redirect resolves
   }
 

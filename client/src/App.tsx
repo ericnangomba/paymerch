@@ -42,6 +42,31 @@ function Router() {
           <MerchantDashboard />
         </MerchantGuard>
       </Route>
+      <Route path="/dashboard/transactions">
+        <MerchantGuard>
+          <MerchantDashboard />
+        </MerchantGuard>
+      </Route>
+      <Route path="/dashboard/payment-links">
+        <MerchantGuard>
+          <MerchantDashboard />
+        </MerchantGuard>
+      </Route>
+      <Route path="/dashboard/analytics">
+        <MerchantGuard>
+          <MerchantDashboard />
+        </MerchantGuard>
+      </Route>
+      <Route path="/dashboard/payouts">
+        <MerchantGuard>
+          <MerchantDashboard />
+        </MerchantGuard>
+      </Route>
+      <Route path="/dashboard/settings">
+        <MerchantGuard>
+          <MerchantDashboard />
+        </MerchantGuard>
+      </Route>
 
       {/* Checkout links */}
       <Route path="/checkout/:linkId" component={Checkout} />

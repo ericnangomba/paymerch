@@ -16,25 +16,25 @@ import {
 const menuItems = [
   {
     title: "Transactions",
-    url: "/dashboard/transactions",
+    url: "/merchant",
     icon: Receipt,
     testId: "nav-transactions",
   },
   {
     title: "Payment Links",
-    url: "/dashboard/payment-links",
+    url: "/merchant",
     icon: LinkIcon,
     testId: "nav-payment-links",
   },
   {
     title: "Analytics",
-    url: "/dashboard/analytics",
+    url: "/merchant",
     icon: BarChart3,
     testId: "nav-analytics",
   },
   {
     title: "Payouts",
-    url: "/dashboard/payouts",
+    url: "/merchant",
     icon: CreditCard,
     testId: "nav-payouts",
   },
@@ -45,16 +45,15 @@ export function AppSidebar() {
 
   return (
     <Sidebar>
-      <SidebarHeader className="p-6">
-        <Link href="/dashboard" data-testid="link-logo">
-          <div className="flex items-center justify-center md:justify-start">
-            <img
-              src="/paymerch.png"
-              alt="Brand logo"
-              className="h-[150px] w-auto object-contain"
-            />
-          </div>
-        </Link>
+      <SidebarHeader className="p-4 border-b">
+        <div className="flex items-center gap-2">
+          <img
+            src="/paymerch_icon.png"
+            alt="Brand logo"
+            className="h-[40px] w-auto object-contain"
+          />
+          <span className="font-bold text-lg">PayMerch</span>
+        </div>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -75,8 +74,8 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="p-6">
-        <Link href="/dashboard/settings" data-testid="link-settings">
+      <SidebarFooter className="p-4 border-t">
+        <Link href="/merchant" data-testid="link-settings">
           <SidebarMenuButton className="w-full hover-elevate">
             <Settings className="h-4 w-4" />
             <span>Settings</span>

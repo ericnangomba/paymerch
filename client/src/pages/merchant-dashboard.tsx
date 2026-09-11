@@ -102,7 +102,9 @@ export default function MerchantDashboard() {
   }, [user]);
 
   const handleLogout = () => {
-    logout();
+    localStorage.removeItem('demoUser');
+    localStorage.removeItem('authToken');
+    window.location.href = '/signin';
   };
 
   if (loading) {

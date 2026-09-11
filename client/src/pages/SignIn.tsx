@@ -24,12 +24,14 @@ export function SignIn() {
         // Demo mode - check admin credentials
         if (email === 'admin@paymerch.com' && password === 'password') {
           localStorage.setItem('demoUser', JSON.stringify({ email, isAdmin: true }));
+          localStorage.setItem("authToken", "demo-admin-token");
           navigate("/admin");
           return;
         }
         // For demo mode, allow any credentials
         localStorage.setItem('demoUser', JSON.stringify({ email, isAdmin: false }));
-        navigate("/dashboard");
+        localStorage.setItem("authToken", "demo-merchant-token");
+        navigate("/merchant");
         return;
       }
 

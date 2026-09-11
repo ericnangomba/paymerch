@@ -137,7 +137,11 @@ export default function Admin() {
             <Link href="/">
               <Button variant="ghost" size="sm" className="text-xs sm:text-sm">Home</Button>
             </Link>
-            <Button variant="destructive" size="sm" className="text-xs sm:text-sm" onClick={logout}>
+            <Button variant="destructive" size="sm" className="text-xs sm:text-sm" onClick={() => {
+              localStorage.removeItem('demoUser');
+              localStorage.removeItem('authToken');
+              window.location.href = '/signin';
+            }}>
               Logout
             </Button>
           </div>
