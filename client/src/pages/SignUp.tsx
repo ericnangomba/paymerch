@@ -27,11 +27,20 @@ export function SignUp() {
         const { error: merchantError } = await supabase
           .from('merchants')
           .insert([{ id: data.user.id, email: data.user.email, businessName: 'My Business' }]);
-        if (merchantError) throw merchantError;
+        if (merchantError) {
+          console.error("Merchant creation error:", merchantError);
+          // Continue anyway - merchant creation might fail due to permissions
+        }
+      }
+      // Show success message if email confirmation is required
+      if (data.user && !data.session) {
+        setError("Account created! Please check your email to confirm your account.");
+        return;
       }
       navigate("/dashboard");
     } catch (err: any) {
-      setError("Failed to create an account. Please try again.");
+      const errorMessage = err.message || "Failed to create an account. Please try again.";
+      setError(errorMessage);
       console.error("Supabase SignUp Error:", err);
     }
   };

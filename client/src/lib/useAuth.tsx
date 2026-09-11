@@ -73,19 +73,22 @@ export function useAuth() {
       const data = await res.json();
       const normalizedRole = data.role?.toLowerCase() || "merchant";
 
+      // Check for pre-created admin credentials
+      const isAdminUser = data.email === "admin@paymerch.com" && normalizedRole === "admin";
+
       const newUser: AuthUser = {
         uid: data.uid,
         email: data.email,
-        isAdmin: normalizedRole === "admin",
+        isAdmin: isAdminUser || normalizedRole === "admin",
         token: accessToken,
-        role: normalizedRole,
+        role: isAdminUser ? "admin" : normalizedRole,
       };
 
       setUser(newUser);
       localStorage.setItem("authToken", accessToken);
 
       // ✅ Redirect based on role
-      if (normalizedRole === "admin") {
+      if (newUser.isAdmin) {
         setLocation("/admin");
       } else if (normalizedRole === "merchant") {
         setLocation("/merchant");

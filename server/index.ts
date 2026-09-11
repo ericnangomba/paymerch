@@ -47,10 +47,15 @@ export const checkAuth = async (req: Request, res: Response, next: NextFunction)
       return res.status(403).json({ message: 'Forbidden: Invalid token - no user ID.' });
     }
 
+    // Check for pre-created admin credentials
+    const isAdminUser = payload.email === "admin@paymerch.com";
+
     // Attach user info to the request object
     (req as any).user = { 
       uid: userId,
       email: payload.email,
+      isAdmin: isAdminUser,
+      role: isAdminUser ? "admin" : "merchant",
       ...payload 
     };
     
