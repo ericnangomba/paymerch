@@ -46,28 +46,28 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center justify-between px-4 sm:px-6">
+        <div className="container flex h-16 sm:h-20 items-center justify-between px-4 sm:px-6">
           <Link href="/" data-testid="link-home-logo">
             <div className="flex items-center gap-2">
               <img
                 src="/paymerch.png"
                 alt="Brand logo"
-                className="h-[100px] sm:h-[125px] w-auto object-contain"
+                className="h-[60px] sm:h-[80px] md:h-[100px] lg:h-[125px] w-auto object-contain"
               />
             </div>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-6">
-            <a href="#features" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-features">
+          <nav className="hidden md:flex items-center gap-4 sm:gap-6">
+            <a href="#features" className="text-xs sm:text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-features">
               Features
             </a>
-            <a href="#pricing" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-pricing">
+            <a href="#pricing" className="text-xs sm:text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-pricing">
               Pricing
             </a>
-            <a href="#how-it-works" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-how-it-works">
+            <a href="#how-it-works" className="text-xs sm:text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-how-it-works">
               How It Works
             </a>
-            <a href="#contact" className="text-sm font-medium text-accent-secondary hover:text-accent-secondary/80 transition-colors font-semibold" data-testid="link-contact">
+            <a href="#contact" className="text-xs sm:text-sm font-medium text-accent-secondary hover:text-accent-secondary/80 transition-colors font-semibold" data-testid="link-contact">
               Contact Us
             </a>
           </nav>
@@ -78,25 +78,25 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-12 sm:py-16">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-16 sm:py-20 lg:py-24">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-background"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-accent-secondary/20 via-background to-background"></div>
         <div className="container relative z-10 px-4 sm:px-6">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            <div className="space-y-6 sm:space-y-8 text-center lg:text-left">
+            <div className="space-y-6 sm:space-y-8 text-center lg:text-left order-2 lg:order-1">
               <div className="flex justify-center lg:justify-start">
-                <Badge className="w-fit bg-accent-secondary/10 text-accent-secondary border border-accent-secondary/30" variant="secondary">
+                <Badge className="w-fit bg-accent-secondary/10 text-accent-secondary border border-accent-secondary/30 text-xs sm:text-sm" variant="secondary">
                   <TrendingUp className="h-3 w-3 mr-1" />
                   Trusted by 10,000+ merchants worldwide
                 </Badge>
               </div>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
                 Accept Payments <span className="text-accent-secondary">Globally</span> with Ease
               </h1>
-              <p className="text-base sm:text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0">
+              <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0">
                 The most powerful payment platform for modern businesses. Accept credit cards, mobile money, and bank transfers with enterprise-grade security and instant payouts.
               </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4">
                 <Link href="/signup" data-testid="button-get-started-hero">
                   <Button size="lg" className="w-full sm:w-auto gap-2 bg-accent text-accent-foreground border-accent hover:bg-accent/90 shadow-lg">
                     Get Started <ArrowRight className="h-4 w-4" />
@@ -108,29 +108,29 @@ export default function Home() {
                   </Button>
                 </Link>
               </div>
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <CheckCircle2 className="h-4 w-4 text-primary" />
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-2 sm:gap-4 pt-2">
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+                  <CheckCircle2 className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />
                   <span>No setup fees</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <CheckCircle2 className="h-4 w-4 text-primary" />
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+                  <CheckCircle2 className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />
                   <span>Free API access</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <CheckCircle2 className="h-4 w-4 text-primary" />
+                <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+                  <CheckCircle2 className="h-3 w-3 sm:h-4 sm:w-4 text-primary" />
                   <span>Instant payouts</span>
                 </div>
               </div>
-              <div className="flex items-center justify-center lg:justify-start gap-6 pt-4">
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 pt-4">
                 <div className="flex items-center gap-2">
-                  <SiVisa className="h-8 w-12 text-muted-foreground" />
-                  <SiMastercard className="h-8 w-12 text-muted-foreground" />
+                  <SiVisa className="h-6 w-9 sm:h-8 sm:w-12 text-muted-foreground" />
+                  <SiMastercard className="h-6 w-9 sm:h-8 sm:w-12 text-muted-foreground" />
                 </div>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-xs sm:text-sm text-muted-foreground">
                   <span className="font-semibold text-foreground">99.9%</span> uptime
                 </div>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-xs sm:text-sm text-muted-foreground">
                   <span className="font-semibold text-foreground">24/7</span> support
                 </div>
               </div>
@@ -144,7 +144,7 @@ export default function Home() {
                   className="w-full h-auto relative z-10"
                 />
                 <div className="absolute bottom-4 left-4 right-4 z-20">
-                  <div className="bg-background/95 backdrop-blur-sm rounded-lg p-4 shadow-lg border">
+                  <div className="bg-background/95 backdrop-blur-sm rounded-lg p-3 sm:p-4 shadow-lg border">
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-muted-foreground">Today's Revenue</p>
@@ -163,36 +163,36 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="features" className="py-16 sm:py-24 bg-muted/50">
+      <section id="features" className="py-12 sm:py-16 md:py-24 bg-muted/50">
         <div className="container px-4 sm:px-6 mx-auto">
-          <div className="mx-auto text-center space-y-4 mb-10 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold">Everything You Need to Succeed</h2>
-            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
+          <div className="mx-auto text-center space-y-3 sm:space-y-4 mb-8 sm:mb-12 md:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">Everything You Need to Succeed</h2>
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
               Powerful features designed to help you grow your business globally with enterprise-grade tools
             </p>
           </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 text-left">
+          <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 text-left">
             <Card className="hover-elevate transition-all duration-300 border-2 hover:border-accent-secondary/50">
               <CardHeader>
                 <div className="mb-4 overflow-hidden rounded-lg relative">
                   <img src={checkoutImage}
                     alt="payment methods"
-                    className="w-full h-40 object-cover"
+                    className="w-full h-32 sm:h-40 object-cover"
                   />
                   <div className="absolute top-2 right-2 bg-accent-secondary text-white text-xs px-2 py-1 rounded-full">
                     Popular
                   </div>
                 </div>
                 <div className="flex items-center gap-2 mb-2">
-                  <CreditCard className="h-5 w-5 text-accent-secondary" />
-                  <CardTitle>Multiple Payment Methods</CardTitle>
+                  <CreditCard className="h-4 w-4 sm:h-5 sm:w-5 text-accent-secondary" />
+                  <CardTitle className="text-base sm:text-lg">Multiple Payment Methods</CardTitle>
                 </div>
-                <CardDescription className="text-sm">
+                <CardDescription className="text-xs sm:text-sm">
                   Accept credit cards (Visa, Mastercard), mobile money (M-Pesa, MTN), and bank transfers. Support for 50+ currencies with automatic conversion.
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2 text-sm text-muted-foreground">
+                <ul className="space-y-2 text-xs sm:text-sm text-muted-foreground">
                   <li className="flex items-center gap-2">
                     <CheckCircle2 className="h-3 w-3 text-accent-secondary" />
                     <span>Real-time payment processing</span>
@@ -706,30 +706,30 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="contact" className="py-24 bg-muted/30">
-        <div className="container px-6 mx-auto">
-          <div className="text-center space-y-4 mb-16">
-            <h2 className="text-4xl font-bold">Get In Touch</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+      <section id="contact" className="py-16 sm:py-20 md:py-24 bg-muted/30">
+        <div className="container px-4 sm:px-6 mx-auto">
+          <div className="text-center space-y-3 sm:space-y-4 mb-8 sm:mb-12 md:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">Get In Touch</h2>
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
               Have questions? Our team is here to help you succeed
             </p>
           </div>
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-5xl mx-auto">
             <Card className="text-center hover-elevate transition-all duration-300 border-2 hover:border-accent-secondary/50">
               <CardHeader>
-                <div className="mx-auto h-16 w-16 rounded-full bg-accent-secondary/10 flex items-center justify-center mb-4">
-                  <Mail className="h-8 w-8 text-accent-secondary" />
+                <div className="mx-auto h-12 w-12 sm:h-16 sm:w-16 rounded-full bg-accent-secondary/10 flex items-center justify-center mb-3 sm:mb-4">
+                  <Mail className="h-6 w-6 sm:h-8 sm:w-8 text-accent-secondary" />
                 </div>
-                <CardTitle>Email Us</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-base sm:text-lg">Email Us</CardTitle>
+                <CardDescription className="text-xs sm:text-sm">
                   Get in touch via email for general inquiries
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <a href="mailto:support@paymerch.com" className="text-accent-secondary font-medium hover:underline">
+                <a href="mailto:support@paymerch.com" className="text-accent-secondary font-medium hover:underline text-sm sm:text-base">
                   support@paymerch.com
                 </a>
-                <p className="text-sm text-muted-foreground mt-2">
+                <p className="text-xs sm:text-sm text-muted-foreground mt-2">
                   Response time: &lt; 2 hours
                 </p>
               </CardContent>
@@ -737,16 +737,16 @@ export default function Home() {
 
             <Card className="text-center hover-elevate transition-all duration-300 border-2 hover:border-accent/50">
               <CardHeader>
-                <div className="mx-auto h-16 w-16 rounded-full bg-accent/10 flex items-center justify-center mb-4">
-                  <Phone className="h-8 w-8 text-accent" />
+                <div className="mx-auto h-12 w-12 sm:h-16 sm:w-16 rounded-full bg-accent/10 flex items-center justify-center mb-3 sm:mb-4">
+                  <Phone className="h-6 w-6 sm:h-8 sm:w-8 text-accent" />
                 </div>
-                <CardTitle>Call Us</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-base sm:text-lg">Call Us</CardTitle>
+                <CardDescription className="text-xs sm:text-sm">
                   Speak with our support team directly
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <a href="tel:+27123456789" className="text-accent font-medium hover:underline">
+                <a href="tel:+27123456789" className="text-accent font-medium hover:underline text-sm sm:text-base">
                   +27 12 345 6789
                 </a>
                 <p className="text-sm text-muted-foreground mt-2">
@@ -831,25 +831,25 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="border-t py-12 bg-muted/20">
-        <div className="container px-6 mx-auto">
-          <div className="grid md:grid-cols-4 gap-12 mb-8 md:text-left">
-            <div className="space-y-4 flex flex-col items-center md:items-start">
-              <div className="flex items-center gap-2">
-                <img src="/paymerch_icon.png" alt="Brand icon" className="h-[50px] w-auto object-contain" />
+      <footer className="border-t py-8 sm:py-12 bg-muted/20">
+        <div className="container px-4 sm:px-6 mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 sm:gap-8 md:gap-12 mb-6 sm:mb-8 text-left">
+            <div className="space-y-3 sm:space-y-4 col-span-2 sm:col-span-1">
+              <div className="flex items-center gap-2 justify-center sm:justify-start">
+                <img src="/paymerch_icon.png" alt="Brand icon" className="h-[40px] sm:h-[50px] w-auto object-contain" />
               </div>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs sm:text-sm text-muted-foreground text-center sm:text-left">
                 Global payment solutions for modern businesses. Accept payments anywhere, anytime.
               </p>
-              <div className="flex items-center gap-4">
-                <SiVisa className="h-8 w-12 text-muted-foreground" />
-                <SiMastercard className="h-8 w-12 text-muted-foreground" />
-                <SiPaypal className="h-8 w-12 text-muted-foreground" />
+              <div className="flex items-center gap-3 sm:gap-4 justify-center sm:justify-start">
+                <SiVisa className="h-6 w-9 sm:h-8 sm:w-12 text-muted-foreground" />
+                <SiMastercard className="h-6 w-9 sm:h-8 sm:w-12 text-muted-foreground" />
+                <SiPaypal className="h-6 w-9 sm:h-8 sm:w-12 text-muted-foreground" />
               </div>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Product</h4>
-              <ul className="space-y-3 text-sm text-muted-foreground">
+              <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Product</h4>
+              <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-muted-foreground">
                 <li><a href="#features" className="hover:text-foreground transition-colors" data-testid="footer-link-features">Features</a></li>
                 <li><a href="#pricing" className="hover:text-foreground transition-colors" data-testid="footer-link-pricing">Pricing</a></li>
                 <li><a href="#how-it-works" className="hover:text-foreground transition-colors" data-testid="footer-link-how-it-works">How It Works</a></li>
@@ -858,18 +858,18 @@ export default function Home() {
             </div>
             <FooterCompany />
             <div>
-              <h4 className="font-semibold mb-4">Legal</h4>
-              <ul className="space-y-3 text-sm text-muted-foreground">
+              <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Legal</h4>
+              <ul className="space-y-2 sm:space-y-3 text-xs sm:text-sm text-muted-foreground">
                 <li><a href="#" className="hover:text-foreground transition-colors" data-testid="footer-link-privacy">Privacy Policy</a></li>
                 <li><a href="#" className="hover:text-foreground transition-colors" data-testid="footer-link-terms">Terms of Service</a></li>
                 <li><a href="#" className="hover:text-foreground transition-colors" data-testid="footer-link-security">Security</a></li>
               </ul>
             </div>
           </div>
-          <div className="border-t pt-8 text-center text-sm text-muted-foreground">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="border-t pt-6 sm:pt-8 text-center text-xs sm:text-sm text-muted-foreground">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-3 sm:gap-4">
               <p>&copy; 2025 PayMerch. All rights reserved.</p>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3 sm:gap-4">
                 <a href="#" className="hover:text-foreground transition-colors">Twitter</a>
                 <a href="#" className="hover:text-foreground transition-colors">LinkedIn</a>
                 <a href="#" className="hover:text-foreground transition-colors">GitHub</a>

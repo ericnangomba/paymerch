@@ -12,6 +12,16 @@ export type AuthUser = {
 
 // Function to refresh and store token safely
 export async function refreshAndStoreToken() {
+  if (!supabase) {
+    const demoUser = localStorage.getItem('demoUser');
+    if (demoUser) {
+      const user = JSON.parse(demoUser);
+      localStorage.setItem("authToken", "demo-token");
+      return "demo-token";
+    }
+    return null;
+  }
+  
   const { data, error } = await supabase.auth.getSession();
   if (error) {
     console.error("Failed to get session", error);
@@ -53,6 +63,36 @@ export function useAuth() {
 
   const fetchMe = useCallback(async () => {
     try {
+      // Check for demo mode first
+      const demoUser = localStorage.getItem('demoUser');
+      if (demoUser) {
+        const parsedUser = JSON.parse(demoUser);
+        const newUser: AuthUser = {
+          uid: parsedUser.email || 'demo-user',
+          email: parsedUser.email,
+          isAdmin: parsedUser.isAdmin || false,
+          token: 'demo-token',
+          role: parsedUser.isAdmin ? 'admin' : 'merchant',
+        };
+        setUser(newUser);
+        localStorage.setItem("authToken", "demo-token");
+        setLoading(false);
+        
+        // Redirect based on role
+        if (newUser.isAdmin) {
+          setLocation("/admin");
+        } else {
+          setLocation("/dashboard");
+        }
+        return;
+      }
+
+      if (!supabase) {
+        setUser(null);
+        setLoading(false);
+        return;
+      }
+
       const session = await supabase.auth.getSession();
       const accessToken = session.data.session?.access_token;
       if (!accessToken) {
@@ -103,18 +143,21 @@ export function useAuth() {
 
   useEffect(() => {
     fetchMe();
-    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
-      console.log("Supabase auth state change event:", event);
-      console.log("Session data on auth state change:", session);
-      fetchMe();
-    });
-    return () => {
-      listener.subscription.unsubscribe();
-    };
+    if (supabase) {
+      const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+        console.log("Supabase auth state change event:", event);
+        console.log("Session data on auth state change:", session);
+        fetchMe();
+      });
+      return () => {
+        listener.subscription.unsubscribe();
+      };
+    }
   }, [fetchMe]);
 
   const logout = () => {
     localStorage.removeItem("authToken");
+    localStorage.removeItem("demoUser");
     window.location.href = "/signin";
   };
 

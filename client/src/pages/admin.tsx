@@ -117,43 +117,43 @@ export default function Admin() {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-        <div className="container px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img src="/paymerch_icon.png" alt="Brand logo" className="h-[50px] w-auto object-contain" />
+        <div className="container px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <img src="/paymerch_icon.png" alt="Brand logo" className="h-[40px] sm:h-[50px] w-auto object-contain" />
             <div>
-              <h1 className="text-xl font-bold">Admin Dashboard</h1>
-              <p className="text-xs text-muted-foreground">AI-Powered Payment Management System</p>
+              <h1 className="text-base sm:text-lg md:text-xl font-bold">Admin Dashboard</h1>
+              <p className="text-[10px] sm:text-xs text-muted-foreground hidden sm:block">AI-Powered Payment Management System</p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon">
-              <Bell className="h-5 w-5" />
+          <div className="flex items-center gap-2 sm:gap-4">
+            <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-10 sm:w-10">
+              <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
               {fraudAlerts.filter(a => !a.resolved).length > 0 && (
-                <Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center bg-red-500">
+                <Badge className="absolute -top-1 -right-1 h-4 w-4 sm:h-5 sm:w-5 p-0 flex items-center justify-center bg-red-500 text-[10px]">
                   {fraudAlerts.filter(a => !a.resolved).length}
                 </Badge>
               )}
             </Button>
             <Link href="/">
-              <Button variant="ghost">Home</Button>
+              <Button variant="ghost" size="sm" className="text-xs sm:text-sm">Home</Button>
             </Link>
           </div>
         </div>
       </header>
 
-      <main className="container px-6 py-8">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6 lg:w-auto lg:inline-grid">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="transactions">Transactions</TabsTrigger>
-            <TabsTrigger value="merchants">Merchants</TabsTrigger>
-            <TabsTrigger value="fraud">Fraud Detection</TabsTrigger>
-            <TabsTrigger value="ai-ml">AI/ML</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
+      <main className="container px-4 sm:px-6 py-6 sm:py-8">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
+          <TabsList className="grid w-full grid-cols-3 sm:grid-cols-6 lg:w-auto lg:inline-grid gap-1 sm:gap-2">
+            <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
+            <TabsTrigger value="transactions" className="text-xs sm:text-sm">Transactions</TabsTrigger>
+            <TabsTrigger value="merchants" className="text-xs sm:text-sm">Merchants</TabsTrigger>
+            <TabsTrigger value="fraud" className="text-xs sm:text-sm">Fraud</TabsTrigger>
+            <TabsTrigger value="ai-ml" className="text-xs sm:text-sm">AI/ML</TabsTrigger>
+            <TabsTrigger value="settings" className="text-xs sm:text-sm">Settings</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="overview" className="space-y-6">
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <TabsContent value="overview" className="space-y-4 sm:space-y-6">
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               <Card className="border-2 hover:border-accent-secondary/50 transition-all">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
