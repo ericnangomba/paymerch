@@ -31,17 +31,17 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center justify-between px-6">
+        <div className="container flex h-16 items-center justify-between px-4 sm:px-6">
           <Link href="/" data-testid="link-home-logo">
             <div className="flex items-center gap-2">
               <img
                 src="/paymerch.png"
                 alt="Brand logo"
-                className="h-24 w-auto object-contain"
+                className="h-16 sm:h-20 w-auto object-contain"
               />
             </div>
           </Link>
-          
+
           <nav className="hidden md:flex items-center gap-6">
             <a href="#features" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-features">
               Features
@@ -54,37 +54,41 @@ export default function Home() {
             </a>
           </nav>
 
-          <HeaderAuth />
+          <div className="flex items-center justify-end">
+            <HeaderAuth />
+          </div>
         </div>
       </header>
 
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-12 sm:py-16">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-background"></div>
-        <div className="container relative z-10 px-6">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <Badge className="w-fit bg-accent/10 text-accent border border-accent/30" variant="secondary">
-                Trusted by 10,000+ merchants worldwide
-              </Badge>
-              <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
+        <div className="container relative z-10 px-4 sm:px-6">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            <div className="space-y-6 sm:space-y-8 text-center lg:text-left">
+              <div className="flex justify-center lg:justify-start">
+                <Badge className="w-fit bg-accent/10 text-accent border border-accent/30" variant="secondary">
+                  Trusted by 10,000+ merchants worldwide
+                </Badge>
+              </div>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
                 Accept Payments <span className="text-accent">Globally</span> with Ease
               </h1>
-              <p className="text-xl text-muted-foreground max-w-lg">
+              <p className="text-base sm:text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0">
                 The easiest way to accept payments from anywhere in the world. Multiple payment methods, real-time analytics, and instant payouts.
               </p>
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                 <Link href="/signup" data-testid="button-get-started-hero">
-                  <Button size="lg" className="gap-2 bg-accent text-accent-foreground border-accent hover:bg-accent/90">
+                  <Button size="lg" className="w-full sm:w-auto gap-2 bg-accent text-accent-foreground border-accent hover:bg-accent/90">
                     Get Started <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
                 <Link href="/checkout/demo" data-testid="button-view-demo">
-                  <Button size="lg" variant="outline">
+                  <Button size="lg" variant="outline" className="w-full sm:w-auto">
                     View Demo
                   </Button>
                 </Link>
               </div>
-              <div className="flex items-center gap-4 pt-4">
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <CheckCircle2 className="h-4 w-4 text-primary" />
                   <span>No setup fees</span>
@@ -95,8 +99,8 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="relative">
-              <div className="relative rounded-xl overflow-hidden shadow-2xl border -mr-12">
+            <div className="relative order-first lg:order-last">
+              <div className="relative rounded-xl overflow-hidden shadow-2xl border mx-auto max-w-md lg:max-w-none lg:-mr-12">
                 <img 
                   src={payoutImage} 
                   alt="Dashboard preview"
@@ -108,15 +112,15 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="features" className="py-24 bg-muted/50">
-        <div className="container px-6 mx-auto">
-          <div className="mx-auto text-center space-y-4 mb-16">
-            <h2 className="text-4xl font-bold">Everything You Need to Succeed</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+      <section id="features" className="py-16 sm:py-24 bg-muted/50">
+        <div className="container px-4 sm:px-6 mx-auto">
+          <div className="mx-auto text-center space-y-4 mb-10 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold">Everything You Need to Succeed</h2>
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
               Powerful features designed to help you grow your business globally
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 text-left">
             <Card className="hover-elevate transition-all duration-300">
               <CardHeader>
                 <div className="mb-4 overflow-hidden rounded-lg">
