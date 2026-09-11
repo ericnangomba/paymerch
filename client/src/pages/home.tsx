@@ -37,7 +37,7 @@ export default function Home() {
               <img
                 src="/paymerch.png"
                 alt="Brand logo"
-                className="h-16 sm:h-20 w-auto object-contain"
+                className="h-[80px] sm:h-[100px] w-auto object-contain"
               />
             </div>
           </Link>

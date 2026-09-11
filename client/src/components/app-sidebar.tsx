@@ -51,7 +51,7 @@ export function AppSidebar() {
             <img
               src="/paymerch.png"
               alt="Brand logo"
-              className="h-24 w-auto object-contain"
+              className="h-[120px] w-auto object-contain"
             />
           </div>
         </Link>
