@@ -116,12 +116,12 @@ export default function Admin() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+      <header className="border-b bg-gradient-to-r from-purple-900/10 to-indigo-900/10 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
         <div className="container px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
             <img src="/paymerch_icon.png" alt="Brand logo" className="h-[40px] sm:h-[50px] w-auto object-contain" />
             <div>
-              <h1 className="text-base sm:text-lg md:text-xl font-bold">Admin Dashboard</h1>
+              <h1 className="text-base sm:text-lg md:text-xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">Admin Dashboard</h1>
               <p className="text-[10px] sm:text-xs text-muted-foreground hidden sm:block">AI-Powered Payment Management System</p>
             </div>
           </div>
@@ -137,33 +137,30 @@ export default function Admin() {
             <Link href="/">
               <Button variant="ghost" size="sm" className="text-xs sm:text-sm">Home</Button>
             </Link>
-            <Button variant="destructive" size="sm" className="text-xs sm:text-sm" onClick={() => {
-              const { logout } = useAuth();
-              logout();
-            }}>
+            <Button variant="destructive" size="sm" className="text-xs sm:text-sm" onClick={logout}>
               Logout
             </Button>
           </div>
         </div>
       </header>
 
-      <main className="container px-4 sm:px-6 py-6 sm:py-8">
+      <main className="container px-4 sm:px-6 py-6 sm:py-8 bg-gradient-to-br from-purple-50/50 to-indigo-50/50 dark:from-purple-950/20 dark:to-indigo-950/20">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
-          <TabsList className="grid w-full grid-cols-3 sm:grid-cols-6 lg:w-auto lg:inline-grid gap-1 sm:gap-2">
-            <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
-            <TabsTrigger value="transactions" className="text-xs sm:text-sm">Transactions</TabsTrigger>
-            <TabsTrigger value="merchants" className="text-xs sm:text-sm">Merchants</TabsTrigger>
-            <TabsTrigger value="fraud" className="text-xs sm:text-sm">Fraud</TabsTrigger>
-            <TabsTrigger value="ai-ml" className="text-xs sm:text-sm">AI/ML</TabsTrigger>
-            <TabsTrigger value="settings" className="text-xs sm:text-sm">Settings</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 sm:grid-cols-6 lg:w-auto lg:inline-grid gap-1 sm:gap-2 bg-purple-100 dark:bg-purple-900/30">
+            <TabsTrigger value="overview" className="text-xs sm:text-sm data-[state=active]:bg-purple-600 data-[state=active]:text-white">Overview</TabsTrigger>
+            <TabsTrigger value="transactions" className="text-xs sm:text-sm data-[state=active]:bg-purple-600 data-[state=active]:text-white">Transactions</TabsTrigger>
+            <TabsTrigger value="merchants" className="text-xs sm:text-sm data-[state=active]:bg-purple-600 data-[state=active]:text-white">Merchants</TabsTrigger>
+            <TabsTrigger value="fraud" className="text-xs sm:text-sm data-[state=active]:bg-purple-600 data-[state=active]:text-white">Fraud</TabsTrigger>
+            <TabsTrigger value="ai-ml" className="text-xs sm:text-sm data-[state=active]:bg-purple-600 data-[state=active]:text-white">AI/ML</TabsTrigger>
+            <TabsTrigger value="settings" className="text-xs sm:text-sm data-[state=active]:bg-purple-600 data-[state=active]:text-white">Settings</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-4 sm:space-y-6">
             <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-              <Card className="border-2 hover:border-accent-secondary/50 transition-all">
+              <Card className="border-2 hover:border-purple-500/50 transition-all bg-gradient-to-br from-purple-500/5 to-purple-500/10">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-                  <DollarSign className="h-4 w-4 text-accent-secondary" />
+                  <DollarSign className="h-4 w-4 text-purple-600" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">R45,231,890</div>
@@ -171,10 +168,10 @@ export default function Admin() {
                 </CardContent>
               </Card>
 
-              <Card className="border-2 hover:border-accent/50 transition-all">
+              <Card className="border-2 hover:border-indigo-500/50 transition-all bg-gradient-to-br from-indigo-500/5 to-indigo-500/10">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Transactions</CardTitle>
-                  <CreditCard className="h-4 w-4 text-accent" />
+                  <CreditCard className="h-4 w-4 text-indigo-600" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{transactions.length}</div>
@@ -182,10 +179,10 @@ export default function Admin() {
                 </CardContent>
               </Card>
 
-              <Card className="border-2 hover:border-green-500/50 transition-all">
+              <Card className="border-2 hover:border-pink-500/50 transition-all bg-gradient-to-br from-pink-500/5 to-pink-500/10">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Active Merchants</CardTitle>
-                  <Users className="h-4 w-4 text-green-500" />
+                  <Users className="h-4 w-4 text-pink-600" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{merchants.length}</div>
@@ -193,10 +190,10 @@ export default function Admin() {
                 </CardContent>
               </Card>
 
-              <Card className="border-2 hover:border-red-500/50 transition-all">
+              <Card className="border-2 hover:border-red-500/50 transition-all bg-gradient-to-br from-red-500/5 to-red-500/10">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Fraud Alerts</CardTitle>
-                  <AlertTriangle className="h-4 w-4 text-red-500" />
+                  <AlertTriangle className="h-4 w-4 text-red-600" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">{fraudAlerts.filter(a => !a.resolved).length}</div>

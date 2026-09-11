@@ -123,10 +123,10 @@ export default function MerchantDashboard() {
 
         <div className="flex flex-col flex-1 overflow-hidden">
           {/* Header */}
-          <header className="flex items-center justify-between p-4 border-b bg-card">
+          <header className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-accent/5 to-accent-secondary/5">
             <div className="flex items-center gap-4">
               <SidebarTrigger />
-              <h1 className="text-xl font-bold">Merchant Dashboard</h1>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-accent to-accent-secondary bg-clip-text text-transparent">Merchant Dashboard</h1>
             </div>
             <div className="flex items-center gap-3">
               <Link href="/">
@@ -149,7 +149,7 @@ export default function MerchantDashboard() {
           <main className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
             {/* Overview cards */}
             <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Card className="border-2 hover:border-accent/50 transition-all">
+              <Card className="border-2 hover:border-accent/50 transition-all bg-gradient-to-br from-accent/5 to-accent/10">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Balance</CardTitle>
                   <DollarSign className="h-4 w-4 text-accent" />
@@ -162,7 +162,7 @@ export default function MerchantDashboard() {
                 </CardContent>
               </Card>
 
-              <Card className="border-2 hover:border-accent-secondary/50 transition-all">
+              <Card className="border-2 hover:border-accent-secondary/50 transition-all bg-gradient-to-br from-accent-secondary/5 to-accent-secondary/10">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Revenue</CardTitle>
                   <TrendingUp className="h-4 w-4 text-accent-secondary" />
@@ -175,7 +175,7 @@ export default function MerchantDashboard() {
                 </CardContent>
               </Card>
 
-              <Card className="border-2 hover:border-green-500/50 transition-all">
+              <Card className="border-2 hover:border-green-500/50 transition-all bg-gradient-to-br from-green-500/5 to-green-500/10">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Transactions</CardTitle>
                   <CreditCard className="h-4 w-4 text-green-500" />
@@ -188,7 +188,7 @@ export default function MerchantDashboard() {
                 </CardContent>
               </Card>
 
-              <Card className="border-2 hover:border-blue-500/50 transition-all">
+              <Card className="border-2 hover:border-blue-500/50 transition-all bg-gradient-to-br from-blue-500/5 to-blue-500/10">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Success Rate</CardTitle>
                   <BarChart3 className="h-4 w-4 text-blue-500" />
@@ -255,9 +255,9 @@ export default function MerchantDashboard() {
             <section>
               <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <Card className="hover:shadow-lg transition-all cursor-pointer border-2 hover:border-accent/50">
+                <Card className="hover:shadow-lg transition-all cursor-pointer border-2 hover:border-accent/50 bg-gradient-to-br from-accent/5 to-accent/10" onClick={() => alert('Payment link generation coming soon!')}>
                   <CardHeader>
-                    <div className="h-12 w-12 rounded-lg bg-accent/10 flex items-center justify-center mb-2">
+                    <div className="h-12 w-12 rounded-lg bg-accent/20 flex items-center justify-center mb-2">
                       <Plus className="h-6 w-6 text-accent" />
                     </div>
                     <CardTitle className="text-base">Generate Payment Link</CardTitle>
@@ -267,9 +267,9 @@ export default function MerchantDashboard() {
                   </CardHeader>
                 </Card>
 
-                <Card className="hover:shadow-lg transition-all cursor-pointer border-2 hover:border-accent-secondary/50">
+                <Card className="hover:shadow-lg transition-all cursor-pointer border-2 hover:border-accent-secondary/50 bg-gradient-to-br from-accent-secondary/5 to-accent-secondary/10" onClick={() => alert('Payout request coming soon!')}>
                   <CardHeader>
-                    <div className="h-12 w-12 rounded-lg bg-accent-secondary/10 flex items-center justify-center mb-2">
+                    <div className="h-12 w-12 rounded-lg bg-accent-secondary/20 flex items-center justify-center mb-2">
                       <ArrowUpRight className="h-6 w-6 text-accent-secondary" />
                     </div>
                     <CardTitle className="text-base">Request Payout</CardTitle>
@@ -279,9 +279,9 @@ export default function MerchantDashboard() {
                   </CardHeader>
                 </Card>
 
-                <Card className="hover:shadow-lg transition-all cursor-pointer border-2 hover:border-green-500/50">
+                <Card className="hover:shadow-lg transition-all cursor-pointer border-2 hover:border-green-500/50 bg-gradient-to-br from-green-500/5 to-green-500/10" onClick={() => alert('Analytics view coming soon!')}>
                   <CardHeader>
-                    <div className="h-12 w-12 rounded-lg bg-green-500/10 flex items-center justify-center mb-2">
+                    <div className="h-12 w-12 rounded-lg bg-green-500/20 flex items-center justify-center mb-2">
                       <BarChart3 className="h-6 w-6 text-green-500" />
                     </div>
                     <CardTitle className="text-base">View Analytics</CardTitle>
