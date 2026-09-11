@@ -13,8 +13,24 @@ import {
   CheckCircle2,
   Zap,
   Smartphone,
+  Mail,
+  Phone,
+  MapPin,
+  Clock,
+  TrendingUp,
+  Users,
+  Award,
+  Lock,
+  Rocket,
+  DollarSign,
+  PieChart,
+  Layers,
+  MessageSquare,
+  Building2,
+  Play,
+  CheckCircle,
 } from "lucide-react";
-import { SiVisa, SiMastercard } from "react-icons/si";
+import { SiVisa, SiMastercard, SiPaypal, SiStripe } from "react-icons/si";
 import dashboardImage from "@assets/generated_images/Merchant_dashboard_preview_f82fecf1.png";
 import checkoutImage from "@assets/generated_images/Payment_checkout_interface_a8d4ddae.png";
 import apiImage from "@assets/generated_images/API_integration_coding_9329f2b0.png";
@@ -52,6 +68,9 @@ export default function Home() {
             <a href="#how-it-works" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors" data-testid="link-how-it-works">
               How It Works
             </a>
+            <a href="#contact" className="text-sm font-medium text-accent-secondary hover:text-accent-secondary/80 transition-colors font-semibold" data-testid="link-contact">
+              Contact Us
+            </a>
           </nav>
 
           <div className="flex items-center justify-end">
@@ -62,11 +81,13 @@ export default function Home() {
 
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-12 sm:py-16">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-background to-background"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-accent-secondary/20 via-background to-background"></div>
         <div className="container relative z-10 px-4 sm:px-6">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <div className="space-y-6 sm:space-y-8 text-center lg:text-left">
               <div className="flex justify-center lg:justify-start">
                 <Badge className="w-fit bg-accent-secondary/10 text-accent-secondary border border-accent-secondary/30" variant="secondary">
+                  <TrendingUp className="h-3 w-3 mr-1" />
                   Trusted by 10,000+ merchants worldwide
                 </Badge>
               </div>
@@ -74,17 +95,17 @@ export default function Home() {
                 Accept Payments <span className="text-accent-secondary">Globally</span> with Ease
               </h1>
               <p className="text-base sm:text-xl text-muted-foreground max-w-lg mx-auto lg:mx-0">
-                The easiest way to accept payments from anywhere in the world. Multiple payment methods, real-time analytics, and instant payouts.
+                The most powerful payment platform for modern businesses. Accept credit cards, mobile money, and bank transfers with enterprise-grade security and instant payouts.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                 <Link href="/signup" data-testid="button-get-started-hero">
-                  <Button size="lg" className="w-full sm:w-auto gap-2 bg-accent text-accent-foreground border-accent hover:bg-accent/90">
+                  <Button size="lg" className="w-full sm:w-auto gap-2 bg-accent text-accent-foreground border-accent hover:bg-accent/90 shadow-lg">
                     Get Started <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
                 <Link href="/checkout/demo" data-testid="button-view-demo">
-                  <Button size="lg" className="w-full sm:w-auto gap-2 bg-accent-secondary text-accent-secondary-foreground border-accent-secondary hover:bg-accent-secondary/90">
-                    View Demo
+                  <Button size="lg" className="w-full sm:w-auto gap-2 bg-accent-secondary text-accent-secondary-foreground border-accent-secondary hover:bg-accent-secondary/90 shadow-lg">
+                    View Demo <Play className="h-4 w-4" />
                   </Button>
                 </Link>
               </div>
@@ -97,15 +118,46 @@ export default function Home() {
                   <CheckCircle2 className="h-4 w-4 text-primary" />
                   <span>Free API access</span>
                 </div>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <CheckCircle2 className="h-4 w-4 text-primary" />
+                  <span>Instant payouts</span>
+                </div>
+              </div>
+              <div className="flex items-center justify-center lg:justify-start gap-6 pt-4">
+                <div className="flex items-center gap-2">
+                  <SiVisa className="h-8 w-12 text-muted-foreground" />
+                  <SiMastercard className="h-8 w-12 text-muted-foreground" />
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  <span className="font-semibold text-foreground">99.9%</span> uptime
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  <span className="font-semibold text-foreground">24/7</span> support
+                </div>
               </div>
             </div>
             <div className="relative order-first lg:order-last">
-              <div className="relative rounded-xl overflow-hidden shadow-2xl border mx-auto max-w-md lg:max-w-none lg:-mr-12">
+              <div className="relative rounded-xl overflow-hidden shadow-2xl border mx-auto max-w-md lg:max-w-none lg:-mr-12 bg-gradient-to-br from-background to-muted/20">
+                <div className="absolute inset-0 bg-gradient-to-br from-accent-secondary/5 to-accent/5"></div>
                 <img 
                   src={payoutImage} 
                   alt="Dashboard preview"
-                  className="w-full h-auto"
+                  className="w-full h-auto relative z-10"
                 />
+                <div className="absolute bottom-4 left-4 right-4 z-20">
+                  <div className="bg-background/95 backdrop-blur-sm rounded-lg p-4 shadow-lg border">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-muted-foreground">Today's Revenue</p>
+                        <p className="text-2xl font-bold text-accent-secondary">R12,450.00</p>
+                      </div>
+                      <div className="flex items-center gap-1 text-green-500">
+                        <TrendingUp className="h-4 w-4" />
+                        <span className="text-sm font-medium">+23%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -117,160 +169,316 @@ export default function Home() {
           <div className="mx-auto text-center space-y-4 mb-10 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold">Everything You Need to Succeed</h2>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
-              Powerful features designed to help you grow your business globally
+              Powerful features designed to help you grow your business globally with enterprise-grade tools
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 text-left">
-            <Card className="hover-elevate transition-all duration-300">
+            <Card className="hover-elevate transition-all duration-300 border-2 hover:border-accent-secondary/50">
               <CardHeader>
-                <div className="mb-4 overflow-hidden rounded-lg">
-                      <img src={checkoutImage}
-                        alt="payment methods"
-                        className="w-full h-32 object-cover"
-                      />
-                    </div>
-                <CardTitle>Multiple Payment Methods</CardTitle>
-                <CardDescription>
-                  Accept credit cards, mobile money and bank transfers. Currency displayed as ZAR by default.
+                <div className="mb-4 overflow-hidden rounded-lg relative">
+                  <img src={checkoutImage}
+                    alt="payment methods"
+                    className="w-full h-40 object-cover"
+                  />
+                  <div className="absolute top-2 right-2 bg-accent-secondary text-white text-xs px-2 py-1 rounded-full">
+                    Popular
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 mb-2">
+                  <CreditCard className="h-5 w-5 text-accent-secondary" />
+                  <CardTitle>Multiple Payment Methods</CardTitle>
+                </div>
+                <CardDescription className="text-sm">
+                  Accept credit cards (Visa, Mastercard), mobile money (M-Pesa, MTN), and bank transfers. Support for 50+ currencies with automatic conversion.
                 </CardDescription>
               </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-3 w-3 text-accent-secondary" />
+                    <span>Real-time payment processing</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-3 w-3 text-accent-secondary" />
+                    <span>Automatic currency conversion</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-3 w-3 text-accent-secondary" />
+                    <span>Mobile-optimized checkout</span>
+                  </li>
+                </ul>
+              </CardContent>
             </Card>
 
-            <Card className="hover-elevate transition-all duration-300">
+            <Card className="hover-elevate transition-all duration-300 border-2 hover:border-accent-secondary/50">
               <CardHeader>
-                <div className="mb-4 overflow-hidden rounded-lg">
+                <div className="mb-4 overflow-hidden rounded-lg relative">
                   <img src={dashboardImage}
                     alt="analytics"
-                    className="w-full h-32 object-cover"
+                    className="w-full h-40 object-cover"
                   />
+                  <div className="absolute top-2 right-2 bg-accent text-white text-xs px-2 py-1 rounded-full">
+                    New
+                  </div>
                 </div>
-                <CardTitle>Real-time Analytics</CardTitle>
-                <CardDescription>
-                  Track revenue, transactions and trends with powerful dashboards.
+                <div className="flex items-center gap-2 mb-2">
+                  <BarChart3 className="h-5 w-5 text-accent" />
+                  <CardTitle>Real-time Analytics</CardTitle>
+                </div>
+                <CardDescription className="text-sm">
+                  Track revenue, transactions, customer behavior, and trends with powerful dashboards. Export reports and set up custom alerts.
                 </CardDescription>
               </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-3 w-3 text-accent" />
+                    <span>Live transaction monitoring</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-3 w-3 text-accent" />
+                    <span>Custom report generation</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-3 w-3 text-accent" />
+                    <span>Revenue forecasting</span>
+                  </li>
+                </ul>
+              </CardContent>
             </Card>
 
-            <Card className="hover-elevate transition-all duration-300">
+            <Card className="hover-elevate transition-all duration-300 border-2 hover:border-accent-secondary/50">
               <CardHeader>
-                <div className="mb-4 overflow-hidden rounded-lg">
+                <div className="mb-4 overflow-hidden rounded-lg relative">
                   <img src={secureInfrastructureImage}
                     alt="security"
-                    className="w-full h-32 object-cover"
+                    className="w-full h-40 object-cover"
                   />
+                  <div className="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+                    Secure
+                  </div>
                 </div>
-                <CardTitle>Secure Infrastructure</CardTitle>
-                <CardDescription>
-                  Bank-level encryption and PCI standards to keep data secure.
+                <div className="flex items-center gap-2 mb-2">
+                  <Shield className="h-5 w-5 text-green-500" />
+                  <CardTitle>Secure Infrastructure</CardTitle>
+                </div>
+                <CardDescription className="text-sm">
+                  Bank-level encryption, PCI DSS Level 1 compliance, and advanced fraud detection. Your data and your customers' data are protected.
                 </CardDescription>
               </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-3 w-3 text-green-500" />
+                    <span>256-bit SSL encryption</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-3 w-3 text-green-500" />
+                    <span>PCI DSS Level 1 certified</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-3 w-3 text-green-500" />
+                    <span>AI-powered fraud detection</span>
+                  </li>
+                </ul>
+              </CardContent>
             </Card>
 
-            <Card className="hover-elevate transition-all duration-300">
+            <Card className="hover-elevate transition-all duration-300 border-2 hover:border-accent-secondary/50">
               <CardHeader>
-                <div className="mb-4 overflow-hidden rounded-lg">
+                <div className="mb-4 overflow-hidden rounded-lg relative">
                   <img src={globalCoverageImage}
                     alt="global coverage"
-                    className="w-full h-32 object-cover"
+                    className="w-full h-40 object-cover"
                   />
+                  <div className="absolute top-2 right-2 bg-accent-secondary text-white text-xs px-2 py-1 rounded-full">
+                    Global
+                  </div>
                 </div>
-                <CardTitle>Global Coverage</CardTitle>
-                <CardDescription>
-                  Support and reach across regions with local settlement options; default currency is ZAR.
+                <div className="flex items-center gap-2 mb-2">
+                  <Globe className="h-5 w-5 text-accent-secondary" />
+                  <CardTitle>Global Coverage</CardTitle>
+                </div>
+                <CardDescription className="text-sm">
+                  Accept payments from customers in 190+ countries. Local payment methods, multi-currency support, and regional settlement options.
                 </CardDescription>
               </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-3 w-3 text-accent-secondary" />
+                    <span>190+ countries supported</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-3 w-3 text-accent-secondary" />
+                    <span>50+ currencies</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-3 w-3 text-accent-secondary" />
+                    <span>Local payment methods</span>
+                  </li>
+                </ul>
+              </CardContent>
             </Card>
 
-            <Card className="hover-elevate transition-all duration-300">
+            <Card className="hover-elevate transition-all duration-300 border-2 hover:border-accent-secondary/50">
               <CardHeader>
-                <div className="mb-4 overflow-hidden rounded-lg">
+                <div className="mb-4 overflow-hidden rounded-lg relative">
                   <img src={easyIntegrationImage}
                     alt="integration"
-                    className="w-full h-32 object-cover"
+                    className="w-full h-40 object-cover"
                   />
+                  <div className="absolute top-2 right-2 bg-accent text-white text-xs px-2 py-1 rounded-full">
+                    Easy
+                  </div>
                 </div>
-                <CardTitle>Easy Integration</CardTitle>
-                <CardDescription>
-                  Simple APIs and payment links to get you up and running in minutes.
+                <div className="flex items-center gap-2 mb-2">
+                  <Code className="h-5 w-5 text-accent" />
+                  <CardTitle>Easy Integration</CardTitle>
+                </div>
+                <CardDescription className="text-sm">
+                  RESTful API with comprehensive documentation, SDKs for major platforms, and pre-built payment links. Integrate in minutes, not days.
                 </CardDescription>
               </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-3 w-3 text-accent" />
+                    <span>RESTful API & webhooks</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-3 w-3 text-accent" />
+                    <span>SDKs for all platforms</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-3 w-3 text-accent" />
+                    <span>Instant payment links</span>
+                  </li>
+                </ul>
+              </CardContent>
             </Card>
 
-            <Card className="hover-elevate transition-all duration-300">
+            <Card className="hover-elevate transition-all duration-300 border-2 hover:border-accent-secondary/50">
               <CardHeader>
-                <div className="mb-4 overflow-hidden rounded-lg">
+                <div className="mb-4 overflow-hidden rounded-lg relative">
                   <img src={supportImage}
                     alt="support"
-                    className="w-full h-32 object-cover"
+                    className="w-full h-40 object-cover"
                   />
+                  <div className="absolute top-2 right-2 bg-accent-secondary text-white text-xs px-2 py-1 rounded-full">
+                    24/7
+                  </div>
                 </div>
-                <CardTitle>24/7 Support</CardTitle>
-                <CardDescription>
-                  Our team is here to help you succeed whenever you need assistance.
+                <div className="flex items-center gap-2 mb-2">
+                  <HeadphonesIcon className="h-5 w-5 text-accent-secondary" />
+                  <CardTitle>24/7 Premium Support</CardTitle>
+                </div>
+                <CardDescription className="text-sm">
+                  Dedicated support team available around the clock via chat, email, and phone. Priority support for enterprise customers with dedicated account managers.
                 </CardDescription>
               </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-3 w-3 text-accent-secondary" />
+                    <span>24/7 live chat support</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-3 w-3 text-accent-secondary" />
+                    <span>Email response &lt; 2 hours</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-3 w-3 text-accent-secondary" />
+                    <span>Dedicated account manager</span>
+                  </li>
+                </ul>
+              </CardContent>
             </Card>
           </div>
         </div>
       </section>
 
-      <section id="how-it-works" className="py-24">
+      <section id="how-it-works" className="py-24 bg-gradient-to-b from-background to-muted/30">
         <div className="container px-6 mx-auto">
           <div className="text-center space-y-4 mb-16">
             <h2 className="text-4xl font-bold">How It Works</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Get started in four simple steps
+              Get started in four simple steps and start accepting payments today
             </p>
           </div>
           <div className="space-y-24">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-6">
                 <div className="flex items-center gap-4">
-                  <div className="h-12 w-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-lg">
+                  <div className="h-16 w-16 rounded-full bg-accent-secondary text-white flex items-center justify-center font-bold text-2xl shadow-lg">
                     1
                   </div>
                   <h3 className="text-3xl font-bold">Sign Up</h3>
                 </div>
                 <p className="text-lg text-muted-foreground">
-                  Create your merchant account in minutes. No complicated paperwork or long approval processes.
+                  Create your merchant account in minutes with our streamlined onboarding process. No complicated paperwork or long approval delays.
                 </p>
                 <ul className="space-y-3">
                   <li className="flex items-center gap-3">
-                    <Zap className="h-5 w-5 text-primary" />
-                    <span>Quick verification process</span>
+                    <Zap className="h-5 w-5 text-accent-secondary" />
+                    <span>Quick verification process (under 5 minutes)</span>
                   </li>
                   <li className="flex items-center gap-3">
-                    <Zap className="h-5 w-5 text-primary" />
+                    <Zap className="h-5 w-5 text-accent-secondary" />
                     <span>No setup fees or hidden costs</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <Zap className="h-5 w-5 text-accent-secondary" />
+                    <span>Instant account activation</span>
                   </li>
                 </ul>
               </div>
-              <div className="relative rounded-lg overflow-hidden shadow-xl border">
+              <div className="relative rounded-xl overflow-hidden shadow-2xl border border-muted/20 bg-gradient-to-br from-background to-muted/20">
                 <img src={dashboardImage} alt="Sign up process" className="w-full h-auto" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="bg-background/95 backdrop-blur-sm rounded-lg p-3 shadow-lg border">
+                    <div className="flex items-center gap-2">
+                      <Rocket className="h-4 w-4 text-accent-secondary" />
+                      <span className="text-sm font-medium">Account created successfully!</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div className="order-2 lg:order-1 relative rounded-lg overflow-hidden shadow-xl border">
+              <div className="order-2 lg:order-1 relative rounded-xl overflow-hidden shadow-2xl border border-muted/20 bg-gradient-to-br from-background to-muted/20">
                 <img src={apiImage} alt="API integration" className="w-full h-auto" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="bg-background/95 backdrop-blur-sm rounded-lg p-3 shadow-lg border">
+                    <div className="flex items-center gap-2">
+                      <Code className="h-4 w-4 text-accent" />
+                      <span className="text-sm font-medium">API integration complete</span>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div className="order-1 lg:order-2 space-y-6">
                 <div className="flex items-center gap-4">
-                  <div className="h-12 w-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-lg">
+                  <div className="h-16 w-16 rounded-full bg-accent text-white flex items-center justify-center font-bold text-2xl shadow-lg">
                     2
                   </div>
                   <h3 className="text-3xl font-bold">Integrate</h3>
                 </div>
                 <p className="text-lg text-muted-foreground">
-                  Add payments to your website or app with our simple API or use payment links for instant setup.
+                  Add payments to your website or app with our simple RESTful API or use payment links for instant setup without coding.
                 </p>
                 <ul className="space-y-3">
                   <li className="flex items-center gap-3">
-                    <Code className="h-5 w-5 text-primary" />
-                    <span>RESTful API with clear documentation</span>
+                    <Code className="h-5 w-5 text-accent" />
+                    <span>RESTful API with comprehensive documentation</span>
                   </li>
                   <li className="flex items-center gap-3">
-                    <Code className="h-5 w-5 text-primary" />
+                    <Code className="h-5 w-5 text-accent" />
+                    <span>SDKs for all major platforms (React, Node, Python)</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <Code className="h-5 w-5 text-accent" />
                     <span>Pre-built payment links ready to share</span>
                   </li>
                 </ul>
@@ -280,52 +488,76 @@ export default function Home() {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-6">
                 <div className="flex items-center gap-4">
-                  <div className="h-12 w-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-lg">
+                  <div className="h-16 w-16 rounded-full bg-accent-secondary text-white flex items-center justify-center font-bold text-2xl shadow-lg">
                     3
                   </div>
                   <h3 className="text-3xl font-bold">Accept Payments</h3>
                 </div>
                 <p className="text-lg text-muted-foreground">
-                  Start receiving payments from customers using their preferred payment method.
+                  Start receiving payments from customers using their preferred payment method with our optimized checkout experience.
                 </p>
                 <ul className="space-y-3">
                   <li className="flex items-center gap-3">
-                    <Smartphone className="h-5 w-5 text-primary" />
+                    <Smartphone className="h-5 w-5 text-accent-secondary" />
                     <span>Cards, mobile money, bank transfers</span>
                   </li>
                   <li className="flex items-center gap-3">
-                    <Smartphone className="h-5 w-5 text-primary" />
-                    <span>Mobile-optimized checkout</span>
+                    <Smartphone className="h-5 w-5 text-accent-secondary" />
+                    <span>Mobile-optimized checkout experience</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <Smartphone className="h-5 w-5 text-accent-secondary" />
+                    <span>Real-time payment confirmation</span>
                   </li>
                 </ul>
               </div>
-              <div className="relative rounded-lg overflow-hidden shadow-xl border">
+              <div className="relative rounded-xl overflow-hidden shadow-2xl border border-muted/20 bg-gradient-to-br from-background to-muted/20">
                 <img src={checkoutImage} alt="Payment checkout" className="w-full h-auto" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="bg-background/95 backdrop-blur-sm rounded-lg p-3 shadow-lg border">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="h-4 w-4 text-green-500" />
+                      <span className="text-sm font-medium">Payment successful!</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div className="order-2 lg:order-1 relative rounded-lg overflow-hidden shadow-xl border">
+              <div className="order-2 lg:order-1 relative rounded-xl overflow-hidden shadow-2xl border border-muted/20 bg-gradient-to-br from-background to-muted/20">
                 <img src={payoutImage} alt="Get paid" className="w-full h-auto" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <div className="bg-background/95 backdrop-blur-sm rounded-lg p-3 shadow-lg border">
+                    <div className="flex items-center gap-2">
+                      <DollarSign className="h-4 w-4 text-accent" />
+                      <span className="text-sm font-medium">Payout processed</span>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div className="order-1 lg:order-2 space-y-6">
                 <div className="flex items-center gap-4">
-                  <div className="h-12 w-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-lg">
+                  <div className="h-16 w-16 rounded-full bg-accent text-white flex items-center justify-center font-bold text-2xl shadow-lg">
                     4
                   </div>
                   <h3 className="text-3xl font-bold">Get Paid</h3>
                 </div>
                 <p className="text-lg text-muted-foreground">
-                  Request payouts to your bank account anytime with fast processing.
+                  Request payouts to your bank account anytime with our fast processing system. Automated daily payouts available.
                 </p>
                 <ul className="space-y-3">
                   <li className="flex items-center gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-primary" />
-                    <span>Fast settlement times</span>
+                    <CheckCircle2 className="h-5 w-5 text-accent" />
+                    <span>Same-day settlement for most transactions</span>
                   </li>
                   <li className="flex items-center gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-primary" />
-                    <span>Transparent fee structure</span>
+                    <CheckCircle2 className="h-5 w-5 text-accent" />
+                    <span>Transparent fee structure (no hidden charges)</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <CheckCircle2 className="h-5 w-5 text-accent" />
+                    <span>Automated daily payouts available</span>
                   </li>
                 </ul>
               </div>
@@ -446,6 +678,143 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="py-24 bg-gradient-to-b from-muted/30 to-background">
+        <div className="container px-6 mx-auto">
+          <div className="text-center space-y-4 mb-16">
+            <h2 className="text-4xl font-bold">Trusted by Businesses Worldwide</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Join thousands of merchants who trust PayMerch for their payment needs
+            </p>
+          </div>
+          <div className="grid md:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="text-5xl font-bold text-accent-secondary mb-2">10K+</div>
+              <div className="text-muted-foreground">Active Merchants</div>
+            </div>
+            <div className="text-center">
+              <div className="text-5xl font-bold text-accent mb-2">$50M+</div>
+              <div className="text-muted-foreground">Processed Monthly</div>
+            </div>
+            <div className="text-center">
+              <div className="text-5xl font-bold text-accent-secondary mb-2">190+</div>
+              <div className="text-muted-foreground">Countries Supported</div>
+            </div>
+            <div className="text-center">
+              <div className="text-5xl font-bold text-accent mb-2">99.9%</div>
+              <div className="text-muted-foreground">Uptime Guarantee</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" className="py-24 bg-muted/30">
+        <div className="container px-6 mx-auto">
+          <div className="text-center space-y-4 mb-16">
+            <h2 className="text-4xl font-bold">Get In Touch</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Have questions? Our team is here to help you succeed
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <Card className="text-center hover-elevate transition-all duration-300 border-2 hover:border-accent-secondary/50">
+              <CardHeader>
+                <div className="mx-auto h-16 w-16 rounded-full bg-accent-secondary/10 flex items-center justify-center mb-4">
+                  <Mail className="h-8 w-8 text-accent-secondary" />
+                </div>
+                <CardTitle>Email Us</CardTitle>
+                <CardDescription>
+                  Get in touch via email for general inquiries
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <a href="mailto:support@paymerch.com" className="text-accent-secondary font-medium hover:underline">
+                  support@paymerch.com
+                </a>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Response time: &lt; 2 hours
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center hover-elevate transition-all duration-300 border-2 hover:border-accent/50">
+              <CardHeader>
+                <div className="mx-auto h-16 w-16 rounded-full bg-accent/10 flex items-center justify-center mb-4">
+                  <Phone className="h-8 w-8 text-accent" />
+                </div>
+                <CardTitle>Call Us</CardTitle>
+                <CardDescription>
+                  Speak with our support team directly
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <a href="tel:+27123456789" className="text-accent font-medium hover:underline">
+                  +27 12 345 6789
+                </a>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Mon-Fri: 9AM - 6PM SAST
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center hover-elevate transition-all duration-300 border-2 hover:border-accent-secondary/50">
+              <CardHeader>
+                <div className="mx-auto h-16 w-16 rounded-full bg-accent-secondary/10 flex items-center justify-center mb-4">
+                  <MessageSquare className="h-8 w-8 text-accent-secondary" />
+                </div>
+                <CardTitle>Live Chat</CardTitle>
+                <CardDescription>
+                  Chat with us in real-time for instant support
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button className="w-full bg-accent-secondary text-accent-secondary-foreground border-accent-secondary hover:bg-accent-secondary/90">
+                  Start Chat
+                </Button>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Available 24/7
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="mt-16 max-w-3xl mx-auto">
+            <Card className="border-2">
+              <CardHeader>
+                <CardTitle className="text-2xl">Send us a message</CardTitle>
+                <CardDescription>
+                  Fill out the form below and we'll get back to you within 24 hours
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form className="space-y-4">
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Name</label>
+                      <input type="text" placeholder="Your name" className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-accent-secondary" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Email</label>
+                      <input type="email" placeholder="your@email.com" className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-accent-secondary" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Subject</label>
+                    <input type="text" placeholder="How can we help?" className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-accent-secondary" />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Message</label>
+                    <textarea placeholder="Tell us more about your needs..." rows="4" className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-accent-secondary"></textarea>
+                  </div>
+                  <Button type="submit" className="w-full bg-accent text-accent-foreground border-accent hover:bg-accent/90">
+                    Send Message
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       <section className="py-24 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground">
           <div className="container px-6 mx-auto text-center space-y-8">
           <h2 className="text-4xl lg:text-5xl font-bold">Ready to Start Accepting Payments?</h2>
@@ -463,7 +832,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="border-t py-12">
+      <footer className="border-t py-12 bg-muted/20">
         <div className="container px-6 mx-auto">
           <div className="grid md:grid-cols-4 gap-12 mb-8 md:text-left">
             <div className="space-y-4 flex flex-col items-center md:items-start">
@@ -471,11 +840,12 @@ export default function Home() {
                 <img src="/paymerch_icon.png" alt="Brand icon" className="h-[50px] w-auto object-contain" />
               </div>
               <p className="text-sm text-muted-foreground">
-                Global payment solutions for modern businesses
+                Global payment solutions for modern businesses. Accept payments anywhere, anytime.
               </p>
               <div className="flex items-center gap-4">
                 <SiVisa className="h-8 w-12 text-muted-foreground" />
                 <SiMastercard className="h-8 w-12 text-muted-foreground" />
+                <SiPaypal className="h-8 w-12 text-muted-foreground" />
               </div>
             </div>
             <div>
@@ -483,21 +853,29 @@ export default function Home() {
               <ul className="space-y-3 text-sm text-muted-foreground">
                 <li><a href="#features" className="hover:text-foreground transition-colors" data-testid="footer-link-features">Features</a></li>
                 <li><a href="#pricing" className="hover:text-foreground transition-colors" data-testid="footer-link-pricing">Pricing</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors" data-testid="footer-link-api">API Docs</a></li>
+                <li><a href="#how-it-works" className="hover:text-foreground transition-colors" data-testid="footer-link-how-it-works">How It Works</a></li>
+                <li><a href="#contact" className="hover:text-accent-secondary transition-colors font-medium" data-testid="footer-link-contact">Contact Us</a></li>
               </ul>
             </div>
             <FooterCompany />
             <div>
               <h4 className="font-semibold mb-4">Legal</h4>
               <ul className="space-y-3 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-foreground transition-colors" data-testid="footer-link-privacy">Privacy</a></li>
-                <li><a href="#" className="hover:text-foreground transition-colors" data-testid="footer-link-terms">Terms</a></li>
+                <li><a href="#" className="hover:text-foreground transition-colors" data-testid="footer-link-privacy">Privacy Policy</a></li>
+                <li><a href="#" className="hover:text-foreground transition-colors" data-testid="footer-link-terms">Terms of Service</a></li>
                 <li><a href="#" className="hover:text-foreground transition-colors" data-testid="footer-link-security">Security</a></li>
               </ul>
             </div>
           </div>
           <div className="border-t pt-8 text-center text-sm text-muted-foreground">
-            <p>&copy; 2025 All rights reserved.</p>
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              <p>&copy; 2025 PayMerch. All rights reserved.</p>
+              <div className="flex items-center gap-4">
+                <a href="#" className="hover:text-foreground transition-colors">Twitter</a>
+                <a href="#" className="hover:text-foreground transition-colors">LinkedIn</a>
+                <a href="#" className="hover:text-foreground transition-colors">GitHub</a>
+              </div>
+            </div>
           </div>
         </div>
       </footer>
